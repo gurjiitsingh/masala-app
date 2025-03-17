@@ -22,7 +22,7 @@ export type flavorsProductGType = {
   // flavors:boolean;
   id: string | undefined;
   name: string;
-  price: number;
+  price: string;
   baseProductId: string;
   productDesc: string;
   productCat: string;

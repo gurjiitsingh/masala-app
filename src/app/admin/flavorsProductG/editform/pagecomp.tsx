@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 //import { fetchCategories } from "@/app/action/category/dbOperations";
 //import { fetchbrands } from "@/app/action/brads/dbOperations";
-import {  flavorsProductGSchema, flavorsProductGType } from "@/lib/types/flavorsProductGType";
+import {  flavorsProductGSchema, flavorsProductGSchemaType, flavorsProductGType } from "@/lib/types/flavorsProductGType";
 import {  useRouter, useSearchParams } from "next/navigation";
 import { editProduct, fetchProductById } from "@/app/action/flavorsProductG/dbOperation";
 
@@ -33,31 +33,30 @@ const PageComp = () => {
     setValue,
     handleSubmit,
     // setError,
-  } = useForm<flavorsProductGType>({
+  } = useForm<flavorsProductGSchemaType>({
     resolver: zodResolver(flavorsProductGSchema),
   });
   useEffect(() => {
     let productData;
     async function prefetch() {
       productData = await fetchProductById(id);
-   // console.log("productData.id ----", id)
-    //setProduct(productData);
-    //  const catData = await fetchCategories();
-    //  console.log("----------------- product data in edit", catData);
-    //  setCategory(catData);
+           
+      const priceS = productData.price.toString().replace(/\./g, ',');
       setValue("id", id);
       setValue("name", productData.name);
       setValue("productDesc", productData.productDesc);
-    //  setValue("oldImgageUrl", productData.image);
-      setValue("price", productData.price);
+     // setValue("categoryId", "yishiwe");
+    // setValue("oldImgageUrl", productData.image);
+      setValue("price", priceS);
      // setValue("productCat", productData.productCat);
      // setValue("isFeatured", productData.isFeatured);
+
     }
 
     prefetch();
   }, []);
 
-  async function onsubmit(data: flavorsProductGType) {
+  async function onsubmit(data: flavorsProductGSchemaType) {
        
     const formData = new FormData();
     //console.log("---------formdata", data)

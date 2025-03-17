@@ -43,9 +43,9 @@ const ListView = ({ title }: productTableProps) => {
 
   return (
     <>
-      <div className="mt-10 p-2">
+      <div className="mt-2">
         <h3 className="text-2xl mb-4 font-semibold">
-          {title ? title : "Products"}
+          {title ? title : "Orders"}
         </h3>
         <div className="bg-slate-50 rounded-lg p-1">
         <Table >

@@ -109,23 +109,28 @@ export async function addNewProduct(formData: FormData) {
 // }
 
 export async function editProduct(formData: FormData) {
-  // const id = formData.get("id") as string;
-  // const image = formData.get("image");
-  //  const oldImgageUrl = formData.get("oldImgageUrl") as string;
-  // const featured_img: boolean = false;
-  // featured_img = formData.get("oldImgageUrl");
 
-  // console.log("this is edit sauce -------", formData);
+
+   console.log("this is edit sauce -------", formData);
+  
+
+  // const featured_img: boolean = false;
   const id = formData.get("id") as string;
-  const priceValue = formData.get("price") as string;
-  const price = priceValue.replace(/,/g, ".");
+  const name = formData.get("name");
+  const price = formData.get("price") as string;
+  // const price = priceValue.replace(/,/g, ".");
+  const productCat = formData.get("productCat");
+  //const categoryId = formData.get("categoryId");
+  const productDesc = formData.get("productDesc");
+  //const oldImgageUrl = formData.get("oldImgageUrl") as string;
+  
+
   const receivedData = {
-    name: formData.get("name"),
-    price: price,
-    productCat: formData.get("productCat"),
-    productDesc: formData.get("productDesc"),
-    // image: formData.get("image"),
-    //   isFeatured: featured_img,
+    name,
+    price,
+    productCat,
+    productDesc,
+   
   };
 
   const result = flavorsProductGSchema.safeParse(receivedData);
@@ -175,14 +180,20 @@ export async function editProduct(formData: FormData) {
   //   }
   // }
 
+
+  const priceV = parseFloat(price.replace(/,/g, ".")).toFixed(2); // toFixed convert it to string
+  const priceF = parseFloat(priceV);
+
   const productUpdtedData = {
-    name: formData.get("name"),
-    price: price,
-    productCat: formData.get("productCat"),
-    productDesc: formData.get("productDesc"),
-    // image: imageUrl,
-    //  isFeatured: featured_img,
+    name,
+    price: priceF,
+    productCat,
+  //  categoryId,
+    productDesc,
+   // image:imageUrl,
+   // isFeatured,
   };
+
   console.log("update data ------------", productUpdtedData);
 
   try {

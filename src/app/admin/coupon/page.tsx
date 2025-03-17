@@ -8,9 +8,9 @@ export default function Page({params}:{params:{id:string}}){
   
   console.log("couponaddon view page------", id)
   return (
-    <div className='h-screen flex flex-col '>
+    <div className='h-screen flex flex-col px-1'>
       <div className="flex justify-between">
-      <h1>Coupons </h1>
+      
       <Link href={`/admin/coupon/form`}><button className="bg-[#313131] text-sm text-white px-4 py-2 rounded-lg">Create</button></Link>
       </div>
 

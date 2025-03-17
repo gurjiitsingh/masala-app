@@ -43,9 +43,9 @@ const ListView = () => {
 
   return (
     <>
-      <div className="mt-10 p-2">
-        <h3 className="text-2xl mb-4 font-semibold">
-        Coupons
+      <div className="mt-2">
+      <h3 className="text-2xl mb-4 font-semibold">
+        Coupon
         </h3>
         <div className="bg-slate-50 rounded-lg p-1">
           <Table>
