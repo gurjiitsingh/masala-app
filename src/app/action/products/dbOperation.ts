@@ -20,8 +20,10 @@ import {
   doc,
   getDoc,
   getDocs,
+ query,
  // query,
   setDoc,
+  where,
 } from "@firebase/firestore"; //doc, getDoc,
 
 
@@ -125,29 +127,29 @@ type rt = {
 
 
 
-export async function deleteProduct(id:string, oldImgageUrl:string) {
+export async function deleteProduct(id:string) {
 
  const docRef = doc(db, "product", id);
    await deleteDoc(docRef);                     
    //return { errors: "Delete not implimented jet" };
    // if (result?.rowCount === 1) {
 
-    const imageUrlArray = oldImgageUrl.split("/");
-    console.log(imageUrlArray[imageUrlArray.length - 1]);
-    const imageName =
-      imageUrlArray[imageUrlArray.length - 2] +
-      "/" +
-      imageUrlArray[imageUrlArray.length - 1];
+    // const imageUrlArray = oldImgageUrl.split("/");
+    // console.log(imageUrlArray[imageUrlArray.length - 1]);
+    // const imageName =
+    //   imageUrlArray[imageUrlArray.length - 2] +
+    //   "/" +
+    //   imageUrlArray[imageUrlArray.length - 1];
 
-    const image_public_id = imageName.split(".")[0];
-    console.log(image_public_id);
-    try {
-      const deleteResult = await deleteImage(image_public_id);
-      console.log("image delete data", deleteResult);
-    } catch (error) {
-      console.log(error);
-      return {errors:"Somthing went wrong, can not delete product picture"}
-    }
+    // const image_public_id = imageName.split(".")[0];
+    // console.log(image_public_id);
+    // try {
+    //   const deleteResult = await deleteImage(image_public_id);
+    //   console.log("image delete data", deleteResult);
+    // } catch (error) {
+    //   console.log(error);
+    //   return {errors:"Somthing went wrong, can not delete product picture"}
+    // }
 
        return {
       message: { sucess: "Deleted product" },
@@ -241,31 +243,7 @@ export async function editProduct(formData: FormData) {
   }
 }
 
-export async function fetchProducts(): Promise<ProductType[]> {
-  // const result = await getDocs(collection(db, "product"))
-  // let data = [];
-  // result.forEach((doc) => {
-  //   data.push({id:doc.id, ...doc.data()});
-  // });
-  //  return data;
 
-  const result = await getDocs(collection(db, "product"));
-
-  let data = [] as ProductType[];
-  result.forEach((doc) => {
-    const pData = { id: doc.id, ...doc.data() } as ProductType;
-    data.push(pData);
-  });
-  return data;
-  // let data = [] as ProductType[];
-  //   const q = query(collection(db, "product"));
-  //   const querySnapshot = await getDocs(q);
-  //   querySnapshot.forEach((doc) => {
-  //     const ab = doc.data() as ProductType;
-  //     data.push(ab);
-  //   });
-  //   return data;
-}
 
 export async function fetchProductById(id: string): Promise<ProductType> {
   console.log("tis is sauce action-------------",id)

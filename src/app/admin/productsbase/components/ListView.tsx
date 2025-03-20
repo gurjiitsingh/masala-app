@@ -17,42 +17,71 @@ import {
 } from "@/components/ui/table";
 
 import TableRows from "./TableRows";
-import { fetchProducts } from "@/app/action/productsbase/dbOperation";
+import { fetchProductByCategoryId } from "@/app/action/productsbase/dbOperation";
 
 import { ProductType } from "@/lib/types/productType";
+import { fetchCategories } from "@/app/action/category/dbOperations";
+import { categoryType } from "@/lib/types/categoryType";
+import CategoryComp from "./CategoryComp";
 //import FeaturProductUpdate from "./FeaturProductUpdate";
 
 const ListView = ({ title }: productTableProps) => {
   const [productData, setProductData] = useState<ProductType[]>([]);
+  const [categoryData, setCategoryData] = useState<categoryType[]>([]);
+  const [cateId, setCateId ] = useState<string>('');
   // var pageNo = 1;
   // var limit = 10
 
   useEffect(() => {
-    async function fetchProduct() {
-      try {
-        const result = await fetchProducts();
-        console.log("---------", result)
-        setProductData(result);
-      } catch (error) {
+    async function fetchcate() {
+      try {      
+      const categories = await fetchCategories()
+      categories.sort((a, b) => a.sortOrder! - b.sortOrder!);
+        setCategoryData(categories);
+       } catch (error) {
         console.log(error);
       }
     }
-    fetchProduct();
+    fetchcate();
     
   }, []);
 
-  // function handleDelete(id:string){
-  //   console.log(id)
-  // }
-  // Sort posts in dec product based on date
 
-  //   const sortedproducts: TProduct[] = [...products].sort((a, b) => {
-  //     return new Date(b.date).getTime() - new Date(a.date).getTime();
-  //   });
+  useEffect(() => {
+    // console.log("cat id from -------", cateId)
+     async function fetchProduct() {
+       try {
+         const productData = await fetchProductByCategoryId(cateId);
+         productData.sort((a, b) => a.sortOrder - b.sortOrder);
+         setProductData(productData);
+       } catch (error) {
+         console.log(error);
+       }
+     }
+     fetchProduct();
+     
+   }, [ cateId]);
+
+  
+
+  function fetchServiceHandler(id:string){
+    setCateId(id)
+  }
+
+  
 
   return (
     <>
       <div className="mt-2 ">
+      <h3 className="text-xl mb-4 font-semibold">
+       Select Category
+        </h3>
+        <div className="flex gap-3">
+{categoryData.map((cate)=>{
+  return <CategoryComp name={cate.name} id={cate.id} key={cate.name} cateId={cateId} fetchServiceHandler={fetchServiceHandler} />
+})}
+          
+        </div>
         <h3 className="text-2xl mb-4 font-semibold">
           {title ? title : "Products"}
         </h3>

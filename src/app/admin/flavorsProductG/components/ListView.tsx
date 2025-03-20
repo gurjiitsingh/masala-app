@@ -15,13 +15,13 @@ import {
 
 import TableRows from "./TableRows";
 import {  fetchflavorsProductG } from "@/app/action/flavorsProductG/dbOperation";
-import { ProductType } from "@/lib/types/productType";
+import { flavorsProductGType } from "@/lib/types/flavorsProductGType";
 //import FeaturProductUpdate from "./FeaturProductUpdate";
 
 const ListView = () => {
 
  
-  const [productData, setProductData] = useState<ProductType[]>([]);
+  const [productData, setProductData] = useState<flavorsProductGType[]>([]);
 
   useEffect(() => {
     async function fetchProduct() {

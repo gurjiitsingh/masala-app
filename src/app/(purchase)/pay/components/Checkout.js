@@ -24,15 +24,26 @@ export default function Checkout(){
     //     },
     //   });
     // };
-    console.log("productTotalCost----------",productTotalCost,typeof(productTotalCost),"endTotalG----------",endTotalG,typeof(endTotalG))
+   // console.log("productTotalCost----------",productTotalCost,typeof(productTotalCost),"endTotalG----------",endTotalG,typeof(endTotalG))
   
     //var products =  JSON.parse(window.localStorage.getItem("cart_product_data"));
-    let customerAddress ;
+    // type customerAddressType =	{
+		// 	firstNamestring: string;
+    //         lastName: string;
+		// 	address_line_1: string;
+    //         address_line_2: string;
+    //         admin_area_2: string;
+    //         admin_area_1: string;
+    //         postal_code: string;
+    //         country_code: string;
+		// 	}
+    let customerAddress
     if (typeof window !== 'undefined') {
-     customerAddress = JSON.parse(localStorage.getItem("customer_address"));
+     customerAddress = JSON.parse(localStorage.getItem("customer_address") || '""')  ;
     }
   //console.log("cartData ", productTotalCost)
-    const onCreateOrder = (data, actions) => {
+    //const onCreateOrder = (data, actions) => {
+      const onCreateOrder = (data, actions) => {
       return actions.order.create({
         intent: "CAPTURE",
         purchase_units: [

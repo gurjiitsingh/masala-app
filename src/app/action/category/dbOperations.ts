@@ -1,54 +1,83 @@
 "use server";
-import { categorySchema } from '@/lib/types/categoryType';
+import { categorySchema, editCategorySchema } from "@/lib/types/categoryType";
 import { db } from "@/lib/firebaseConfig";
-import { upload } from "@/lib/cloudinary";
-import { addDoc, collection, getDocs } from "@firebase/firestore";
-import { categoryType, categoryTypeArr } from '@/lib/types/categoryType';
+import { deleteImage, upload } from "@/lib/cloudinary";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  setDoc,
+} from "@firebase/firestore";
+import { categoryType } from "@/lib/types/categoryType";
 
 //type TcategorySchemaArray = TcategorySchema[]
 
-
-
-export const fetchCategories = async ():Promise<categoryTypeArr> => {
+export const fetchCategories = async (): Promise<categoryType[]> => {
   //const userQuery = await db.users.get()
-  const result = await getDocs(collection(db, "category"))
-  const docdata = result.docs.map(x => x.data() as categoryType)
-  return docdata;
+  // const result = await getDocs(collection(db, "category"))
+  // const docdata = result.docs.map(x => x.data() as categoryType)
+  // return docdata;
+
+  const result = await getDocs(collection(db, "category"));
+  const data = [] as categoryType[];
+  result.forEach((doc) => {
+    const pData = { id: doc.id, ...doc.data() } as categoryType;
+    data.push(pData);
+  });
+  return data;
+};
+
+export async function deleteCategory(id: string, oldImgageUrl: string) {
+  const docRef = doc(db, "category", id);
+  await deleteDoc(docRef);
+  //return { errors: "Delete not implimented jet" };
+  // if (result?.rowCount === 1) {
+
+  const imageUrlArray = oldImgageUrl.split("/");
+  console.log(imageUrlArray[imageUrlArray.length - 1]);
+  const imageName =
+    imageUrlArray[imageUrlArray.length - 2] +
+    "/" +
+    imageUrlArray[imageUrlArray.length - 1];
+
+  const image_public_id = imageName.split(".")[0];
+  console.log(image_public_id);
+  try {
+    const deleteResult = await deleteImage(image_public_id);
+    console.log("image delete data", deleteResult);
+  } catch (error) {
+    console.log(error);
+    return { errors: "Somthing went wrong, can not delete product picture" };
+  }
+
+  return {
+    message: { sucess: "Deleted product" },
+  };
+  // }else{
+  //   return {errors:"Somthing went wrong, can not delete product"}
+  // }
 }
 
-// export async function fetchCategories1(){
-//       const result = await getDocs(collection(db, "category"))
-//            let data = [] as categoryType;
-//       result.forEach((doc) => {
-//        //const res = {id:doc.id, ...doc.data()}
-
-//        const res = {
-//         id:doc.id,
-//         name: doc.name,
-//   desc: doc.productDesc;
-//   slug?: doc.slug,
-//   image?: doc.image,
-// }
-
-//         data.push(res);
-//        // data = doc.data() as TcategorySchema;
-//       });
-//    //   console.log("---- cat of data -----",data)
-//       return data;
-// }
-
-
 export async function addNewCategory(formData: FormData) {
-  const recievedData = {
-    name: formData.get("name"),
-    productDesc: formData.get("productDesc"),
-    slug: formData.get("slug"),
-  };
-  console.log("recieved data----------------", recievedData)
+  const name = formData.get("name");
+  const desc = formData.get("desc");
+  const sortOrder = formData.get("sortOrder");
   const image = formData.get("image");
-  
+  const isFeatured: boolean = false;
+  const recievedData = {
+    name,
+    desc,
+    sortOrder,
+    image,
+    isFeatured,
+  };
+  //console.log("recieved data----------------", recievedData);
+
   const result = categorySchema.safeParse(recievedData);
-  console.log(result);
+  //console.log(result);
   let zodErrors = {};
   if (!result.success) {
     result.error.issues.forEach((issue) => {
@@ -60,211 +89,144 @@ export async function addNewCategory(formData: FormData) {
       : { success: true };
   }
 
- 
   let imageUrl;
   try {
-    console.log("INSIDE IMAGE UPLOAD-----------")
+  
     imageUrl = await upload(image);
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return { errors: "image cannot uploaded" };
   }
 
   const data = {
-    name: formData.get("name"),
-    desc: formData.get("productDesc"),
-    slug: formData.get("slug"),
-    imgUrl: imageUrl,
+    name,
+    desc,
+    // slug,
+    sortOrder,
+    image: imageUrl,
+    isFeatured: false,
+  };
+
+  try {
+    const docRef = await addDoc(collection(db, "category"), data);
+    console.log("Document written with ID: ", docRef.id);
+    return {
+      message: { sucess: "Category Created" },
+    };
+    // Clear the form
+  } catch (e) {
+    console.error("Error adding document: ", e);
   }
-
-     try {
-        const docRef = await addDoc(collection(db, "category"), data);
-        console.log("Document written with ID: ", docRef.id);
-        return {
-                message: { sucess: "Category Created" },
-              };
-        // Clear the form
-    } catch (e) {
-        console.error("Error adding document: ", e);
-    }
-
-    
-
- 
 }
 
+export async function editCategory(formData: FormData) {
+ // console.log("inside cat edit -------", formData);
+  const id = formData.get("id") as string;
+  const image = formData.get("image");
+  const name = formData.get("name");
+  const desc = formData.get("desc");
+  const oldImgageUrl = formData.get("oldImgageUrl") as string;
+  const featured_img: boolean = false;
+  const sortOrder = formData.get("sortOrder");
 
+  const receivedData = {
+    id,
+    oldImgageUrl,
+    name,
+    desc,
+    sortOrder,
+    image,
+    isFeatured: false,
+  };
 
-// export async function onSubmitNewCategory1( formData: FormData) {
- 
-// //   console.log("----------- category server action form-------")
-// // console.log(formData.get("name"))
-// // console.log(formData.get("productDesc"))
-// // console.log(formData.get("slug"))
-// // console.log(formData.get("image"))
-// const recievedData = {
-//   name:formData.get("name"),
-//   desc:formData.get("productDesc"),
-//   slug: formData.get("slug"),
-//   imgUrl: formData.get("image")
-// }
+  const result = editCategorySchema.safeParse(receivedData);
 
-// const result = categorySchema.safeParse(recievedData)
+  //console.log("result --------", result)
+  let zodErrors = {};
+  if (!result.success) {
+    result.error.issues.forEach((issue) => {
+      zodErrors = { ...zodErrors, [issue.path[0]]: issue.message };
+    });
 
-// let zodErrors = {};
-//   if (!result.success) {
-//     result.error.issues.forEach((issue) => {
-//       zodErrors = { ...zodErrors, [issue.path[0]]: issue.message };
-//     });
+    return Object.keys(zodErrors).length > 0
+      ? { errors: zodErrors }
+      : { success: true };
+  }
 
-//     return Object.keys(zodErrors).length > 0
-//       ? { errors: zodErrors }
-//       : { success: true };
-//   }
+  let imageUrl;
+  if (image === "undefined" || image === null) {
+    imageUrl = oldImgageUrl;
+    //  console.log("----------------not change image")
+  } else {
+    //  console.log("---------------- change image")
+    try {
+      imageUrl = (await upload(image)) as string;
+      console.log(imageUrl);
+    } catch (error) {
+      //  throw new Error("error")
+      console.log(error);
+      return { errors: "image cannot uploaded" };
+    }
+    const d = false;
+    if (d) {
+      const imageUrlArray = oldImgageUrl?.split("/");
+      console.log("old image url", imageUrlArray);
+      const imageName =
+        imageUrlArray[imageUrlArray.length - 2] +
+        "/" +
+        imageUrlArray[imageUrlArray.length - 1];
 
+      const image_public_id = imageName.split(".")[0];
+      console.log("image_public_id ---", image_public_id);
+      try {
+        const deleteResult = await deleteImage(image_public_id);
+        console.log(deleteResult);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
 
+  const categoryUpdateData = {
+    name,
+    desc,
+    sortOrder,
+    image: imageUrl,
+    isFeatured: featured_img,
+  };
+ //  console.log("update data ------------", categoryUpdateData)
+  // update database
+  try {
+    const docRef = doc(db,"category", id);
+   await setDoc(docRef, categoryUpdateData);
 
-// try {
-//   const result = await db.insert(category).values({
-//   name:formData.get("name"),
-//   desc:formData.get("productDesc"),
-//   slug: formData.get("slug")
-//   }).returning({id:category.id});
- 
-// if(result?.[0].id){
-//   revalidatePath('/admin/category')
-//   return {
-//     message: {sucess:"Category Created"}
-//   }
-// }
- 
-// } catch (error) {
-//   console.log(error);
-//   return JSON.stringify({
-//     message: {error}
-//   }) 
-// }
+  } catch (error) {
+    console.log("error", error);
+    return { errors: "Cannot update" };
+  }
+}
 
-// }
+export async function fetchCategoryById(id: string): Promise<categoryType> {
+  const docRef = doc(db, "category", id);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    //  console.log("Document data:", docSnap.data());
+  } else {
+    //   docSnap.data() //will be undefined in this case
+    //  console.log("No such document!");
+  }
+  const category = { id: docSnap.id, ...docSnap.data() } as categoryType;
 
+  return category;
+  // const docRef = doc(db, "product", id);
+  // const docSnap = await getDoc(docRef);
+  //  return docSnap.data();
 
-// export async function editCategory(formData: FormData){
- 
-//   const id = formData.get("id");
-    
-//   const recievedData = {
-//     name:formData.get("name"),
-//     desc:formData.get("productDesc"),
-//     slug: formData.get("slug"),
-//   }
-  
- 
-//   const result = categorySchema.safeParse(recievedData)
-  
-//   let zodErrors = {};
-//     if (!result.success) {
-//       result.error.issues.forEach((issue) => {
-//         zodErrors = { ...zodErrors, [issue.path[0]]: issue.message };
-//       });
-  
-//       return Object.keys(zodErrors).length > 0
-//         ? { errors: zodErrors }
-//         : { success: true };
-//     }
-  
-  
-  
-//   try {
-  
-//    const result = await db
-//    .update(category)
-//    //.values({ name:formData.get("name"), desc:formData.get("productDesc"), slug: formData.get("slug") })
-//    .set(
-//     recievedData,
-//    ).where(eq(category.id, id));
-
-
-//    revalidatePath('/admin/categories')
-
-//    // console.log(result)
-//   if(result?.rowCount===1){
-//     revalidatePath('/','layout')
-//     return {
-//       message: {sucess:"Updated Created"}
-//     }
-//   }
-   
-//   } catch (error) {
-//     console.log(error);
-//     return JSON.stringify({
-//       message: {error}
-//     }) 
-//   }
-
-// }
-
-
-
-// export async function editCategoryAction1(formData: FormData){
- 
-//   const id = formData.get("id");
-    
-//   const recievedData = {
-//     name:formData.get("name"),
-//     desc:formData.get("productDesc"),
-//     slug: formData.get("slug"),
-//   }
-  
- 
-//   const result = categorySchema.safeParse(recievedData)
-  
-//   let zodErrors = {};
-//     if (!result.success) {
-//       result.error.issues.forEach((issue) => {
-//         zodErrors = { ...zodErrors, [issue.path[0]]: issue.message };
-//       });
-  
-//       return Object.keys(zodErrors).length > 0
-//         ? { errors: zodErrors }
-//         : { success: true };
-//     }
-  
-  
-  
-//   try {
-  
-//    const result = await db
-//    .update(category)
-//    //.values({ name:formData.get("name"), desc:formData.get("productDesc"), slug: formData.get("slug") })
-//    .set(
-//     recievedData,
-//    ).where(eq(category.id, id));
-
-
-//    revalidatePath('/admin/categories')
-
-//    // console.log(result)
-//   if(result?.rowCount===1){
-//     revalidatePath('/','layout')
-//     return {
-//       message: {sucess:"Updated Created"}
-//     }
-//   }
-   
-//   } catch (error) {
-//     console.log(error);
-//     return JSON.stringify({
-//       message: {error}
-//     }) 
-//   }
-
-// }
-
-
-// export async  function deleteCategory(catId){
-//   const { id } = JSON.parse(catId)
-// console.log("jlkjlll================8", id)
-
-// const result = await db.delete(category).where(eq(category.id, id))
-// revalidatePath('/admin/categories')
-// }
+  //  let data = [] as ProductType[];
+  //   const q = query(collection(db, "product", id));
+  //   const querySnapshot = await getDocs(q);
+  //   querySnapshot.forEach((doc) => {
+  //     data = doc.data() as ProductTypeArr;
+  //   });
+  //   return data;
+}

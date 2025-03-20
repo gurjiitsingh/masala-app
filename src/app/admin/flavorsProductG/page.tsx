@@ -3,10 +3,8 @@
 import ListView from './components/ListView'
 import Link from "next/link"
 
-export default function Page({params}:{params:{id:string}}){
-  const id = params.id as string;
-  
-  console.log("productaddon view page------", id)
+export default function Page(){
+ 
   return (
     <div className='h-screen flex flex-col px-1'>
       <div className="flex justify-between">

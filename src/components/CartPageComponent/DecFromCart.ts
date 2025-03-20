@@ -1,10 +1,11 @@
 'use client'
 
-import { ProductType } from '@/lib/types/productType';
+
+import { cartProductType } from '@/lib/types/cartDataType';
 import { useCartContext } from '@/store/CartContext';
 
 
-export  function DecFromCart({product}:{product:ProductType}) {
+export  function DecFromCart({product}:{product:cartProductType}) {
 
   const {  removeCartProduct } =  useCartContext();
    

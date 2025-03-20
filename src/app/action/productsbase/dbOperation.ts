@@ -15,7 +15,12 @@ import {
   doc,
   getDoc,
   getDocs,
+ 
+  query,
+  
   setDoc,
+  
+  where,
 } from "@firebase/firestore"; //doc, getDoc,
 
 import { ProductType } from "@/lib/types/productType";
@@ -25,6 +30,7 @@ import { ProductType } from "@/lib/types/productType";
 //from "@/lib/firestore/products/write";
 
 export async function addNewProduct(formData: FormData) {
+  console.log("formdata-----", formData);
   let featured_img: boolean = false;
 
   if (formData.get("isFeatured") === "ture") {
@@ -35,7 +41,7 @@ export async function addNewProduct(formData: FormData) {
   //console.log("isFeatured ", typeof formData.get("isFeatured"));
   const name = formData.get("name");
   const price = formData.get("price");
-  const productCat = formData.get("productCat");
+  const sortOrder = formData.get("sortOrder") as string;
   const categoryId = formData.get("categoryId");
   const productDesc = formData.get("productDesc");
   const image = formData.get("image");
@@ -44,7 +50,7 @@ export async function addNewProduct(formData: FormData) {
   const receivedData = {
     name,
     price,
-    productCat,
+    sortOrder,
     categoryId,
     productDesc,
     image,
@@ -76,14 +82,16 @@ export async function addNewProduct(formData: FormData) {
 
   const priceValue = formData.get("price") as string;
   const priceV = parseFloat(priceValue.replace(/,/g, ".")).toFixed(2); // toFixed convert it to string
-  const priceF = parseFloat(priceV);
+  const priceF = new Number(parseFloat(priceV)).toFixed(2);
+  //const priceF = parseFloat(priceV);
   // console.log("typeof price-------",priceValue)
-  // console.log("typeof price-------",typeof(priceF),priceF)
+   console.log("typeof price-------",typeof(priceF),priceF)
+  const sortOrderN = parseInt(sortOrder) as number;
   const data = {
     name,
     price: priceF,
     flavors: false,
-    productCat,
+    sortOrder: sortOrderN,
     categoryId,
     productDesc,
     image: imageUrl,
@@ -133,22 +141,22 @@ export async function deleteProduct(id: string, oldImgageUrl: string) {
 }
 
 export async function editProduct(formData: FormData) {
- 
   const featured_img: boolean = false;
   const id = formData.get("id") as string;
   const name = formData.get("name");
   const price = formData.get("price");
-  const productCat = formData.get("productCat");
+  const sortOrder = formData.get("sortOrder") as string;
   const categoryId = formData.get("categoryId");
   const productDesc = formData.get("productDesc");
   const oldImgageUrl = formData.get("oldImgageUrl") as string;
   const image = formData.get("image");
   const isFeatured = featured_img;
+//console.log("-----------", formData)
 
   const receivedData = {
     name,
     price,
-    productCat,
+    sortOrder,
     categoryId,
     productDesc,
     image,
@@ -192,7 +200,7 @@ export async function editProduct(formData: FormData) {
         imageUrlArray[imageUrlArray.length - 1];
 
       const image_public_id = imageName.split(".")[0];
-     // console.log("image_public_id ---", image_public_id);
+      // console.log("image_public_id ---", image_public_id);
       try {
         const deleteResult = await deleteImage(image_public_id);
         console.log(deleteResult);
@@ -204,19 +212,21 @@ export async function editProduct(formData: FormData) {
 
   const priceValue = formData.get("price") as string;
   const priceV = parseFloat(priceValue.replace(/,/g, ".")).toFixed(2); // toFixed convert it to string
-  const priceF = parseFloat(priceV);
+  const priceF = new Number(parseFloat(priceV)).toFixed(2);
 
+  const sortOrderN = parseInt(sortOrder) as number;
   const productUpdtedData = {
     name,
     price: priceF,
-    productCat,
+    flavors: false,
+    sortOrder: sortOrderN,
     categoryId,
     productDesc,
-    image:imageUrl,
+    image: imageUrl,
     isFeatured,
   };
 
-  //console.log("---------",productUpdtedData)
+  console.log("---------",productUpdtedData)
   try {
     const docRef = doc(db, "product", id);
     await setDoc(docRef, productUpdtedData);
@@ -224,49 +234,6 @@ export async function editProduct(formData: FormData) {
     console.log("error", error);
     return { errors: "Cannot update" };
   }
-}
-
-export async function fetchProducts(): Promise<ProductType[]> {
-  // const result = await getDocs(collection(db, "product"))
-  // let data = [];
-  // result.forEach((doc) => {
-  //   data.push({id:doc.id, ...doc.data()});
-  // });
-  //  return data;
-
-  const result = await getDocs(collection(db, "product"));
-
-  let data = [] as ProductType[];
-  result.forEach((doc) => {
-    const pData = { id: doc.id, ...doc.data() } as ProductType;
-    data.push(pData);
-  });
-  return data;
-  // let data = [] as ProductType[];
-  //   const q = query(collection(db, "product"));
-  //   const querySnapshot = await getDocs(q);
-  //   querySnapshot.forEach((doc) => {
-  //     const ab = doc.data() as ProductType;
-  //     data.push(ab);
-  //   });
-  //   return data;
-}
-
-export async function fetchProducts1(): Promise<ProductType[]> {
-  // const result = await getDocs(collection(db, "product"))
-  // let data = [];
-  // result.forEach((doc) => {
-  //   data.push({id:doc.id, ...doc.data()});
-  // });
-  //  return data;
-
-  const result = await getDocs(collection(db, "product"));
-  let data = [] as ProductType[];
-  result.forEach((doc) => {
-    const pData = { id: doc.id, ...doc.data() } as ProductType;
-    data.push(pData);
-  });
-  return data;
 }
 
 export async function fetchProductById(id: string): Promise<ProductType> {
@@ -293,9 +260,57 @@ export async function fetchProductById(id: string): Promise<ProductType> {
   //   return data;
 }
 
+export async function fetchProducts(): Promise<ProductType[]> {
+  // const result = await getDocs(collection(db, "product"))
+  // let data = [];
+  // result.forEach((doc) => {
+  //   data.push({id:doc.id, ...doc.data()});
+  // });
+  //  return data;
+  
+
+  const result = await getDocs(collection(db, "product"));
+
+  const data = [] as ProductType[];
+  result.forEach((doc) => {
+    const pData = { id: doc.id, ...doc.data() } as ProductType;
+    data.push(pData);
+  });
+  return data;
+  // let data = [] as ProductType[];
+  //   const q = query(collection(db, "product"));
+  //   const querySnapshot = await getDocs(q);
+  //   querySnapshot.forEach((doc) => {
+  //     const ab = doc.data() as ProductType;
+  //     data.push(ab);
+  //   });
+  //   return data;
+}
+export async function fetchProductByCategoryId(
+  id: string
+): Promise<ProductType[]> {
+  // console.log("this is sauce action-------------",id)
+
+  const collectionRef = query(collection(db, "product"), where("categoryId", "==", id));
+  const querySnapshot = await getDocs(collectionRef);
+
+  
+  const data = [] as ProductType[];
+  querySnapshot.forEach((doc) => {
+    // const datas = doc.data() as TproductSchema;
+
+    const pData = { id: doc.id, ...doc.data() } as ProductType;
+    data.push(pData);
+    // data.push(datas);
+  });
+ // console.log("product by cate id-----------", data);
+  return data;
+}
+
+
 //console.log("Foorm data ---------",formData.get("oldImgageUrl"));
 // console.log(formData.get("price"));
-// console.log(formData.get("productCat"));
+// console.log(formData.get("sortOrder"));
 // console.log(formData.get("productDesc"));
 // console.log(formData.get("image"));
 // console.log("is featured =======",formData.get("isFeatured"));
@@ -306,7 +321,7 @@ export async function fetchProductById(id: string): Promise<ProductType> {
 
 // console.log(formData.get("name"));
 // console.log(formData.get("price"));
-// console.log(formData.get("productCat"));
+// console.log(formData.get("sortOrder"));
 // console.log(formData.get("productDesc"));
 // console.log(formData.get("image"));
 // console.log(formData.get("isFeatured"));

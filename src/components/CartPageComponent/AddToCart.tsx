@@ -1,9 +1,10 @@
 'use client'
 import { useCartContext } from '@/store/CartContext';
 
-import { ProductType } from '@/lib/types/productType';
 
-export  function AddToCart({product}:{product:ProductType}) {
+import { cartProductType } from '@/lib/types/cartDataType';
+
+export  function AddToCart({product}:{product:cartProductType}) {
  
  
   const ctx = useCartContext();

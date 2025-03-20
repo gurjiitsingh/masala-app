@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 //import Description from "./componets/Description";
 import { useForm } from "react-hook-form";
@@ -14,28 +14,14 @@ import {
   fetchProductById,
 } from "@/app/action/productsbase/dbOperation";
 import { useRouter, useSearchParams } from "next/navigation";
-// import { categoryTypeArr } from "@/lib/types/categoryType";
+import { fetchCategories } from "@/app/action/category/dbOperations";
+import { categoryType } from "@/lib/types/categoryType";
 
-// type Terror = {
-//   name: string | null;
-//   price: string | null;
-//   isFeatured: string | null;
-//   company: string | null;
-//   productCat: string | null;
-//   productDesc: string | null;
-//   image: string | null;
-// };
 const PageComp = () => {
-  //const searchParams = useSearchParams();
-  //const id = searchParams.get("id") || "";
-  //const id = params.editform as string;
-
+  const [categoryData, setCategoryData] = useState<categoryType[]>([]);
   const searchParams = useSearchParams();
   const id = searchParams.get("id") || "";
-  // console.log("this is product edit---------------",id)
 
-  //const [categories, setCategory] = useState<categoryTypeArr>([]);
-  //const [product, setProduct] = useState({});
   const router = useRouter();
   const {
     register,
@@ -50,7 +36,7 @@ const PageComp = () => {
     let productData;
     async function prefetch() {
       productData = await fetchProductById(id);
-     // console.log("productData.id ----", productData);
+      console.log("productData ----", productData);
       const priceS = productData.price.toString().replace(/\./g, ',');
       setValue("id", id);
       setValue("name", productData.name);
@@ -58,20 +44,40 @@ const PageComp = () => {
      // setValue("categoryId", "yishiwe");
       setValue("oldImgageUrl", productData.image);
       setValue("price", priceS);
-      setValue("productCat", productData.productCat);
+      setValue("sortOrder", productData.sortOrder!.toString());
+      setValue("categoryId", productData.categoryId!);
       setValue("isFeatured", productData.isFeatured);
     }
 
     prefetch();
   }, []);
 
+   
+    useEffect(() => {
+      async function prefetch() {
+        const categoriesData = await fetchCategories();
+        // console.log("cat id --------", categoriesData)
+        //   const brandData = await fetchbrands();
+        setCategoryData(categoriesData);
+        // setBrand(brandData);
+      }
+      prefetch();
+    }, []);
+
   async function onsubmit(data: TeditProductSchema) {
     const formData = new FormData();
+    //console.log("---------",formData);
+    // let CatId;
+    // if(data.categoryId === "0"){
+    //  CatId = data.categoryIdOld as string; 
+    // }else{
+    //  CatId = data.categoryId as string;  
+    // }
 
     formData.append("name", data.name);
     formData.append("price", data.price);
-    formData.append("productCat", data.productCat);
-    formData.append("categoryId", "yishiwe");
+    formData.append("categoryId", data.categoryId!);
+    formData.append("sortOrder", data.sortOrder);
     formData.append("productDesc", data.productDesc);
     formData.append("image", data.image[0]);
     formData.append("oldImgageUrl", data.oldImgageUrl!);
@@ -103,7 +109,7 @@ const PageComp = () => {
     //   } else if (errors.productCat) {
     //     setError("productCat", {
     //       type: "server",
-    //       message: errors.productCat,
+    //       message: errors.productCat, 
     //     });
     //   }
     //   if (errors.productDesc) {
@@ -140,10 +146,10 @@ const PageComp = () => {
 
           <div className="flex flex-col lg:flex-row gap-5 ">
             {/* left box */}
-            <div className="flex-1 flex flex-col gap-y-5">
+            <div className="flex-1 flex flex-col gap-y-2">
               <div className="flex-1 flex flex-col gap-3 bg-white rounded-xl p-4 border">
                 <h1 className="font-semibold">Product</h1>
-                <div className="flex w-full flex-col gap-2  my-15 ">
+                <div className="flex w-full flex-col gap-2  my-2 ">
                   <input {...register("id")} hidden />
                 
                   <div className="flex flex-col gap-1 w-full">
@@ -157,19 +163,20 @@ const PageComp = () => {
                       )}
                     </span>
                   </div>
-                  <input {...register("productCat", {value:"all"})}  hidden />
-                  {/* <div className="flex flex-col gap-1 w-full">
+                  <input {...register("categoryIdOld")} hidden />
+                  <div className="flex flex-col gap-1 w-full">
                     <label className="label-style" htmlFor="product-title">
                       Category<span className="text-red-500">*</span>{" "}
                     </label>
-                    <select {...register("productCat")} className="input-style">
-                      <option key="wer" value="Mobile">
-                        Select Product Category
+                    <select {...register("categoryId")} className="input-style">
+                      <option key="wer" value="0">
+                        Do not change Category
                       </option>
-                      {categories.map(
-                        (category: { name: string }, i: number) => {
+                      {categoryData.map(
+                        (category: { name: string; id: string }, i: number) => {
+                         // console.log("cat id -------", category.id);
                           return (
-                            <option key={i} value={category.name}>
+                            <option key={i} value={category.id}>
                               {category.name}
                             </option>
                           );
@@ -177,16 +184,17 @@ const PageComp = () => {
                       )}
                     </select>
                     <span className="text-[0.8rem] font-medium text-destructive">
-                      {errors.productCat?.message && (
-                        <p>{errors.productCat?.message}</p>
+                      {errors.categoryId?.message && (
+                        <p>{errors.categoryId?.message}</p>
                       )}
                     </span>
-                  </div> */}
+                  </div>
+                 
                 </div>
               </div>
               <div className="flex-1 flex flex-col gap-3 bg-white rounded-xl p-4 border">
                 <h1 className="font-semibold">Price Details</h1>
-                <div className="flex w-full flex-col gap-2  my-15 ">
+                <div className="flex w-full flex-col gap-2  my-2 ">
                   <div className="flex flex-col gap-1 w-full">
                     <label className="label-style" htmlFor="product-title">
                       Price<span className="text-red-500">*</span>{" "}
@@ -247,15 +255,15 @@ const PageComp = () => {
                   </p>
                 </div>
 
-                {/* <div className="flex  items-center gap-4 ">
-                  <label className="label-style">Normal Product</label>
-                  <input {...register("isFeatured")} type="radio" value="false" />
-                  <p className="text-[0.8rem] font-medium text-destructive">
-                    {errors.isFeatured?.message && (
-                      <p>{errors.isFeatured?.message}</p>
+                <div className="flex flex-col gap-1">
+                  <label className="label-style">Sort Order</label>
+                  <input {...register("sortOrder")} className="input-style" />
+                  <span className="text-[0.8rem] font-medium text-destructive">
+                    {errors.sortOrder?.message && (
+                      <span>{errors.sortOrder?.message}</span>
                     )}
-                  </p>
-                </div> */}
+                  </span>
+                </div>
 
                 <div className="flex    items-center gap-4">
                   <label className="label-style">Featured Product</label>

@@ -5,6 +5,7 @@ import CartContext from "@/store/CartContext";
 import { ProductType } from "@/lib/types/productType";
 import { useSearchParams } from "next/navigation";
 import { FaChevronDown } from "react-icons/fa";
+import { cartProductType } from "@/lib/types/cartDataType";
 //import { FaCheckCircle } from 'react-icons/fa';
 
 export default function CartLeft() {
@@ -17,8 +18,8 @@ const [addCoupon, setAddCoupon] = useState<boolean>(false);
   const { cartData } = useContext(CartContext);
   //console.log("kljjljlkll", cartData.lenght)
   let total = 0;
-  cartData.forEach((item: ProductType) => {
-    total += item.quantity! * +parseFloat(item.price);
+  cartData.forEach((item: cartProductType) => { 
+    total += item.quantity! * + item.price;
     // total += parseInt(item.quantity) * +parseFloat(item.price);
   });
 

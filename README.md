@@ -3,7 +3,10 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 const price = (product.price.toString()).replace(/\./g, ',')
 
+## colors
 
+bg-[#F8ED8C]
+bg-[#FF8989]
 
 ## Getting Started
 

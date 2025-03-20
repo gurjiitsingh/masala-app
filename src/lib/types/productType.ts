@@ -24,9 +24,11 @@ export type ProductType = {
   id: string | undefined;
   name: string;
   price: number;
+  categoryId:string;
+     productCat:string | undefined;
   baseProductId: string;
   productDesc: string;
-  productCat: string;
+  sortOrder: number;
   image: string;
   isFeatured: boolean;
   purchaseSession: string | null;
@@ -38,7 +40,7 @@ export type ProductType = {
 export type ProductTypeArr = {
   name: string;
   price: string;
-  productCat: string;
+  sortOrder: string;
   productDesc: string;
   // image?: any; id?: string | undefined;
   image: string;
@@ -61,7 +63,7 @@ const productSchema = z.object({
   price: z
     .string()
     .refine((value) => /^\d+$/.test(value), "Invalid product price"), // Refinement
-  productCat: z.string().min(1, { message: "Please select category" }),
+  sortOrder: z.string().min(1, { message: "Please select category" }),
 
   productDesc: z.string().min(1, { message: "Please select category" }),
   company: z.string().min(1, { message: "Please select category" }),
@@ -87,7 +89,7 @@ export const newPorductSchema = z.object({
     .refine((value) => /[.,\d]+/.test(value), "Invalid product price"),
   //categoryId: z.string().min(1, { message: "Please select category" }),
   categoryId:z.string().optional(),
-  productCat: z.string().min(1, { message: "Please select category" }),
+  sortOrder: z.string().min(1, { message: "Please add sort order" }),
   productDesc: z
     .string()
     .min(2, { message: "Product productDescription is required" }),
@@ -113,7 +115,7 @@ export type ShowPorductT = {
   id: string;
   name: string;
   price: string;
-  productCat: string;
+  sortOrder: string;
   productDesc: string;
   isFeatured: boolean;
   image: string;
@@ -130,8 +132,9 @@ export const editPorductSchema = z.object({
   // price: z
   //   .string()
   //   .refine((value) => /^\d+$/.test(value), "Invalid product price"), // Refinement
-  productCat: z.string().min(1, { message: "Please select category" }),
+  sortOrder: z.string().min(1, { message: "Please select category" }),
   categoryId:z.string().optional(),
+  categoryIdOld:z.string().optional(),
   productDesc: z
     .string()
     .min(2, { message: "Product productDescription is required" }),

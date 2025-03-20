@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useCartContext } from "@/store/CartContext";
 
-import { ProductType } from "@/lib/types/productType";
+
 //import { useSearchParams } from "next/navigation";
 import { FaChevronDown } from "react-icons/fa";
 import CouponDiscForm from "./CouponDiscForm";
@@ -11,6 +11,7 @@ import { UseSiteContext } from "@/SiteContext/SiteContext";
 import DeliveryCost from "./DeliveryCost";
 import Pickup from "./Pickup";
 import CouponDisc from "./CouponDisc";
+import { cartProductType } from "@/lib/types/cartDataType";
 //import { FaCheckCircle } from 'react-icons/fa';
 
 export default function CartLeft() {
@@ -27,7 +28,7 @@ export default function CartLeft() {
   const { cartData, setEndTotalG, setTotalDiscountG } = useCartContext();
   //console.log("kljjljlkll", cartData.lenght)
   let total = 0;
-  cartData.forEach((item: ProductType) => {
+  cartData.forEach((item: cartProductType) => {
     total += item.quantity! * +item.price;
     // total += parseInt(item.quantity) * +parseFloat(item.price);
   });

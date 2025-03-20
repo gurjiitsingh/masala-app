@@ -27,14 +27,14 @@ function TableRows({ product }:{product:ProductType}){
 
  async function handleDelete(product:ProductType) {
    console.log(product.id);
-  const result = await deleteProduct(product.id!, product.image)
-if(result.errors){
-  alert(result.errors)
-}else{
-  // router.push('/admin/products')
-   //   router.refresh()
-      location.reload()
-}
+  const result = await deleteProduct(product.id!)
+// if(result.errors){
+//   alert(result.errors)
+// }else{
+//   // router.push('/admin/products')
+//    //   router.refresh()
+//       location.reload()
+// }
 
   }
   
@@ -53,7 +53,7 @@ if(result.errors){
           />}
         </div>
       </TableCell>
-      <TableCell>{product.name}</TableCell>
+      <TableCell>{product.sortOrder}.&nbsp;{product.name}</TableCell>
       <TableCell>{price}</TableCell>
        {/* <TableCell>{product.productCat}</TableCell> */}
       {/* <TableCell></TableCell> */}
@@ -70,12 +70,12 @@ if(result.errors){
         <p className="flex gap-3">
         <Link
             href={{
-              pathname: `/admin/productsaddon/${product.id}`,
-           // pathname: `/admin/${product.id}`,
-            //  pathname: "/admin/products/editform",
-            //   query: {
-            //     id: product.id,
-            //    },
+           //   pathname: `/admin/productsaddon/${product.id}`,
+          // pathname: `/admin/${product.id}`,
+             pathname: "/admin/productsaddon",
+              query: {
+                id: product.id,
+               },
             }
           }
           >

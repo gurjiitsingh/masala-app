@@ -9,7 +9,7 @@ export default function Header() {
   return (
     <section className="fixed w-full top-0 flex items-center gap-3 bg-white border-b px-4 py-3">
       <div className="flex justify-center items-center lg:hidden">
-        <Button onClick={()=>{setAdminSideBarToggleG()}}>
+        <Button onClick={()=>{setAdminSideBarToggleG(true)}}>
         <IoMdMenu />
         </Button>
      

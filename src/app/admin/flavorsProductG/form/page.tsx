@@ -11,8 +11,8 @@ import { addNewProduct } from "@/app/action/flavorsProductG/dbOperation";
 import { fetchCategories } from "@/app/action/category/dbOperations";
 import { categoryTypeArr } from "@/lib/types/categoryType";
 
-const Page = ({ params }: { params: { id: string } }) => {
-  const baseProductId = params.id;
+const Page = () => {
+  const baseProductId = "params.id";
  // console.log("addonprodut form  baseproductId============", baseProductId);
 
   const [categories, setCategory] = useState<categoryTypeArr>([]);

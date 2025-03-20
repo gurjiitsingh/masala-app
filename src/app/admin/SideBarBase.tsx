@@ -12,19 +12,19 @@ export default function SideBarBase() {
  
 
   useEffect(() => {
-      setAdminSideBarToggleG();
+      setAdminSideBarToggleG(false);
   }, [path]);
 
   return (
-    <div className="">
+    <div className="border-0">
 
-      <div className="hidden lg:block">
+      <div className="hidden border-0 lg:block">
         <Sidebar />
       </div>
 
       <div
         ref={sidebarRef}
-        className={`fixed lg:hidden z-30 bg-white
+        className={`fixed border-0 lg:hidden z-30 bg-white
                ${adminSideBarToggle ? "translate-x-0 " : "-translate-x-[290px]"}
                `}
       >

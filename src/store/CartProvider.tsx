@@ -2,8 +2,9 @@
 
 import React, {  useEffect, useState } from "react";
 import CartContext from "./CartContext";
-import { ProductType } from "@/lib/types/productType";
+
 import { addressT } from "@/lib/types/addressType";
+import { cartProductType } from "@/lib/types/cartDataType";
 
 interface Props {
   children: React.ReactNode;
@@ -16,7 +17,7 @@ export const CartProvider: React.FC<Props> = ({
 }>) => {
   //var now1 = Date.now().toString();
 
-  const [cartData, setCartData] = useState<ProductType[]>([]);
+  const [cartData, setCartData] = useState<cartProductType[]>([]);
    const [address, setAddress] = useState<addressT>({
     name: "",
     mobNo: "",
@@ -48,7 +49,7 @@ export const CartProvider: React.FC<Props> = ({
       const data = JSON.parse(cart_data_localstorage);
       setCartData([]);
       if (data) {
-        data.map((item: ProductType) => {
+        data.map((item: cartProductType) => {
           setCartData((prevState) => {
             return [...prevState, { ...item }];
           });
@@ -69,7 +70,7 @@ export const CartProvider: React.FC<Props> = ({
     setCartData([]);
 
     if (data) {
-      data.map((item: ProductType) => {
+      data.map((item: cartProductType) => {
         setCartData((prevState) => {
           return [...prevState, { ...item }];
         });
@@ -98,7 +99,7 @@ export const CartProvider: React.FC<Props> = ({
     setIsUpdated(true);
   }
 
-  function addProductToCart(newProduct: ProductType ) {
+  function addProductToCart(newProduct: cartProductType ) {
 
  //   console.log("float price---------", newProduct.price)
 
@@ -125,7 +126,7 @@ export const CartProvider: React.FC<Props> = ({
           ...newProduct!,
           quantity: newProduct.quantity!,
         //  purchaseSession: localStorage.getItem("cart_product_data_id"),
-          status: "draft",
+          // status: "draft",
         },
       ]); // if the item is not in the cart, add the item to the cart
     }
@@ -133,10 +134,10 @@ export const CartProvider: React.FC<Props> = ({
     // setIsUpdated(true);
   }
 
-  function decCartProduct(decProduct: ProductType) {
+  function decCartProduct(decProduct: cartProductType) {
     //this funciton dec product almost to 1
     setCartData(
-      cartData.map((item: ProductType) => {
+      cartData.map((item: cartProductType) => {
         return item.id === decProduct.id
           ? item.quantity! > 1
             ? { ...item, quantity: item.quantity! - 1 }
@@ -146,11 +147,11 @@ export const CartProvider: React.FC<Props> = ({
     );
     setIsUpdated(true);
   }
-  function decCartProductAll(decProduct: ProductType) {
+  function decCartProductAll(decProduct: cartProductType) {
     //this funciton dec product almost to 0
     //removeCartProduct
     setCartData(
-      cartData.map((item: ProductType) => {
+      cartData.map((item: cartProductType) => {
         return item.id === decProduct.id
           ? item.quantity! > 0
             ? { ...item, quantity: item.quantity! - 1 }
@@ -161,8 +162,8 @@ export const CartProvider: React.FC<Props> = ({
     setIsUpdated(true);
   }
 
-  function removeCartProduct(item: ProductType | undefined) {
-    const isItemInCart = cartData.find((cartItem) => cartItem.id === item?.id) as ProductType ;
+  function removeCartProduct(item: cartProductType | undefined) {
+    const isItemInCart = cartData.find((cartItem) => cartItem.id === item?.id) as cartProductType ;
   //  console.log("item qu-- ", isItemInCart.quantity!);
     if (isItemInCart.quantity! <= 1) {
       setCartData(cartData.filter((cartItem) => cartItem.id !== item?.id)); // if the quantity of the item is 1, remove the item from the cart
@@ -177,7 +178,7 @@ export const CartProvider: React.FC<Props> = ({
     }
 
     // setCartData(
-    //   cartData.filter((item: ProductType) => {
+    //   cartData.filter((item: cartProductType) => {
     //     return item.productId !== remProduct.productId;
     //   })
     // );
@@ -190,7 +191,7 @@ export const CartProvider: React.FC<Props> = ({
 
     setIsUpdated(true);
   }
-  function addProduct(newProduct:ProductType) {
+  function addProduct(newProduct:cartProductType) {
     // console.log("new add product", newProduct)
     // const product = {
     //   id:"kljljl",
@@ -223,8 +224,8 @@ export const CartProvider: React.FC<Props> = ({
         {
           ...newProduct,
           quantity: 1,
-          purchaseSession: localStorage.getItem("cart_product_data_id"),
-          status: "draft",
+         // purchaseSession: localStorage.getItem("cart_product_data_id"),
+         // status: "draft",
         },
       ]); // if the item is not in the cart, add the item to the cart
     }}

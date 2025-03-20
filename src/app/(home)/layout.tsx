@@ -33,7 +33,7 @@ export default function RootLayout({
             <SideCart />
             <Header />
             {children}
-            <div className="sticky  bottom-4 flex justify-end pr-3 z-50"><Cart /></div> 
+            {/* <div className="sticky  bottom-4 flex justify-end pr-3 z-50"><Cart /></div>  */}
             <Footer />
          
           </CartProvider>

@@ -19,7 +19,7 @@
   @apply px-32 py-32;
 }
 .primary{
-  @apply bg-blue-600;
+  @apply bg-amber-300;
 }
 .dim{
   @apply bg-blue-400;

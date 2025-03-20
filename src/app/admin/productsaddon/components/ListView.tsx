@@ -1,6 +1,10 @@
 "use client";
 
-
+type productTableProps = {
+  limit?: number;
+  title?: string;
+  id?: string;
+};
 
 import React, { useEffect, useState } from "react";
 import {
@@ -14,23 +18,27 @@ import {
 } from "@/components/ui/table";
 
 import TableRows from "./TableRows";
-import {  fetchProductSauces } from "@/app/action/productsauces/dbOperation";
-import { ProductType } from "@/lib/types/productType";
+import {  fetchProductByBaseProductId } from "@/app/action/productsaddon/dbOperation";
+import { useSearchParams } from "next/navigation";
+import { AddOnProductSchemaType } from "@/lib/types/productAddOnType";
 //import FeaturProductUpdate from "./FeaturProductUpdate";
 
 const ListView = () => {
-
- 
+const searchParams = useSearchParams();
+  const baseProductId = searchParams.get("id") || "";
+  
   //console.log("product addon view ----", id)
-  const [productData, setProductData] = useState<ProductType[]>([]);
+  const [productData, setProductData] = useState<AddOnProductSchemaType[]>([]);
   // var pageNo = 1;
   // var limit = 10
 
   useEffect(() => {
     async function fetchProduct() {
       try {
-          const result = await fetchProductSauces();
-       
+       // const result = await fetchProducts();
+       // console.log("---------", result)
+        const result = await fetchProductByBaseProductId(baseProductId);
+       // console.log("addonproduct by baseproductid---------", result)
         setProductData(result);
       } catch (error) {
         console.log(error);
@@ -40,12 +48,20 @@ const ListView = () => {
     
   }, []);
 
+  // function handleDelete(id:string){
+  //   console.log(id)
+  // }
+  // Sort posts in dec product based on date
+
+  //   const sortedproducts: TProduct[] = [...products].sort((a, b) => {
+  //     return new Date(b.date).getTime() - new Date(a.date).getTime();
+  //   });
 
   return (
     <>
-      <div className="mt-2">
+      <div className="mt-10 p-2">
         <h3 className="text-2xl mb-4 font-semibold">
-        Sauces
+        Product Addons
         </h3>
         <div className="bg-slate-50 rounded-lg p-1">
           <Table>
@@ -67,8 +83,8 @@ const ListView = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {productData.map((product) => {
-                return <TableRows key={product.id} product={product} />;
+              {productData.map((product,i) => {
+                return <TableRows key={i} product={product} />;
               })}
             </TableBody>
           </Table>

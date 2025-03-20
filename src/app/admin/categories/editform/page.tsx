@@ -3,8 +3,8 @@ import PageComp from './pagecomp'
 
 export default function page() {
   return (
-   <Suspense>
+  <Suspense>
     <PageComp />
-   </Suspense>
+  </Suspense>
   )
 }

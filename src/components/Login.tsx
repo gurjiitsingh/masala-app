@@ -4,7 +4,7 @@ import LinkDropdown from "./LinkDropdown";
 
 export default function Login() {
   const { data: session } = useSession(); 
-console.log("sessiong to find type----------------",session)
+//console.log("sessiong to find type----------------",session)
   return (
     <>
       <div className="flex items-center gap-2 justify-between  ">
@@ -22,7 +22,7 @@ console.log("sessiong to find type----------------",session)
           )}
           {/* {session&&  <Link href="/user">My Account</Link> } */}
           {!session && <Link href="/auth/register">Register</Link>}
-          {session && <LinkDropdown session={session} />}
+          {/* {session && <LinkDropdown session={session} />} */}
         </div>
       </div>
     </>

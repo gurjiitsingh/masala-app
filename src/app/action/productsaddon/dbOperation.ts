@@ -1,10 +1,5 @@
 "use server";
-import {
-  newPorductSchema,
-  editPorductSchema,
-  // TnewProductSchema,
-  // ShowPorductT,
-} from "@/lib/types/productType";
+
 
 //import { z } from "zod";
 import { deleteImage, upload } from "@/lib/cloudinary";
@@ -25,11 +20,8 @@ import {
   where,
 } from "@firebase/firestore"; //doc, getDoc,
 
-import {
-  
-  ProductType,
- 
-} from "@/lib/types/productType";
+import { editPorductSchema, ProductType } from "@/lib/types/productType";
+import { addOnPorductSchema, AddOnProductSchemaType } from "@/lib/types/productAddOnType";
 
 //import { Result } from "postcss";
 //productT,productTs, productTsArr, TproductSchemaArr
@@ -37,31 +29,28 @@ import {
 //from "@/lib/firestore/products/write";
 
 export async function addNewProduct(formData: FormData) {
-  let featured_img: boolean = false;
-  // console.log(formData.get("name"));
-  // console.log(formData.get("price"));
-  //  console.log(formData.get("baseProductId"));
-  //  console.log(formData.get("productCat"));
-  // console.log(formData.get("productDesc"));
-  // console.log(formData.get("image"));
-  // console.log(formData.get("isFeatured"));
+  const featured_img: boolean = false;
+  const name = formData.get("name");
+  const price = formData.get("price");
+  const baseProductId = formData.get("baseProductId");
+  const sortOrder = formData.get("sortOrder") as string;
+  const desc = formData.get("desc");
+  //image: formData.get("image"),
+  const isFeatured = featured_img;
 
-  if (formData.get("isFeatured") === "ture") featured_img = true;
-
-  //console.log("isFeatured ", typeof formData.get("isFeatured"));
 
   const receivedData = {
-    name: formData.get("name"),
-    price: formData.get("price"),
-    baseProductId : formData.get("baseProductId"),
-    productCat: formData.get("productCat"),
-    productDesc: formData.get("productDesc"),
+    name,
+    price,
+    baseProductId,
+    sortOrder,
+    desc,
     //image: formData.get("image"),
-    isFeatured: featured_img,
+    isFeatured,
   };
 
-  const result = newPorductSchema.safeParse(receivedData);
-console.log("zod result", result)
+  const result = addOnPorductSchema.safeParse(receivedData);
+  console.log("zod result", result);
   let zodErrors = {};
   if (!result.success) {
     result.error.issues.forEach((issue) => {
@@ -86,23 +75,23 @@ console.log("zod result", result)
 
   //imageUrl =  "/public/com.jpg";
 
-  // const name = formData.get("name");
-  // const price = formData.get("price");
-  // const productCat = formData.get("productCat");
-  // const productDesc = formData.get("productDesc");
-  // const featured = formData.get("isFeatured");
   const priceValue = formData.get("price") as string;
-  const price = priceValue.replace(/,/g, '.')
+  const priceV = parseFloat(priceValue.replace(/,/g, ".")).toFixed(2); // toFixed convert it to string
+
+  const priceF = new Number(parseFloat(priceV)).toFixed(2);
+  const priceFF = parseFloat(priceF);
+  const sortOrderN = parseFloat(sortOrder) as number;
+  
   const data = {
-    name: formData.get("name"),
-    price,
-    productCat: formData.get("productCat"),
-    productDesc: formData.get("productDesc"),
-    baseProductId : formData.get("baseProductId"),
-   // image: imageUrl,
+    name,
+    price:priceFF,
+   // productCat: formData.get("productCat"),
+   sortOrder:sortOrderN,
+    desc,
+    baseProductId,    // image: imageUrl,
     isFeatured: featured_img,
-  }; 
-  //console.log("data to be saved ---", data)
+  };
+
 
   try {
     const docRef = await addDoc(collection(db, "productaddon"), data);
@@ -111,51 +100,47 @@ console.log("zod result", result)
   } catch (e) {
     console.error("Error adding document: ", e);
   }
-const idS = formData.get("baseProductId") as string;
-  updateBaseProduct(idS)
+  const idS = formData.get("baseProductId") as string;
+  updateBaseProduct(idS);
 
   return { message: "Product saved" };
+} //end of add new product
 
-
-}//end of add new product 
-
-async function updateBaseProduct(id:string){
+async function updateBaseProduct(id: string) {
   const productUpdtedData = {
     flavors: true,
-      };
+  };
   //console.log("update data ------------", productUpdtedData)
   // update database
   try {
-    const docRef = doc(db,"product", id);
-   await updateDoc(docRef, productUpdtedData);
+    const docRef = doc(db, "product", id);
+    await updateDoc(docRef, productUpdtedData);
 
-  // Set the "capital" field of the city 'DC'
-// await updateDoc(washingtonRef, {
-//   capital: true
-// });
+    // Set the "capital" field of the city 'DC'
+    // await updateDoc(washingtonRef, {
+    //   capital: true
+    // });
 
-//   const cityRef = db.collection('cities').doc('DC');
+    //   const cityRef = db.collection('cities').doc('DC');
 
-// // Set the 'capital' field of the city
-// const res = await cityRef.update({capital: true});
-
+    // // Set the 'capital' field of the city
+    // const res = await cityRef.update({capital: true});
   } catch (error) {
     console.log("error", error);
     return { errors: "Cannot update" };
   }
 }
 
-
-
-
 type rt = {
-  errors:string;
-}
+  errors: string;
+};
 
-export async function deleteProduct(id: string, oldImgageUrl: string):Promise<rt> {
-
-console.log("out put ", id, oldImgageUrl)
-  return {"errors":"Delete not implimented jet"};
+export async function deleteProduct(
+  id: string,
+  oldImgageUrl: string
+): Promise<rt> {
+  console.log("out put ", id, oldImgageUrl);
+  return { errors: "Delete not implimented jet" };
 }
 
 // export async function deleteProduct(id:string, oldImgageUrl:string) {
@@ -195,7 +180,7 @@ export async function editProduct(formData: FormData) {
   const image = formData.get("image");
   const oldImgageUrl = formData.get("oldImgageUrl") as string;
   const featured_img: boolean = false;
- // featured_img = formData.get("oldImgageUrl");
+  // featured_img = formData.get("oldImgageUrl");
 
   const receivedData = {
     name: formData.get("name"),
@@ -222,9 +207,9 @@ export async function editProduct(formData: FormData) {
   let imageUrl;
   if (image === "undefined" || image === null) {
     imageUrl = oldImgageUrl;
-  //  console.log("----------------not change image")
+    //  console.log("----------------not change image")
   } else {
-  //  console.log("---------------- change image")
+    //  console.log("---------------- change image")
     try {
       imageUrl = (await upload(image)) as string;
       console.log(imageUrl);
@@ -252,7 +237,7 @@ export async function editProduct(formData: FormData) {
       }
     }
   }
-  
+
   const productUpdtedData = {
     name: formData.get("name"),
     price: formData.get("price"),
@@ -264,9 +249,8 @@ export async function editProduct(formData: FormData) {
   //console.log("update data ------------", productUpdtedData)
   // update database
   try {
-    const docRef = doc(db,"productaddon", id);
-   await setDoc(docRef, productUpdtedData);
-
+    const docRef = doc(db, "productaddon", id);
+    await setDoc(docRef, productUpdtedData);
   } catch (error) {
     console.log("error", error);
     return { errors: "Cannot update" };
@@ -283,13 +267,12 @@ export async function fetchProducts(): Promise<ProductType[]> {
 
   const result = await getDocs(collection(db, "productaddon"));
 
-  let data = [] as ProductType[];
+  const data = [] as ProductType[];
   result.forEach((doc) => {
     const pData = { id: doc.id, ...doc.data() } as ProductType;
     data.push(pData);
   });
   return data;
- 
 }
 
 export async function fetchProductById(id: string): Promise<ProductType> {
@@ -297,38 +280,39 @@ export async function fetchProductById(id: string): Promise<ProductType> {
   const docSnap = await getDoc(docRef);
   let productData = {} as ProductType;
   if (docSnap.exists()) {
-     console.log("Document data:", docSnap.data());
+    console.log("Document data:", docSnap.data());
   } else {
     //   docSnap.data() //will be undefined in this case
-     console.log("No such document!");
+    console.log("No such document!");
   }
   productData = docSnap.data() as ProductType;
   return productData;
-  
 }
 
-export async function fetchProductByBaseProductId(id: string): Promise<ProductType[]> {
-let data = [] as ProductType[];
-     const q = query(collection(db, "productaddon"), where("baseProductId", "==", id));
-      const querySnapshot = await getDocs(q);
-  
-      querySnapshot.forEach((doc) => {
-        const datas = doc.data() as ProductType;
-        data.push(datas)
-      });
-      return data;
-    }
-  
+export async function fetchProductByBaseProductId(
+  id: string
+): Promise<AddOnProductSchemaType[]> {
+  const data = [] as AddOnProductSchemaType[];
+  const q = query(
+    collection(db, "productaddon"),
+    where("baseProductId", "==", id)
+  );
+  const querySnapshot = await getDocs(q);
 
+  querySnapshot.forEach((doc) => {
+    const datas = doc.data() as AddOnProductSchemaType;
+    data.push(datas);
+  });
+  return data;
+}
 
-
- //console.log("Foorm data ---------",formData.get("oldImgageUrl"));
-  // console.log(formData.get("price"));
-  // console.log(formData.get("productCat"));
-  // console.log(formData.get("productDesc"));
-  // console.log(formData.get("image"));
-  // console.log("is featured =======",formData.get("isFeatured"));
-  // featured_img = formData.get("isFeatured");
-  // if (formData.get("isFeatured").toString() === "true") {
-  //   featured_img = true;
-  // }
+//console.log("Foorm data ---------",formData.get("oldImgageUrl"));
+// console.log(formData.get("price"));
+// console.log(formData.get("productCat"));
+// console.log(formData.get("productDesc"));
+// console.log(formData.get("image"));
+// console.log("is featured =======",formData.get("isFeatured"));
+// featured_img = formData.get("isFeatured");
+// if (formData.get("isFeatured").toString() === "true") {
+//   featured_img = true;
+// }

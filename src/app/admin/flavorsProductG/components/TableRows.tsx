@@ -23,7 +23,8 @@ function TableRows({ product }:{product:flavorsProductGType}){
 
  async function handleDelete(product:flavorsProductGType) {
   
- const result = await deleteProduct(product.id!)
+ //const result =
+  await deleteProduct(product.id!)
 // if(result.errors){
 //   alert(result.errors)
 // }else{

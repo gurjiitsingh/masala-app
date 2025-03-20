@@ -1,24 +1,26 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { newPorductSchema, TnewProductSchema } from "@/lib/types/productType";
 import { addNewProduct } from "@/app/action/productsbase/dbOperation";
+import { fetchCategories } from "@/app/action/category/dbOperations";
+import { categoryType } from "@/lib/types/categoryType";
 
 const Page = () => {
-  //const [categories, setCategory] = useState<categoryTypeArr>([]);
-
-  // useEffect(() => {
-  //   async function prefetch() {
-  //     const categoriesData = await fetchCategories();
-  //     //   const brandData = await fetchbrands();
-  //     setCategory(categoriesData);
-  //     // setBrand(brandData);
-  //   }
-  //   prefetch();
-  // }, []);
+  const [categoryData, setCategoryData] = useState<categoryType[]>([]);
+  useEffect(() => {
+    async function prefetch() {
+      const categoriesData = await fetchCategories();
+      // console.log("cat id --------", categoriesData)
+      //   const brandData = await fetchbrands();
+      setCategoryData(categoriesData);
+      // setBrand(brandData);
+    }
+    prefetch();
+  }, []);
 
   const {
     register,
@@ -37,14 +39,15 @@ const Page = () => {
 
   async function onsubmit(data: TnewProductSchema) {
     //typeof(data.featured)
+    console.log("formdata in client----- ", data);
     const formData = new FormData();
-   // console.log("images---------", data);
+    // console.log("images---------", data);
     formData.append("name", data.name);
     formData.append("price", data.price);
     // formData.append("isFeatured", data.isFeatured);
-   // formData.append("isFeatured", true);
-    formData.append("productCat", data.productCat);
-    formData.append("categoryId", "qwwiooibsmn");
+    // formData.append("isFeatured", true);
+    formData.append("sortOrder", data.sortOrder);
+    formData.append("categoryId", data.categoryId!);
     formData.append("productDesc", data.productDesc);
     formData.append("image", data.image[0]);
 
@@ -56,7 +59,7 @@ const Page = () => {
       setValue("name", "");
       setValue("productDesc", "");
       setValue("price", "");
-      setValue("productCat", "Select Category");
+     // setValue("sortOrder", "");
       // setValue("brand", "Select Brand");
       // setValue("weight", "");
       // setValue("dimensions", "");
@@ -79,10 +82,10 @@ const Page = () => {
     //       type: "server",
     //       message: errors.price,
     //     });
-    //   } else if (errors.productCat) {
-    //     setError("productCat", {
+    //   } else if (errors.sortOrder) {
+    //     setError("sortOrder", {
     //       type: "server",
-    //       message: errors.productCat,
+    //       message: errors.sortOrder,
     //     });
     //   }
     //   if (errors.productDesc) {
@@ -121,7 +124,7 @@ const Page = () => {
             <div className="flex-1 flex flex-col gap-y-5">
               <div className="flex-1 flex flex-col gap-3 bg-white rounded-xl p-4 border">
                 <h1 className="font-semibold">Product</h1>
-                <div className="flex w-full flex-col gap-2  my-15 ">
+                <div className="flex w-full flex-col gap-2   ">
                   <div className="flex flex-col gap-1 w-full">
                     <label className="label-style" htmlFor="product-title">
                       Product Name<span className="text-red-500">*</span>{" "}
@@ -138,22 +141,19 @@ const Page = () => {
                     </span>
                   </div>
 
-                  <input
-                    {...register("productCat", { value: "all" })}
-                    type="hidden"
-                  />
-                  {/* <div className="flex flex-col gap-1 w-full">
+                  <div className="flex flex-col gap-1 w-full">
                     <label className="label-style" htmlFor="product-title">
                       Category<span className="text-red-500">*</span>{" "}
                     </label>
-                    <select {...register("productCat")} className="input-style">
-                      <option key="wer" value="Mobile">
-                        Select Product Category
+                    <select {...register("categoryId")} className="input-style">
+                      <option key="wer" value="notFind">
+                        Select Category
                       </option>
-                      {categories.map(
-                        (category: { name: string }, i: number) => {
+                      {categoryData.map(
+                        (category: { name: string; id: string }, i: number) => {
+                          console.log("cat id -------", category.id);
                           return (
-                            <option key={i} value={category.name}>
+                            <option key={i} value={category.id}>
                               {category.name}
                             </option>
                           );
@@ -161,16 +161,16 @@ const Page = () => {
                       )}
                     </select>
                     <span className="text-[0.8rem] font-medium text-destructive">
-                      {errors.productCat?.message && (
-                        <p>{errors.productCat?.message}</p>
+                      {errors.categoryId?.message && (
+                        <p>{errors.categoryId?.message}</p>
                       )}
                     </span>
-                  </div> */}
+                  </div>
                 </div>
               </div>
               <div className="flex-1 flex flex-col gap-3 bg-white rounded-xl p-4 border">
                 <h1 className="font-semibold">Price Details</h1>
-                <div className="flex w-full flex-col gap-2  my-15 ">
+                <div className="flex w-full flex-col gap-2   ">
                   <div className="flex flex-col gap-1 w-full">
                     <label className="label-style" htmlFor="product-title">
                       Price<span className="text-red-500">*</span>{" "}
@@ -216,13 +216,14 @@ const Page = () => {
                   <label className="label-style">Product description</label>
 
                   <textarea
-                    {...register("productDesc"
-                    //   , {
-                    //   validate: {
-                    //     pattern: (value: string) => !/[!]/.test(value),
-                    //   },
-                    // }
-                  )}
+                    {...register(
+                      "productDesc"
+                      //   , {
+                      //   validate: {
+                      //     pattern: (value: string) => !/[!]/.test(value),
+                      //   },
+                      // }
+                    )}
                     className="textarea-style"
                   />
                   <p className="text-[0.8rem] font-medium text-destructive">
@@ -241,6 +242,16 @@ const Page = () => {
                     )}
                   </p>
                 </div> */}
+
+                <div className="flex flex-col gap-1">
+                  <label className="label-style">Sort Order</label>
+                  <input {...register("sortOrder")} className="input-style" />
+                  <span className="text-[0.8rem] font-medium text-destructive">
+                    {errors.sortOrder?.message && (
+                      <span>{errors.sortOrder?.message}</span>
+                    )}
+                  </span>
+                </div>
 
                 <div className="flex    items-center gap-4">
                   <label className="label-style">Featured Product</label>

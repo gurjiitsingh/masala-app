@@ -16,23 +16,25 @@ import { MdDeleteForever } from "react-icons/md";
 import Link from "next/link";
 import { CiEdit } from "react-icons/ci";
 import { deleteProduct } from "@/app/action/products/dbOperation";
-import { ProductType } from "@/lib/types/productType";
+
+import { AddOnProductSchemaType } from "@/lib/types/productAddOnType";
 //import { deleteProduct } from "@/app/action/products/dbOperation";
 //import { useRouter  } from "next/navigation";
-function TableRows({ product }:{product:ProductType}){
+function TableRows({ product }:{product:AddOnProductSchemaType}){
 
 //const router = useRouter();
 
- async function handleDelete(product:ProductType) {
-   console.log(product.id);
-  const result = await deleteProduct(product.id!, product.image)
-if(result.errors){
-  alert(result.errors)
-}else{
-  // router.push('/admin/products')
-   //   router.refresh()
-      location.reload()
-}
+ async function handleDelete(product:AddOnProductSchemaType) {
+   const idS = product.id as string;
+  //const result =
+   await deleteProduct(idS)
+// if(result.errors){
+//   alert(result.errors)
+// }else{
+//   // router.push('/admin/products')
+//    //   router.refresh()
+//       location.reload()
+// }
 
   }
 
@@ -54,7 +56,7 @@ if(result.errors){
       </TableCell> */}
 
       {/* <TableCell>{product.productCat}</TableCell> */}
-      <TableCell>{product.productDesc}</TableCell>
+      <TableCell>{product.desc}</TableCell>
       {/* <TableCell>       
         {product?.isFeatured === true && (
           <span className="ml-2 bg-gradient-to-tr from-blue-500 to-indigo-400 text-white text-[10px] rounded-full px-3 py-1">
@@ -67,11 +69,11 @@ if(result.errors){
         <p className="flex gap-3">
           <Link
             href={{
-              pathname: `/admin/products/${product.id!}`,
-            //  pathname: "/admin/products/editform",
-            //   query: {
-            //     id: product.id,
-            //    },
+             // pathname: `/admin/products/${product.id!}`,
+             pathname: "/admin/productsaddon/editform",
+              query: {
+                id: product.id,
+               },
             }
           }
           >

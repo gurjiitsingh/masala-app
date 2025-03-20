@@ -1,5 +1,14 @@
 import { ProductType } from "./productType";
 
+export  type cartProductType = {
+  id: string | undefined;
+  price: number;
+  quantity:number;
+  
+  name: string;
+  image: string;
+}
+
 export type cartDataT = {
     productDesc:string;
     productCat:string;

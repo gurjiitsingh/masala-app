@@ -5,8 +5,8 @@ import Cart from "@/components/CartBottom/CartBottom"
 
 
 export const metadata: Metadata = {
-  title: "Pea and fry",
-  description: "Pea and fry food web app",
+  title: "Masala GF",
+  description: "Masala GF food web app",
 };
 
 export default function RootLayout({
@@ -22,7 +22,7 @@ export default function RootLayout({
      
     
     {children}
-    <div className="sticky  bottom-4 flex justify-end pr-3 z-50"><Cart /></div>  
+    {/* <div className="sticky  bottom-4 flex justify-end pr-3 z-50"><Cart /></div>   */}
       </Comcomp> 
       </body>
   </html>

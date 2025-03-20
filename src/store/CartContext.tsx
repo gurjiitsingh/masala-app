@@ -1,22 +1,23 @@
 import { createContext, useContext } from "react";
-//import { ProductType } from  '@/lib/types/ProductType'
-//import { ProductTypeT } from "@/lib/types/ProductTypeype";
+//import { cartProductType } from  '@/lib/types/cartProductType'
+//import { cartProductTypeT } from "@/lib/types/cartProductTypeype";
 
-import { ProductType } from "@/lib/types/productType";
+
 import { addressT } from "@/lib/types/addressType";
+import { cartProductType } from "@/lib/types/cartDataType";
 interface CartContextType {
   counter: number;
   productTotalCost: number;
-  cartData: ProductType[];
+  cartData: cartProductType[];
   address: addressT;
   addAddress: (a:addressT) => void;
 
   //getAddress:()=>{};
-  addProduct: (c: ProductType) => void;
-  addProductToCart: (c: ProductType ) => void;
-  decCartProduct: (c: ProductType) => void;
-  decCartProductAll: (c: ProductType) => void;
-  removeCartProduct: (c: ProductType | undefined) => void;
+  addProduct: (c: cartProductType) => void;
+  addProductToCart: (c: cartProductType ) => void;
+  decCartProduct: (c: cartProductType) => void;
+  decCartProductAll: (c: cartProductType) => void;
+  removeCartProduct: (c: cartProductType | undefined) => void;
   emptyCart: () => void;
   endTotalG: number;
   setEndTotalG: (c: number) => void;
@@ -45,7 +46,7 @@ const CartContext = createContext<CartContextType>({
   addAddress: (a:addressT) => {return a},
   // getAddress:()=>{},
   addProduct: () => {},
-  addProductToCart: (p:ProductType) => {return p},
+  addProductToCart: (p:cartProductType) => {return p},
   decCartProduct: () => {},
   decCartProductAll: () => {},
   removeCartProduct: () => {},

@@ -5,7 +5,6 @@ import React, { useRef } from "react";
 import "../globals.css";
 //import { Metadata } from "next";
 
-
 import { SiteProvider } from "@/SiteContext/SiteProvider";
 import SideBarBase from "./SideBarBase";
 
@@ -19,23 +18,18 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-
- 
-
-  
-
   return (
     <html lang="de">
       <body>
         <SiteProvider>
-          <main className="relative flex">
-<SideBarBase />
+          <main className="relative flex border-0">
+            <SideBarBase />
 
-            <div className="w-full flex flex-col">
+            <div className="w-full flex flex-col border-0">
               <div className="">
                 <Header />
               </div>
-              <div className="w-full flex flex-col p-5 mt-12 bg-slate-100 h-screen">
+              <div className="w-full flex flex-col p-5 mt-12 bg-slate-100 h-screen border-0">
                 {children}
               </div>
             </div>

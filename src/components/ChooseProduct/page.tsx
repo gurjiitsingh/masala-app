@@ -16,12 +16,14 @@ import { useCartContext } from '@/store/CartContext';
 import { fetchflavorsProductG } from "@/app/action/flavorsProductG/dbOperation";
 import { flavorsProductGType } from "@/lib/types/flavorsProductGType";
 import { sauceProductType } from "@/lib/types/productSaucesType";
+import { AddOnProductSchemaType } from "@/lib/types/productAddOnType";
+import { cartProductType } from "@/lib/types/cartDataType";
 //import FeaturProductUpdate from "./FeaturProductUpdate";
 type TVariantType = { name: string; price: number };
 
 const ChooseProduct = () => {
 
-  const [productAddOn, setProductAddon] = useState<ProductType[]>([]);
+  const [productAddOn, setProductAddon] = useState<AddOnProductSchemaType[]>([]);
   const [productBase, setProductBase] = useState<ProductType>();
   const [cartItem, setCartItem] = useState<ProductType | undefined>();
   const [productSauces, setProductSaces] = useState<sauceProductType[]>([]);
@@ -31,7 +33,7 @@ const ChooseProduct = () => {
   const [VariantType, setVariantType] = useState<TVariantType>();
   const [ quantity, setQuantity ] = useState<number>(1);
   //const [ productVariat, setProductVariant ] = useState<string>();
-   const { setShowProductDetailM, showProductDetailM, baseProductId } =
+   const { setShowProductDetailM,  baseProductId } =
     UseSiteContext();
     const { addProductToCart } = useCartContext();
  
@@ -61,12 +63,12 @@ const ChooseProduct = () => {
   }, [baseProductId]);
  
 
-  let cartProduct = {} as ProductType;
+  //let cartProduct = {} as ProductType;
 
-  function addExtra({ name, price }: { name: string; price: number }) {
-    console.log("add extra--------",price,typeof(price))
-     setVariantType({ name: name, price: price });
-   }
+  // function addExtra({ name, price }: { name: string; price: number }) {
+  //   console.log("add extra--------",price,typeof(price))
+  //    setVariantType({ name: name, price: price });
+  //  }
 
  
   function itemOrderUpdate() {
@@ -84,21 +86,21 @@ const ChooseProduct = () => {
     const pName = productBase?.name as string;
     const pDesc = VariantType?.name as string;
 
-    cartProduct = {
-      id: id,
-      baseProductId,
-      productDesc: pDesc,
-      productCat: pdesc,
-      image: img,
-      isFeatured: isF,
-      name: pName,
-      price: finalPrice,
-      purchaseSession: "",
-      quantity: quantity,
-      status: "",
-    } as ProductType;
-    console.log("final price ----------",finalPrice,typeof(finalPrice))
-    addProductToCart(cartProduct);
+    // cartProduct = {
+    //   id: id,
+    //   baseProductId,
+    //   productDesc: pDesc,
+    //   productCat: pdesc,
+    //   image: img,
+    //   isFeatured: isF,
+    //   name: pName,
+    //   price: finalPrice,
+    //   purchaseSession: "",
+    //   quantity: quantity,
+    //   status: "",
+    // } as cartProductType;
+  //  console.log("final price ----------",finalPrice,typeof(finalPrice))
+  //  addProductToCart(cartProduct);
     setVariantType({name:"", price:0});
     setQuantity(1);
     //setCartItem(cartProduct);
@@ -149,7 +151,7 @@ let price = "";
             </div>
             <> {showMessage && <div className="z-50 text-red-500 w-full text-sm bg-slate-100 rounded-lg p-3">Wähle dein Flavour</div>}</>
             <div className="flex flex-col  flex-wrap ">
-              {productBase?.flavors&&productAddOn.map((product, i) => {
+              {/* {productBase?.flavors&&productAddOn.map((product, i) => {
                 return (
                   <Productvariant
                     key={i}
@@ -157,8 +159,8 @@ let price = "";
                     addExtra={addExtra}
                   />
                 );
-              })} 
-              {!productBase?.flavors&&
+              })}  */}
+              {/* {!productBase?.flavors&&
               
               flavorsProductG.map((product, i) => {
                 return (
@@ -170,7 +172,7 @@ let price = "";
                 );
               })
               
-              }
+              } */}
             </div>
           {/*  <div className="w-full flex bg-white font-semibold text-[#222] text-center py-3  px-6">
               Add Sauces

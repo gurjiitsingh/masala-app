@@ -25,10 +25,10 @@ type Terror = {
   productDesc: string | null;
   image: string | null;
 };
-const Page = ({ params }: { params: { editform: string } }) => {
+const Page = () => {
   //const searchParams = useSearchParams();
   //const id = searchParams.get("id") || "";
-  const id = params.editform as string;
+  const id = "params.editform" as string;
 console.log("-----------",id)
   const [categories, setCategory] = useState<categoryTypeArr>([]);
   //const [product, setProduct] = useState({});
@@ -55,8 +55,8 @@ console.log("-----------",id)
       setValue("name", productData.name);
       setValue("productDesc", productData.productDesc);
       setValue("oldImgageUrl", productData.image);
-      setValue("price", productData.price);
-      setValue("productCat", productData.productCat);
+      setValue("price", productData.price.toString());
+    
       setValue("isFeatured", productData.isFeatured);
     }
 
@@ -69,7 +69,7 @@ console.log("-----------",id)
 
     formData.append("name", data.name);
     formData.append("price", data.price);
-    formData.append("productCat", data.productCat);
+   // formData.append("productCat", data.productCat);
     formData.append("productDesc", data.productDesc);
     formData.append("image", data.image[0]);
      formData.append("oldImgageUrl",data.oldImgageUrl!)
@@ -134,7 +134,7 @@ console.log("-----------",id)
     <> 
       <form onSubmit={handleSubmit(onsubmit)}>
         <div className="flexflex flex-col gap-4 p-5">
-          <h1>Edit Product</h1>
+          <h1>Edit Variant</h1>
 
           <div className="flex flex-col lg:flex-row gap-5 ">
             {/* left box */}
@@ -156,7 +156,7 @@ console.log("-----------",id)
                     </span>
                   </div>
 
-                  <div className="flex flex-col gap-1 w-full">
+                  {/* <div className="flex flex-col gap-1 w-full">
                     <label className="label-style" htmlFor="product-title">
                       Category<span className="text-red-500">*</span>{" "}
                     </label>
@@ -179,7 +179,7 @@ console.log("-----------",id)
                         <p>{errors.productCat?.message}</p>
                       )}
                     </span>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className="flex-1 flex flex-col gap-3 bg-white rounded-xl p-4 border">

@@ -3,16 +3,17 @@ import React from 'react'
 import { IoMdRemove } from 'react-icons/io';
 
 import { useCartContext } from '@/store/CartContext';
-import { ProductType } from '@/lib/types/productType';
+import { cartProductType } from '@/lib/types/cartDataType';
 
 
-export  function ButtonDecCartProduct({product}:{product:ProductType | undefined}) {
+
+export  function ButtonDecCartProduct({product}:{product:cartProductType | undefined}) {
 
   const {  removeCartProduct } =  useCartContext();
 
   
   
-  function decItemFromCart(product:ProductType | undefined){
+  function decItemFromCart(product:cartProductType | undefined){
     
     removeCartProduct(product)
     //decCartProductAll(product)

@@ -15,11 +15,13 @@ import { GoHome } from "react-icons/go";
 import { UseSiteContext } from "@/SiteContext/SiteContext";
 import { IoClose } from "react-icons/io5";
 //import { Button } from '@/components/ui/button';
-
+import { IconType } from "react-icons";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
 type Titem = {
   name: string;
   link: string;
-  icon: unknown;
+  icon: any;
 };
 const menuList = [
   {
@@ -33,20 +35,25 @@ const menuList = [
     icon: <MdSpaceDashboard />,
   },
   {
+    name:"Categories",
+    link:"/admin/categories",
+    icon:<TbCategoryPlus />
+  },
+  {
     name: "Products",
     link: "/admin/productsbase",
     icon: <MdOutlineProductionQuantityLimits />,
   },
   {
-    name: "Flavors",
+    name: "Variants",
     link: "/admin/flavorsProductG",
     icon: <MdOutlineProductionQuantityLimits />,
   },
-  {
-    name: "Sauces",
-    link: "/admin/productsauces",
-    icon: <TbCategoryPlus />,
-  },
+  // {
+  //   name: "Sauces",
+  //   link: "/admin/productsauces",
+  //   icon: <TbCategoryPlus />,
+  // },
   {
     name: "Coupon",
     link: "/admin/coupon",
@@ -58,11 +65,7 @@ const menuList = [
     icon: <TbCategoryPlus />,
   },
 
-  // {
-  //   name:"Categories",
-  //   link:"/admin/categories",
-  //   icon:<TbCategoryPlus />
-  // },
+  
   // {
   //   name:"Brands",
   //   link:"/admin/brands",
@@ -97,15 +100,16 @@ const menuList = [
 
 const Sidebar = () => {
   const { setAdminSideBarToggleG } = UseSiteContext();
+  
 
   return (
     <>
-      <div className="flex items-center px-2 pt-2 justify-between p-2   lg:hidden">
+      <div className="flex items-center  pt-2 justify-between    lg:hidden">
         <div></div>
         <div>
           <button
             onClick={() => {
-              setAdminSideBarToggleG();
+              setAdminSideBarToggleG(false);
             }}
             className="p-1 border-zinc-800 rounded-xl"
             aria-label="close sidebar"
@@ -114,18 +118,19 @@ const Sidebar = () => {
           </button>
         </div>
       </div>
-      <div className=" pt-12 h-screen w-[290px] border-r flex flex-col py-4 px-8 items-center justify-start overflow-hidden">
+      <div className=" pt-12 h-screen w-[290px] border-r flex flex-col py-4 px-2  justify-start overflow-hidden">
         <ul className="flex flex-col gap-2 overflow-y-auto">
           {menuList?.map((list) => {
             return <Tab key={list.name} item={list} />;
           })}
         </ul>
-        <div className="flex flex-col items-center w-full">
+        <div className="flex  items-center my-3 justify-between w-full border-amber-500 rounded-2xl p-2">
+        <IoIosLogOut />
           <button
             onClick={() => signOut()}
             className="flex gap-2 items-center px-4 py-1 rounded-lg ease-soft translate-all duration-300 font-semibold text-[.9rem]"
           >
-            Logout <IoIosLogOut />
+            Logout 
           </button>
         </div>
       </div>
@@ -134,20 +139,29 @@ const Sidebar = () => {
 };
 
 function Tab(item: { item: Titem }) {
-  //console.log("in tab ----",item.item)
-  // const path = usePathname();
-  // const isSelected = path === item?.link;
-  const isSelected = false;
+  
+  //const [isSelected, setIsSelected ] = useState(false);
+  //console.log("in tab ----",item.item.link)
+  let isSelected = false;
+  const path = usePathname();
+  //console.log("path ----",path)
+  
+  if(item.item.link === path){
+   // setIsSelected(true);
+  // console.log("path--------",path)
+   isSelected = true;
+  }
+  
   return (
     <>
-      {" "}
+     
       <Link href={item.item?.link}>
         <li
-          className={`flex gap-2 items-center px-4 py-1 rounded-lg ease-soft translate-all duration-300 font-semibold text-[.9rem] 
-      ${isSelected ? "bg-violet-300 text-white" : "text-slate-700"}`}
+          className={`w-full bg-amber-400 flex gap-2 items-center justify-between px-4 py-1 rounded-lg ease-soft translate-all duration-300 font-semibold text-[.9rem] 
+      ${isSelected ? "bg-amber-900 text-white" : "text-slate-700"}`}
         >
-          {/* {item?.item.icon} */}
-          {item?.item.name}
+      <div>{item?.item.icon}</div><div> {item?.item.name}</div>    
+         
         </li>
       </Link>
     </>
