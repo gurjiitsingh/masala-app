@@ -13,6 +13,8 @@ export default function Checkout(){
     //const [currency, setCurrency] = useState(options.currency);
     const router = useRouter();
     const {  productTotalCost, endTotalG } = useCartContext();
+   const endTotalG1 = endTotalG.toFixed(2)
+    //console.log("amount--------------",productTotalCost,typeof(productTotalCost), endTotalG1,typeof(endTotalG1),endTotalG,typeof(endTotalG))
   
     // const onCurrencyChange = ({ target: { value } }) => {
     //   setCurrency(value);
@@ -37,12 +39,11 @@ export default function Checkout(){
     //         postal_code: string;
     //         country_code: string;
 		// 	}
-    let customerAddress
+    let customerAddress;
     if (typeof window !== 'undefined') {
      customerAddress = JSON.parse(localStorage.getItem("customer_address") || '""')  ;
     }
   //console.log("cartData ", productTotalCost)
-    //const onCreateOrder = (data, actions) => {
       const onCreateOrder = (data, actions) => {
       return actions.order.create({
         intent: "CAPTURE",
@@ -55,11 +56,11 @@ export default function Checkout(){
         ], 
         items: [
           {
-            "name": "First Product Name", /* Shows within upper-right dropdown during payment approval */
-            "description": "Optional descriptive text..", /* Item details will also be in the completed paypal.com transaction view */
+            "name": "All products", /* Shows within upper-right dropdown during payment approval */
+            "description": "Total amount", /* Item details will also be in the completed paypal.com transaction view */
             "unit_amount": {
               "currency_code": "EUR",
-              "value": productTotalCost,
+              "value": endTotalG,
             },
             "quantity": 1
           },
@@ -110,7 +111,7 @@ export default function Checkout(){
           <>
             <PayPalButtons
               message={{
-                amount: productTotalCost,
+                amount: endTotalG,
                 align: "center",
                 color: "black",
                 position: "top",

@@ -20,7 +20,7 @@ export const SideCart = () => {
   //const [ showEmailForm, setShowEmailForm ] = UseSiteContext();
   const { open, sideBarToggle } = UseSiteContext();
   const { openEmailForm, emailFormToggle, customerEmail } = UseSiteContext();
-  const { cartData } = useCartContext()
+  const { cartData } = useCartContext();
   const ref = useRef(null);
   const router = useRouter();
   useClickAway(ref, () => sideBarToggle());
@@ -30,73 +30,90 @@ export const SideCart = () => {
   //  emailFormToggle(false)
   //  chageDeliveryType("delivery")
   // }
-  
-  function pickUpHandle(){
+
+  function pickUpHandle() {
     /// setShowEmailForm((state)=>!state)
-   // chageDeliveryType("pickup")
-     sideBarToggle();
-    emailFormToggle(true)
-   }
+    // chageDeliveryType("pickup")
+    sideBarToggle();
+    emailFormToggle(true);
+  }
 
-   function shopMoreHandle(){
+  function shopMoreHandle() {
     // setShowEmailForm((state)=>!state)
-     sideBarToggle();
-     router.push('/');
-   // chageDeliveryType("pickup")
-   // emailFormToggle()
-   }
+    sideBarToggle();
+    router.push("/");
+    // chageDeliveryType("pickup")
+    // emailFormToggle()
+  }
   return (
-    <><SessionProvider>
-    {!openEmailForm &&
-      <AnimatePresence mode="wait" initial={false}>
-        {open && (
-          <>
-            <motion.div
-              {...framerSidebarBackground}
-              aria-hidden="true"
-              className="fixed bottom-0 left-0 right-0 top-0 z-40 bg-[rgba(244,243,243,0.1)] backdrop-blur-sm "
-            ></motion.div>
-            <motion.div
-              {...framerSidebarPanel}
-              className="fixed top-0 bottom-0 left-0 z-50 w-full h-screen max-w-lg border-r-2 border-zinc-50 bg-white p-2"
-              ref={ref}
-              aria-label="Sidebar"
-            >
-              <div className="flex items-center px-2 pt-2 justify-between p-2  rounded-2xl  border ">
-                <span>Dein Warenkorb</span>
-                <button
-                  onClick={sideBarToggle}
-                  className="p-1 border-zinc-800 rounded-xl"
-                  aria-label="close sidebar"
+    <>
+      <SessionProvider>
+        {!openEmailForm && (
+          <AnimatePresence mode="wait" initial={false}>
+            {open && (
+              <>
+                <motion.div
+                  {...framerSidebarBackground}
+                  aria-hidden="true"
+                  className="fixed bottom-0 left-0 right-0 top-0 z-40 bg-[rgba(244,243,243,0.1)] backdrop-blur-sm "
+                ></motion.div>
+                <motion.div
+                  {...framerSidebarPanel}
+                  className="fixed top-0 bottom-0 left-0 z-50 w-full h-screen max-w-lg border-r-2 border-zinc-50 bg-white p-2"
+                  ref={ref}
+                  aria-label="Sidebar"
                 >
-                  <IoClose size={30} />
-                </button>
-              </div>
-
-              
-              <MiniCartContent />
-              <MiniCartSubtotal />
-              <div className=" flex items-center justify-center gap-4 mt-2">
-           
-            {cartData.length ?  <button onClick={()=>{pickUpHandle()}} className="min-w-[200px] mt-5 py-1 text-center bg-blue-500 rounded-2xl text-white text-[1rem]">
-                    {/* Pickup */}
-                    Kasse
-                  </button>:<></>}
-                  <div className="flex flex-col gap-2 justify-center">
-{cartData.length ?<></>:<div className="min-w-[200px] mt-5 py-1 text-center  rounded-2xl text-[1rem] font-semibold">Warenkorb ist leer</div>}
-                  <button onClick={()=>{shopMoreHandle() }} className="min-w-[200px] mt-5 py-1 text-center bg-blue-500 rounded-2xl text-white text-[1rem]">Mehr einkaufen</button>
+                  <div className="flex items-center  pt-2 justify-between p-2  rounded-xl  bg-slate-100 ">
+                    <span>Dein Warenkorb</span>
+                    <button
+                      onClick={sideBarToggle}
+                      className="p-1 border-zinc-800 rounded-xl"
+                      aria-label="close sidebar"
+                    >
+                      <IoClose size={30} />
+                    </button>
                   </div>
-              </div>
 
-
-            </motion.div>
-          </>
+                  <MiniCartContent />
+                  <MiniCartSubtotal />
+                  <div className=" flex flex-col items-center justify-center gap-3 ">
+                    {cartData.length ? (
+                      <button
+                        onClick={() => {
+                          pickUpHandle();
+                        }}
+                        className="w-full mt-5 py-1 text-center bg-red-600 rounded-xl text-white text-[1rem]"
+                      >
+                        {/* Pickup */}
+                        Kasse
+                      </button>
+                    ) : (
+                      <></>
+                    )}
+                    <div className="w-full flex flex-col gap-2 justify-center">
+                      {cartData.length ? (
+                        <></>
+                      ) : (
+                        <div className="min-w-[200px] mt-5 py-1 text-center  rounded-2xl text-[1rem] font-semibold">
+                          Warenkorb ist leer
+                        </div>
+                      )}
+                      <button
+                        onClick={() => {
+                          shopMoreHandle();
+                        }}
+                        className="min-w-[200px] mt-5 py-1 text-center bg-slate-400 rounded-xl text-white text-[1rem]"
+                      >
+                        Mehr einkaufen
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
         )}
-      </AnimatePresence>}
-     {openEmailForm  && 
- <ProccedWithEmail />
-
-      }
+        {openEmailForm && <ProccedWithEmail />}
       </SessionProvider>
     </>
   );

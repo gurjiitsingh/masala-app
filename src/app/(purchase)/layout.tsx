@@ -22,7 +22,7 @@ export default function RootLayout({
      
     
     {children}
-    {/* <div className="sticky  bottom-4 flex justify-end pr-3 z-50"><Cart /></div>   */}
+    <div className="sticky  bottom-4 flex justify-end pr-3 z-50"><Cart /></div>  
       </Comcomp> 
       </body>
   </html>

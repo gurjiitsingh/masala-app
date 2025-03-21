@@ -1,25 +1,25 @@
 @import "tailwindcss";
 
 .input-style1 {
-  @apply border rounded focus:outline-none py-[.5rem] px-1 text-slate-700 text-[.8rem];
+  @apply border border-slate-300 rounded focus:outline-none py-[.5rem] px-1 text-slate-700 text-[.8rem];
 }
 .input-style {
-  @apply w-full border px-1 py-[.1rem] rounded-lg  outline-none text-slate-800 text-[1rem];
+  @apply w-full border-slate-300 border px-1 py-[.1rem] rounded-lg  outline-none text-slate-800 text-[1rem];
 }        
 .label-style{
-  @apply text-gray-500 text-xs;
+  @apply text-gray-500  text-xs;
 }
 .textarea-style {
-  @apply w-full border px-4 py-1 rounded-lg  outline-none text-slate-700;
+  @apply w-full border border-slate-300 px-4 py-1 rounded-lg  outline-none text-slate-700;
 }        
 .input-image-style{
-@apply text-sm border rounded
+@apply text-sm border border-slate-300 rounded
 }
 .mp{
   @apply px-32 py-32;
 }
 .primary{
-  @apply bg-amber-300;
+  @apply bg-amber-400;
 }
 .dim{
   @apply bg-blue-400;

@@ -40,7 +40,7 @@ const ProccedWithEmail = () => {
   });
   const userEmail = session?.user?.email as string;
   if (session !== null) {
-    setValue("email", userEmail);
+  //  setValue("email", userEmail);
   }
 
   async function onSubmit(data: TemailZ) {
@@ -60,8 +60,8 @@ const ProccedWithEmail = () => {
   }
 
   return (
-    <div className="z-50 absolute mx-auto h-full flex items-center justify-center backdrop-blur-lg  p-12 w-full">
-      <div className="w-full md:w-[50%] lg:w-[30%]   rounded-2xl mx-auto flex flex-col items-center justify-center bg-green-50 border">
+    <div className="z-50 absolute bottom-0 top-0 left-0 right-0 flex items-center justify-center backdrop-blur-lg  p-12">
+      <div className="w-full md:w-[50%] lg:w-[30%]   rounded-2xl mx-auto flex flex-col items-center justify-center bg-slate-100 border border-slate-300">
         <div className="flex flex-col  w-full px-2 p-2">
           <div className="flex justify-end w-full">
             <div>

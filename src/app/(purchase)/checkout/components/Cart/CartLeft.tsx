@@ -52,7 +52,7 @@ export default function CartLeft() {
   if (couponDisc?.price) {
    // console.log("----coupon disc", +total * +couponDisc?.price);
     endPrice = endPrice - (+total * +couponDisc?.price) / 100;
-    endPrice = +endPrice.toFixed(2);
+   // endPrice = +endPrice.toFixed(2);
     TotalDiscount = TotalDiscount + +couponDisc?.price;
   }
   //  console.log("total discount ------",TotalDiscount)
@@ -61,6 +61,7 @@ export default function CartLeft() {
   const endPriceS = (endPrice.toFixed(2)).toString();
   const endPriceComma = endPriceS.split(".").join(",");
   useEffect(() => {
+    endPrice = +endPrice.toFixed(2);
     setEndTotalG(endPrice);
   }, [endPrice]);
   useEffect(() => {}, [deliveryType]);
@@ -69,15 +70,15 @@ export default function CartLeft() {
   }, [TotalDiscount]);
   return (
     <div className="flex flex-col gap-4 w-full ">
-      <div className="flex flex-col bg-white p-5 h-full w-full gap-7 rounded-2xl">
+      <div className="flex flex-col bg-slate-50 p-5 h-full w-full gap-7 rounded-2xl">
         <div className="flex flex-col gap-2 items-center">
-          <h2 className="text-xl font-semibold border-b py-3 w-full uppercase">
+          <h2 className="text-xl font-semibold border-b border-slate-200 py-3 w-full uppercase">
             {/* Shopping cart total */}
             {/* Gesamtsumme im Warenkorb */}
             Warenkorb-Summe
           </h2>
 
-          <div className="font-semibold border-b py-3 w-full flex flex-col justify-between gap-4">
+          <div className="font-semibold border-b border-slate-200 py-3 w-full flex flex-col justify-between gap-4">
             <div className="w-fit">
               <button
                 onClick={() => setAddCoupon(!addCoupon)}
@@ -98,7 +99,7 @@ export default function CartLeft() {
             )}
           </div>
 
-          <div className="font-semibold border-b py-3 w-full flex justify-between">
+          <div className="font-semibold border-b border-slate-200 py-3 w-full flex justify-between">
             <div className="text-sm font-semibold py-3 w-full text-left">
             Zwischensumme
             </div>
@@ -108,13 +109,13 @@ export default function CartLeft() {
             </div>
           </div>
 
-          <div className="font-semibold border-b py-3 w-full flex  justify-start gap-4">
+          <div className="font-semibold border-b border-slate-200 py-3 w-full flex  justify-start gap-4">
             <div className="w-fit">
             
             
            { deliveryType === 'pickup'?   <button
                 onClick={() => chageDeliveryType("pickup")}
-                className="flex gap-2  items-center text-sm text-slate-600 bg-green-200 border rounded-2xl px-3 font-semibold py-1 w-full text-left "
+                className="flex gap-2  items-center text-sm text-slate-600 bg-green-200 border border-slate-200 rounded-2xl px-3 font-semibold py-1 w-full text-left "
               >
                 <span>Abholen </span>
                 {/* <span>
@@ -123,7 +124,7 @@ export default function CartLeft() {
               </button>:
               <button
                 onClick={() => chageDeliveryType("pickup")}
-                className="shadow-lg flex gap-2 items-center text-sm text-slate-600 bg-red-200 border rounded-2xl px-3 font-semibold py-1 w-full text-left "
+                className="shadow-lg flex gap-2 items-center text-sm text-slate-600 bg-red-200 border border-slate-200   rounded-2xl px-3 font-semibold py-1 w-full text-left "
               >
                 <span>Abholen </span>
                 {/* <span>
@@ -137,7 +138,7 @@ export default function CartLeft() {
             <div className="w-fit">
             { deliveryType === 'delivery'?     <button
                 onClick={() => chageDeliveryType("delivery")}
-                className="flex gap-2 items-center text-sm text-slate-600 bg-green-200 border rounded-2xl px-3 font-semibold py-1 w-full text-left "
+                className="flex gap-2 items-center text-sm text-slate-600 bg-green-200 border border-slate-50 rounded-2xl px-3 font-semibold py-1 w-full text-left "
               >
               
                 <span>Lieferung </span>
@@ -147,7 +148,7 @@ export default function CartLeft() {
               </button>:
               <button
                 onClick={() => chageDeliveryType("delivery")}
-                className="shadow-lg flex gap-2 items-center text-sm text-slate-600 bg-red-200 border rounded-2xl px-3 font-semibold py-1 w-full text-left "
+                className="shadow-lg flex gap-2 items-center text-sm text-slate-600 bg-red-200 border border-slate-50 rounded-2xl px-3 font-semibold py-1 w-full text-left "
               >
               
                 <span>Lieferung </span>
@@ -165,14 +166,14 @@ export default function CartLeft() {
 
           <CouponDisc total={total} />
 
-          {/* <div className="font-semibold border-b py-3 w-full ">
+          {/* <div className="font-semibold border-b border-slate-200 py-3 w-full ">
             <h3 className="text-sm font-semibold py-3 w-full text-left">
               {" "}
               Local Pickup (Restaurant)
             </h3>
           </div> */}
 
-          {/* <div className="border-b py-3 w-full ">
+          {/* <div className="border-b border-slate-200 py-3 w-full ">
             <h3 className="text-sm font-semibold pt-3 pb-1 w-full text-left">
              
               Flat Rate
@@ -180,7 +181,7 @@ export default function CartLeft() {
             <p className="text-sm  pb-3 w-full text-left"> $4</p>
           </div> */}
 
-          <div className="font-semibold border-b py-3 w-full flex justify-between">
+          <div className="font-semibold border-b border-slate-200 py-3 w-full flex justify-between">
             <div className="text-md font-semibold py-3 w-full text-left">
             Gesamt
             </div>

@@ -8,7 +8,7 @@ export default function Pickup({total}:{total:number}) {
   return (
     <>{deliveryType === "pickup" &&
        
-                <div className="font-semibold border-b py-3 w-full flex justify-between">
+                <div className="font-semibold border-b border-slate-200 py-3 w-full flex justify-between">
                   <button className="text-sm font-semibold py-3 w-full text-left">
                   Abholrabatt 10%
                   </button>

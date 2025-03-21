@@ -80,10 +80,10 @@ export async function createNewOrder(purchaseData:purchaseDataT) {
 //  const q = query(collectionRef);
 //  const querySnapshot = await getDocs(q);
 let new_srno =1;
-let orderData = [] as orderMasterDataT[];
+const orderData = [] as orderMasterDataT[];
   querySnapshot.forEach((doc) => {
      const  data = doc.data() as orderMasterDataT;
-       console.log("last order ----------", data)
+    //   console.log("last order ----------", data)
        orderData.push(data)
      });
  
@@ -91,7 +91,7 @@ let orderData = [] as orderMasterDataT[];
    if(orderData[0]?.srno !== undefined){
      new_srno =orderData[0].srno + 1;
    }
-   console.log("sr No ----------", new_srno)
+ //  console.log("sr No ----------", new_srno)
 
  // const timeId = new Date().toISOString();
   const orderMasterData = {

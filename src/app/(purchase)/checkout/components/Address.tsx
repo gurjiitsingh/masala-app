@@ -160,7 +160,7 @@ if(deliveryType==='pickup' || deliveryDis !== undefined){
   
 
   return (
-    <div className="w-full lg:w-[70%] md:border md:rounded-2xl md:p-5">
+    <div className="w-full lg:w-[70%] md:border border-slate-400 md:rounded-2xl md:p-5">
       <div className="flex flex-col">
         <div className="flex flex-col gap-2 mb-4">
           <h2 className="text-xl font-semibold text-slate-600  py-3 uppercase">
