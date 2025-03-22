@@ -1,12 +1,16 @@
 'use client'
-import React from 'react'
+//import React, { useEffect } from 'react'
 import { IoCartOutline } from "react-icons/io5";
-
+//import { usePathname } from "next/navigation";
 
 import CartCount from './CartCount';
 import { UseSiteContext } from '@/SiteContext/SiteContext'
 //<ProductType[]>
 const CartBottom = () => {
+  // const path = usePathname();
+  // useEffect(()=>{
+  //   console.log("path------------",path)
+  // },[])
 
 const {  sideBarToggle } = UseSiteContext();//open,
 

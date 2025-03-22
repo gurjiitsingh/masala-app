@@ -13,7 +13,7 @@ import { loadScript } from "@paypal/paypal-js";
 import Checkout from "./components/Checkout";
 
 loadScript({
-  "client-id": process.env.PAYPAL_CLIENT_KEY,
+  "client-id": process.env.PAYPAL_CLIENT_ID,
     // "AW5e7drnAQ7XcIGUsTNi1B88EO_XyXPhMGzm32hUffetc9NWsDBjzua8cGJKVbLbR16XxdlGE0Wh4nUa",
 })
   .then((paypal) => {
@@ -27,7 +27,7 @@ loadScript({
 
 const initialOptions = {
   //"client-id": "AaE5j_iAGG8h6JeuW6y3khLvftR8OT2qDi2tqlhTaOeC4QxU3feFgMgF1RYMGe7LuYAtd7EyhQZpUhQz",//
-  "client-id": process.env.PAYPAL_CLIENT_KEY,
+  "client-id": process.env.PAYPAL_CLIENT_ID,
   
   currency: "EUR",
   intent: "capture",

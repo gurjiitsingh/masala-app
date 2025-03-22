@@ -15,9 +15,9 @@ import { GoHome } from "react-icons/go";
 import { UseSiteContext } from "@/SiteContext/SiteContext";
 import { IoClose } from "react-icons/io5";
 //import { Button } from '@/components/ui/button';
-import { IconType } from "react-icons";
+//import { IconType } from "react-icons";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+//import { useState } from "react";
 type Titem = {
   name: string;
   link: string;

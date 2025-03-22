@@ -35,6 +35,16 @@ export const CartProvider: React.FC<Props> = ({
 
   useEffect(() => {
 
+    if (typeof window !== 'undefined') {
+      if (window.localStorage.getItem("END_TOTAL") !== null) {
+        const end_total =  window.localStorage.getItem("END_TOTAL") as string;
+          const end_total1 = JSON.parse(end_total);
+          setEndTotalL(+end_total1)
+        }
+      }
+
+   
+
     if (window.localStorage.getItem("cart_product_data_id") == null) {
       const cartItemDateId = Date.now().toString();
       window.localStorage.setItem("cart_product_data_id", cartItemDateId);
@@ -249,6 +259,10 @@ export const CartProvider: React.FC<Props> = ({
 
   
        function setEndTotalG(t:number){
+        console.log("in store set end total------", t)
+        if (typeof window !== 'undefined') {
+          localStorage.setItem("END_TOTAL", JSON.stringify(t));
+          }
 setEndTotalL(t)
        }
 

@@ -14,7 +14,7 @@ export default function Checkout(){
     const router = useRouter();
     const {  productTotalCost, endTotalG } = useCartContext();
    const endTotalG1 = endTotalG.toFixed(2)
-    //console.log("amount--------------",productTotalCost,typeof(productTotalCost), endTotalG1,typeof(endTotalG1),endTotalG,typeof(endTotalG))
+  //  console.log("amount--------------",productTotalCost,typeof(productTotalCost), endTotalG1,typeof(endTotalG1),endTotalG,typeof(endTotalG))
   
     // const onCurrencyChange = ({ target: { value } }) => {
     //   setCurrency(value);
@@ -62,7 +62,7 @@ export default function Checkout(){
               "currency_code": "EUR",
               "value": endTotalG,
             },
-            "quantity": 1
+            "quantity": 2
           },
         ],
         payer: {

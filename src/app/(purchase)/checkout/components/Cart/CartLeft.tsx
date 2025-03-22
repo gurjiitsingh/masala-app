@@ -62,6 +62,7 @@ export default function CartLeft() {
   const endPriceComma = endPriceS.split(".").join(",");
   useEffect(() => {
     endPrice = +endPrice.toFixed(2);
+    console.log("endprice in cartleft-------------",endPrice)
     setEndTotalG(endPrice);
   }, [endPrice]);
   useEffect(() => {}, [deliveryType]);
