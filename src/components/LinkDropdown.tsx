@@ -12,9 +12,10 @@ import {
   } from "@/components/ui/dropdown-menu"
 import { signOut } from 'next-auth/react'
 import Link from 'next/link'
-import { sessionT } from '@/lib/types/sessionType';
+//import { DefaultSession } from 'next-auth';
+import { CustomSessionType } from '@/lib/types/auth';
 
-const LinkDropdown = ({session}:{session:sessionT}) => {
+const LinkDropdown = ({session}:{session:CustomSessionType}) => {
  
   // console.log("User Role -------------", session?.user?.role)
 

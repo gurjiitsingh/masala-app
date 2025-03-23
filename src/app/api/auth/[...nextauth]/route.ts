@@ -4,38 +4,9 @@ import { db } from "@/lib/firebaseConfig";
 import CredentialsProvider from "next-auth/providers/credentials";
 import NextAuth from "next-auth/next";
 import { collection, getDocs,  query, where } from "@firebase/firestore";
-import { DefaultSession, ISODateString, User } from "next-auth";
+import { DefaultSession, User } from "next-auth";
 import { JWT } from "next-auth/jwt";
 
-// type TProduct = {
-//   product: {
-//     name: string;
-//     _id: string;
-//     image: string;
-//     category: string;
-//   };
-// };
-export type CustomSessionType = {
-  user?: CustomUserType;
-  expires: ISODateString;
-};
-
-export type CustomUserType = {
-  name?: string | null;
-  id?: string | null;
-  email?: string | null;
-  role?: string | null;
-  image?: string | null;
-  avatar?: string | null;
-};
-// type userData = {
-//   userData: { user:string;
-//      account:string;
-//      profile:string;
-//      email:string;
-//      credentials:string;
-//      }
-// };
 
 const handler = NextAuth({
   session: {
@@ -119,7 +90,7 @@ const handler = NextAuth({
       // call stack 1
       // you can get user values from databas directly here
       if (user) {
-        user.role = user?.role === null ? "user" : user?.role;
+      //  user.role = user?.role === null ? "user" : user?.role;
         token.user = user;
       }
       return token;
@@ -130,7 +101,7 @@ const handler = NextAuth({
     }: {
       session: DefaultSession;
       token: JWT;
-      user: User;
+      
     }) {
       session.user = token.user as User;
       //   console.log("session -------",session)

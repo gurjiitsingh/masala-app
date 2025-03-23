@@ -34,10 +34,10 @@ const AddForm = () => {
         } 
     }  
     
-     if(session?.user?.id !== undefined){
-      const idUser: string = session?.user?.id;
-      getUserDataById(idUser)
-    }  
+    //  if(session?.user?.id !== undefined){
+    //   const idUser: string = session?.user?.id;
+    //   getUserDataById(idUser)
+    // }  
     },[])//session
 
 
@@ -67,9 +67,9 @@ const AddForm = () => {
     formData.append("password", data.password!);
     formData.append("addressLine1", data.addressLine1!);
     formData.append("addressLine2", data.addressLine2!);
-    formData.append("city", data.city);
+    formData.append("city", data.city!);
     formData.append("state", data.state!);
-    formData.append("zipCode", data.zipCode);
+    formData.append("zipCode", data.zipCode!);
 
     await newCustomerAddress(formData);
   

@@ -48,10 +48,10 @@ const EditForm = () => {
         setValue("zipCode", addressRes.zipCode!);
       } 
   }  
-   if(session?.user?.id !== undefined){
-    const idU: string = session?.user?.id;
-  getUserDataById(idU)
-  }  
+  //  if(session?.user?.id !== undefined){
+  //   const idU: string = session?.user?.id;
+  // getUserDataById(idU)
+  // }  
   },[])//session // give error when put in dependency
 
 
@@ -84,9 +84,9 @@ const EditForm = () => {
     formData.append("password", data.password!);
     formData.append("addressLine1", data.addressLine1!);
     formData.append("addressLine2", data.addressLine2!);
-    formData.append("city", data.city);
+    formData.append("city", data.city!);
     formData.append("state", data.state!);
-    formData.append("zipCode", data.zipCode);
+    formData.append("zipCode", data.zipCode!);
 
     await editCustomerAddress(formData);
   
