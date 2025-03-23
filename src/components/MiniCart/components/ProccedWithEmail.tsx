@@ -32,30 +32,22 @@ const ProccedWithEmail = () => {
     formState: { errors }, //, isSubmitting
     handleSubmit,
     // reset,
-    setValue,
+    //setValue,
     // getValues,
     // setError,
   } = useForm<TemailZ>({
     resolver: zodResolver(emailZ),
   });
-  const userEmail = session?.user?.email as string;
+  //const userEmail = session?.user?.email as string;
   if (session !== null) {
-  //  setValue("email", userEmail);
+    //  setValue("email", userEmail);
   }
 
   async function onSubmit(data: TemailZ) {
     const formData = new FormData();
-    //     console.log("data.userId --------------", data)
     formData.append("email", data.email);
-    // formData.append("mobNo", data.mobNo);
-    // const customAddress = {
-    //     email: data.email,
-    // //  mobNo: data.mobNo,
-    //   };
     emailFormToggle(false);
     setCustomerEmailG(data.email);
-    // sideBarToggle()
-    //   router.push(`/checkout?email=${data.email}&deliverytype=${deliveryType}`)
     router.push(`/checkout?email=${data.email}`);
   }
 

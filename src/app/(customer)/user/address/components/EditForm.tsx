@@ -48,10 +48,10 @@ const EditForm = () => {
         setValue("zipCode", addressRes.zipCode!);
       } 
   }  
-  //  if(session?.user?.id !== undefined){
-  //   const idU: string = session?.user?.id;
-  // getUserDataById(idU)
-  // }  
+   if(session?.user?.id !== undefined){
+    const idU: string = session?.user?.id;
+  getUserDataById(idU)
+  }  
   },[])//session // give error when put in dependency
 
 

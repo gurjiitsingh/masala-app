@@ -34,10 +34,10 @@ const AddForm = () => {
         } 
     }  
     
-    //  if(session?.user?.id !== undefined){
-    //   const idUser: string = session?.user?.id;
-    //   getUserDataById(idUser)
-    // }  
+     if(session?.user?.id !== undefined){
+      const idUser: string = session?.user?.id;
+      getUserDataById(idUser)
+    }  
     },[])//session
 
 

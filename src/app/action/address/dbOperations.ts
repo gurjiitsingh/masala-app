@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/lib/firebaseConfig";
-import { addressResT, addressSchima, addressSchimaCheckout } from "@/lib/types/addressType"; //, TaddressSchema
+import { addressResT, addressResType, addressSchima, addressSchimaCheckout } from "@/lib/types/addressType"; //, TaddressSchema
 import {
   addDoc,
   collection,
@@ -122,33 +122,61 @@ type Task = {
   zipCode: string;
 }[];
 
-export async function searchAddressEmail(email: string): Promise<addressResT> {
+
+export async function searchAddressEmail1(email: string): Promise<addressResType> {
+
+  const result = await getDocs(collection(db, "address"));
+  
+    const data = {} as addressResType;
+
+    result.forEach((doc) => {
+      console.log("find or not--------",doc.data().email)
+    //  const pData = { id: doc.id, ...doc.data() } as addressResType;
+     // data.push(pData);
+     if(doc.data().email===email){
+      Object.assign(data, doc.data());
+     }
+    });
+
+    console.log("llllllll",data)
+    return {
+      addressLine2: 'Avenue 7',
+      email: 'gurjiitsingh4@gmail.com',
+      firstName: 'Gim',
+      mobNo: '9838883323',
+      state: 'undefined',
+      addressLine1: '25 Street H No. 1',
+      userId: 'gDqlXKIfvis6SgnwaOc7',
+      lastName: 'Kari',
+      zipCode: '38518',
+      city: 'Hostin'
+    } as addressResType;
+
+}
+
+export async function searchAddressEmail(email: string): Promise<addressResType> {
+
+  let data = {
+    addressLine2: '',
+    email: email,
+    firstName: '',
+    mobNo: '',
+    state: '',
+    addressLine1: '',
+    userId: '',
+    lastName: '',
+    zipCode: '',
+    city: ''
+  } as addressResType;
+
   const q = query(collection(db, "address"), where("email", "==", email));
   const querySnapshot = await getDocs(q);
-
-  //let recordId = null;
-  let data = {} as addressResT;
-  //  const user01 = {} as User;
-  //let i = 0;
+    
   querySnapshot.forEach((doc) => {
-    // i++;
-    // recordId = doc.id;
-    // doc.data() is never undefined for query doc snapshots
-   // console.log(" address find --", doc.data());
-    data = doc.data() as addressResT;
+      data = doc.data() as addressResType;
   });
-  return {
-    email: data.email,
-    firstName: data.firstName,
-    lastName: data.lastName,
-    // userId:data.lastName;
-    mobNo: data.mobNo,
-    addressLine1: data.addressLine1,
-    addressLine2: data.addressLine2,
-    city: data.city,
-    state: data.state,
-    zipCode: data.zipCode,
-  };
+  
+  return data;
 }
 
 export async function searchAddressByAddressId(

@@ -20,7 +20,7 @@ Versandkosten
               <div className="flex gap-1 justify-start">
 
                 {/* <span className="text-sm font-extralight">Please enter full address for delivery estimation </span> */}
-                <span className="text-sm font-extralight">Bitte geben Sie die vollständige Adresse für die Lieferzeitschätzung ein </span>
+                <span className="text-sm font-extralight text-red-600">Bitte geben Sie die vollständige Adresse und Postleitzahl ein, um die Versandkosten zu schätzen </span>
               </div>}
             </div>}
          

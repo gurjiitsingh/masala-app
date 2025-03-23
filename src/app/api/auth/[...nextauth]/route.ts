@@ -5,6 +5,8 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import NextAuth from "next-auth/next";
 import { collection, getDocs, limit, query, where } from "@firebase/firestore";
 import { string } from "zod";
+import { DefaultSession, ISODateString, User } from "next-auth";
+import { JWT } from "next-auth/jwt";
 
 // type TProduct = {
 //   product: {
@@ -14,15 +16,29 @@ import { string } from "zod";
 //     category: string;
 //   };
 // };
+export type CustomSessionType ={
+  user?:CustomUserType;
+  expires: ISODateString;
+}
 
-type userData = {
-  userData: { user:string;
-     account:string;
-     profile:string;
-     email:string;
-     credentials:string;
-     }
-};
+export type CustomUserType = {
+ 
+    name?: string | null
+    id?: string | null
+    email?: string | null
+    role?: string | null
+    image?: string | null
+    avatar?: string | null
+ 
+}
+// type userData = {
+//   userData: { user:string;
+//      account:string;
+//      profile:string;
+//      email:string;
+//      credentials:string;
+//      }
+// };
 
 const handler = NextAuth({
   session: {
@@ -111,35 +127,50 @@ const handler = NextAuth({
       else if (new URL(url).origin === baseUrl) return url
       return baseUrl
     },
-    async jwt({ token, user, session }:any) {
-      //  console.log("in jwt --------",user,"session--------", session,"token ----- ",token )
-       // call stack 1
-        // you can get user values from databas directly here
-        if (user) {
-         // User is available during sign-in
-         // can take value from user to assing to token
-          return {
-            id: user.id,
-            name: user.name,
-            role: user.role,
-            email: user.email,
-            picture: user.image,
-          };
-        }
-        return token;
-      },
-      async session({ session, token }:any) {
-        // call stack 2
-       //token pocess all values, assign value to session
+    // async jwt({ token, user, session }:any) {
+    //   //  console.log("in jwt --------",user,"session--------", session,"token ----- ",token )
+    //    // call stack 1
+    //     // you can get user values from databas directly here
+    //     if (user) {
+    //      // User is available during sign-in
+    //      // can take value from user to assing to token
+    //       return {
+    //         id: user.id,
+    //         name: user.name,
+    //         role: user.role,
+    //         email: user.email,
+    //         picture: user.image,
+    //       };
+    //     }
+    //     return token;
+    //   },
+
+      async jwt({ token, user }) {
+        //  console.log("in jwt --------",user,"session--------", session,"token ----- ",token )
+         // call stack 1
+          // you can get user values from databas directly here
+          if (user) {
+            user.role = user?.role === null ? "user" : user?.role;
+          token.user = user;
+          }
+          return token;
+        },  
+        async session({ session, token, user }:{session:DefaultSession,token:JWT, user:User}) {
+       session.user = token.user as CustomUserType;
+          return session;
+        },
+      // async session({ session, token, user }:{session:CustomSessionType,token:JWT, user:CustomUserType}) {
+      //   // call stack 2
+      //  //token pocess all values, assign value to session
        
-        session.user.id = token.id;
-        session.user.name = token.name;
-        session.user.email = token.email;
-        session.user.role = token.role;
-        session.user.image = token.picture;
-      // console.log("in session --------", session, token )
-        return session;
-      },
+      //   session.user.id = token.id;
+      //   session.user.name = token.name;
+      //   session.user.email = token.email;
+      //   session.user.role = token.role;
+      //   session.user.image = token.picture;
+      // // console.log("in session --------", session, token )
+      //   return session;
+      // },
   },
 });
 

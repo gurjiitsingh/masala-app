@@ -31,24 +31,27 @@ export const addressSchima = z.object({
 export type TaddressSchema = z.infer<typeof addressSchima>;
 
 export const addressSchimaCheckout = z.object({
+  id:z.string().optional(),
   firstName: z
   .string()
   .trim()
-  .min(2, { message: "First name is very short" })
+  .min(2, { message: "First name is required" })
   .max(30, { message: "First name is very long" }),
   lastName: z
   .string()
   .trim()
-  .min(2, { message: "Last name is very short" })
+  .min(2, { message: "Last name is required" })
   .max(30, { message: "Last name is very long" }),
   password:z.string().optional(),
   email: z.string().min(2, { message: "Email is required" }),
   mobNo: z.string().min(2, { message: "Mobile is required" }),
   addressLine1: z.string().optional(),
   addressLine2: z.string().optional(),
-  city: z.string().min(2, { message: "City is required" }),
+ // city: z.string().min(2, { message: "City is required" }),
+ city: z.string().optional(),
   state: z.string().optional(),//min(2, { message: "State is required" }),
-  zipCode: z.string().min(2, { message: "Zip code is required" }),
+// zipCode: z.string().min(2, { message: "Post code is required" }),
+zipCode: z.string().optional(),
   userId: z.string().optional(),
   payment: z.string().optional(),
   
@@ -84,6 +87,20 @@ export type TaddressCheckout ={
       firstName:string;
       lastName:string;
      // userId:string;
+      mobNo:string;
+      addressLine1:string;
+      addressLine2:string;
+      city:string;
+      state:string;
+      zipCode:string;
+    } 
+
+    export type addressResType ={
+      id:string;
+      email:string;
+      firstName:string;
+      lastName:string;
+      userId:string;
       mobNo:string;
       addressLine1:string;
       addressLine2:string;

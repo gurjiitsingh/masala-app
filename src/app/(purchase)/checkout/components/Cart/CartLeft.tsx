@@ -21,6 +21,8 @@ export default function CartLeft() {
   // const searchParams = useSearchParams();
   //const deliveryType = searchParams.get("deliverytype");
 
+  //console.log("deliveryType -------------", deliveryType)
+
   const [addCoupon, setAddCoupon] = useState<boolean>(false);
 
   //console.log("del type------", searchParams.get("deliverytype"));
@@ -62,7 +64,7 @@ export default function CartLeft() {
   const endPriceComma = endPriceS.split(".").join(",");
   useEffect(() => {
     endPrice = +endPrice.toFixed(2);
-    console.log("endprice in cartleft-------------",endPrice)
+   // console.log("endprice in cartleft-------------",endPrice)
     setEndTotalG(endPrice);
   }, [endPrice]);
   useEffect(() => {}, [deliveryType]);

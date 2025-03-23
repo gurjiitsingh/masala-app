@@ -228,7 +228,7 @@ export async function fetchdeliveryByZip(
   zipname: string
 ): Promise<deliveryType[]> {
  // console.log("insider delivery action------", zipname)
-  let data = [] as deliveryType[];
+  const data = [] as deliveryType[];
   const q = query(
     collection(db, "delivery"),
     where("name", "==", zipname)
