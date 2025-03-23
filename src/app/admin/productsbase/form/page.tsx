@@ -151,7 +151,7 @@ const Page = () => {
                       </option>
                       {categoryData.map(
                         (category: { name: string; id: string }, i: number) => {
-                          console.log("cat id -------", category.id);
+                       //   console.log("cat id -------", category.id);
                           return (
                             <option key={i} value={category.id}>
                               {category.name}

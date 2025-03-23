@@ -22,7 +22,7 @@ export default function Login() {
           )}
           {/* {session&&  <Link href="/user">My Account</Link> } */}
           {!session && <Link href="/auth/register">Register</Link>}
-          {/* {session && <LinkDropdown session={session} />} */}
+          {session && <LinkDropdown session={session} />}
         </div>
       </div>
     </>

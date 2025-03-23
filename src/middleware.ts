@@ -5,51 +5,58 @@ import { NextResponse } from "next/server"
 export default withAuth(
   // `withAuth` augments your `Request` with the user's token.
   function middleware(request:NextRequestWithAuth) {
-   // console.log("this is login middleware ",  request.nextauth.token)
+    // console.log("this is login middleware -------------------",  request.nextauth.token)
+    // console.log("this is login middleware role-------------------",  request.nextauth.token?.user?.role)
 
     if(request.nextUrl.pathname.startsWith("/admin/*")
-     && request.nextauth.token?.role !== "admin"){
+     && request.nextauth.token?.user?.role !== "admin"){
       console.log("not admin")
    return NextResponse.rewrite(
      new URL("/", request.url)
    )}
    if(request.nextUrl.pathname.startsWith("/admin")
-    && request.nextauth.token?.role === "user"){
+    && request.nextauth.token?.user?.role === "user"){
      console.log("not admin")
   return NextResponse.rewrite(
     new URL("/user", request.url)
   )}
   if(request.nextUrl.pathname.startsWith("/user")
-    // && request.nextauth.token?.role !== "admin"
-   && request.nextauth.token?.role !== "user"){
+    && request.nextauth.token?.user?.role === "user"){
+     console.log("not admin")
+  return NextResponse.rewrite(
+    new URL("/user", request.url)
+  )}
+  if(request.nextUrl.pathname.startsWith("/user")
+    // && request.nextauth.token?.user?.role !== "admin"
+   && request.nextauth.token?.user?.role !== "user"){
     console.log("not user")
    return NextResponse.rewrite(
      new URL("/", request.url)
    )}
    if(request.nextUrl.pathname.startsWith("/user/address")
-    // && request.nextauth.token?.role !== "admin"
-   && request.nextauth.token?.role !== "user"){
+    // && request.nextauth.token?.user?.role !== "admin"
+   && request.nextauth.token?.user?.role !== "user"){
     console.log("not user")
    return NextResponse.rewrite(
      new URL("/", request.url)
    )}
    if(request.nextUrl.pathname.startsWith("/user/*")
-    // && request.nextauth.token?.role !== "admin"
-   && request.nextauth.token?.role !== "user"){
+    // && request.nextauth.token?.user?.role !== "admin"
+   && request.nextauth.token?.user?.role !== "user"){
     console.log("not user")
    return NextResponse.rewrite(
      new URL("/", request.url)
    )}
 
    if(request.nextUrl.pathname.startsWith("/user")
-    // && request.nextauth.token?.role !== "admin"
-   && request.nextauth.token?.role === "admin"){
+    // && request.nextauth.token?.user?.role !== "admin"
+   && request.nextauth.token?.user?.role === "admin"){
     console.log("not user")
    return NextResponse.rewrite(
      new URL("/admin", request.url)
    )}
    
-  //  if(request.nextauth.token?.role === "admin") 
+  //  if(request.nextauth.token?.user?.role === "admin") 
   // return NextResponse.rewrite(
   //   new URL("/admin", request.url)
   // )

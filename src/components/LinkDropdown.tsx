@@ -16,6 +16,8 @@ import { sessionT } from '@/lib/types/sessionType';
 
 const LinkDropdown = ({session}:{session:sessionT}) => {
  
+  // console.log("User Role -------------", session?.user?.role)
+
   return (
     <DropdownMenu>
   <DropdownMenuTrigger>
