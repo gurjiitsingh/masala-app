@@ -89,3 +89,18 @@ body {
  .modul-img {
   @apply order-2;
 }
+
+.slick-arrow{
+  background-color: #555 !important;
+  border-radius: 100%;
+  padding:3px;
+  z-index: 9999;
+} 
+.slick-prev{
+margin-right: -300px;
+}
+
+ .slick-next{
+margin-left: -400px !important;
+
+}

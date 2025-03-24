@@ -61,7 +61,7 @@ const { productCategoryIdG } = UseSiteContext();
       <div className="w-full flex flex-col p-3 justify-between ">
         <div className="w-full flex-col gap-4 justify-between ">
           <div className="w-full flex gap-2 mb-2 justify-between ">
-            <div className="flex items-center justify-center text-nowrap text-center px-2 py-1 bg-red-600 w-fit  rounded-3xl  text-white">
+            <div className="flex items-center justify-center text-nowrap text-center px-2 py-1 bg-[#64870d] w-fit  rounded-3xl  text-white">
            {productCategoryIdG!=="" && <>{product.sortOrder}.&nbsp;</>}   
               
               

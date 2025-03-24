@@ -22,7 +22,7 @@ const { productCategoryIdG, setProductCategoryIdG } = UseSiteContext();
     <button onClick={()=>{setProductCategoryIdG(category.id)}}>
     {productCategoryIdG === category.id ?  <div className='flex items-start justify-center text-nowrap text-center px-2 py-1 bg-red-600 w-fit  rounded-2xl border-amber-400 text-white'>{category.name}</div>
   :
-  <div className='flex items-start justify-center text-nowrap text-center px-2 py-1  w-fit text-slate-500 bg-slate-100 rounded-2xl border-amber-300 '>{category.name}</div>
+  <div className='flex items-start justify-center text-nowrap text-center px-2 py-1  w-fit text-slate-50 bg-slate-500 rounded-2xl border-amber-300 '>{category.name}</div>
 }
   </button>
 

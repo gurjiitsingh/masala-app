@@ -22,6 +22,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/(purchase)/pay/components/Checkout.js","next-auth.d.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/(purchase)/pay/components/Checkout.js","next-auth.d.ts", "src/app/(home)/Components/CategorySlider.js"],
   "exclude": ["node_modules"]
 }

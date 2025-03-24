@@ -25,8 +25,8 @@ export default function Categories() {
       }, []);
 
   return (
-   <div className='flex flex-wrap py-2 gap-2  rounded-2xl justify-between  w-full'>
-    {productCategoryIdG===""&&<div className='flex items-start justify-center text-nowrap text-center px-2 py-1 bg-red-600 w-fit  rounded-2xl border-amber-400 text-white'>All</div>}
+   <div className='flex flex-wrap py-2 gap-2 -mt-12 md:mt-0 rounded-2xl justify-between  w-full'>
+    {productCategoryIdG===""&&<div className='flex items-center'><div className='flex items-start justify-center text-nowrap text-center px-2 py-1 bg-red-600 w-fit h-fit  rounded-2xl border-amber-400 text-white'>All</div></div>}
     {categoryData.map((category,i) => {
                 return <CategoryList key={category.name} pos={i} category={category} />;
               })}
