@@ -8,6 +8,7 @@ isAdmin:string;
 isVerfied:string;
 role:string;
 username:string;
+time:string | undefined;
 }
 
 
@@ -19,6 +20,7 @@ isAdmin:string;
 isVerfied:string;
 role:string;
 username:string;
+time:string | undefined;
 }[]
 
 

@@ -1,9 +1,9 @@
 'use server'
 import { hashPassword } from "@/lib/auth";
 import { db } from "@/lib/firebaseConfig";
-import {  userTypeArr, TuserSchem } from "@/lib/types/userType";
+import {  userTypeArr, TuserSchem, userType } from "@/lib/types/userType";
 
-import { addDoc, collection, getDocs, query, where } from "@firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDocs, query, where } from "@firebase/firestore";
 
 
 export async function addUserDirect(formData: FormData) {
@@ -39,6 +39,23 @@ export async function addUserDirect(formData: FormData) {
       username = firstName + " " + lastName;
     }
     let userDocRef = "" as string;
+
+    const date = new Date();
+    // toLocaleString, default format for language de
+    console.log(date.toLocaleString('de',{timeZone:'Europe/Berlin', timeZoneName: 'long'}));
+    // DateTimeFormat.format with specific options
+    const f = new Intl.DateTimeFormat('de', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      hour12: false,
+      minute: '2-digit',
+      // timeZone: 'Europe/Berlin',
+      // timeZoneName: 'short'
+    });
+    const time = f.format(date)
+
     try {
       const hashedPassword = await hashPassword(password);
       const newuser = {
@@ -48,6 +65,7 @@ export async function addUserDirect(formData: FormData) {
         role: "user",
         isVerfied: true,
         isAdmin: false,
+        time,
       };
 
       userDocRef = (await addDoc(collection(db, "user"), newuser)).id ;
@@ -103,26 +121,48 @@ export async function searchUserById(id: string | undefined): Promise<TuserSchem
 
 
 
-  export async function fetchAllUsers(): Promise<userTypeArr>{
+  export async function fetchAllUsers(): Promise<userType[]>{
 
-   
-    //    const querySnapshot = await getDocs(collection(db, "user"))
-    //    let data = [];
-    //    querySnapshot.forEach((doc) => {
-    //    data.push({id:doc.id, ...doc.data()});
-    //  });
-    //  console.log(data)
-    //  return data;
 
-     let data = [] as userTypeArr;
-     const q = query(collection(db, "orderMaster"));
+     const data = [] as userType[];
+     const q = query(collection(db, "user"));
      const querySnapshot = await getDocs(q);
      querySnapshot.forEach((doc) => {
-       data = doc.data() as userTypeArr;
+     const  userData = {id:doc.id, ...doc.data()} as userType;
+     data.push(userData)
      });
      return data;
     }
 
 
 
+  export async function deleteUser(id: string, oldImgageUrl: string) {
+    const docRef = doc(db, "user", id);
+    await deleteDoc(docRef);
+
+
+      
+    // const imageUrlArray = oldImgageUrl.split("/");
+    // console.log(imageUrlArray[imageUrlArray.length - 1]);
+    // const imageName =
+    //   imageUrlArray[imageUrlArray.length - 2] +
+    //   "/" +
+    //   imageUrlArray[imageUrlArray.length - 1];
   
+    // const image_public_id = imageName.split(".")[0];
+    // console.log(image_public_id);
+    // try {
+    //   const deleteResult = await deleteImage(image_public_id);
+    //   console.log("image delete data", deleteResult);
+    // } catch (error) {
+    //   console.log(error);
+    //   return { errors: "Somthing went wrong, can not delete product picture" };
+    // }
+  
+    return {
+      message: { success: "ok" },
+    };
+    // }else{
+    //   return {errors:"Somthing went wrong, can not delete product"}
+    // }
+  }

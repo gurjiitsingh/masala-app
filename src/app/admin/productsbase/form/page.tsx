@@ -41,7 +41,13 @@ const Page = () => {
     //typeof(data.featured)
     console.log("formdata in client----- ", data);
     const formData = new FormData();
-    // console.log("images---------", data);
+     console.log("images client---------", data.image[0]);
+     if(data.image[0] === undefined){
+      console.log("undefind")
+      formData.append("image", "0");
+     }else{
+      formData.append("image", data.image[0]);
+     }
     formData.append("name", data.name);
     formData.append("price", data.price);
     // formData.append("isFeatured", data.isFeatured);
@@ -49,7 +55,7 @@ const Page = () => {
     formData.append("sortOrder", data.sortOrder);
     formData.append("categoryId", data.categoryId!);
     formData.append("productDesc", data.productDesc);
-    formData.append("image", data.image[0]);
+   
 
     const result = await addNewProduct(formData);
 

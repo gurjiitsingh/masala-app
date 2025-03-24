@@ -71,6 +71,10 @@ export async function addNewProduct(formData: FormData) {
   }
 
   let imageUrl;
+  if(image === "0"){
+     imageUrl = '/com.jpg'
+ 
+}else{
   try {
     imageUrl = await upload(image);
     console.log(imageUrl);
@@ -79,13 +83,14 @@ export async function addNewProduct(formData: FormData) {
     console.log(error);
     return { errors: "image cannot uploaded" };
   }
+}
 
   const priceValue = formData.get("price") as string;
   const priceV = parseFloat(priceValue.replace(/,/g, ".")).toFixed(2); // toFixed convert it to string
   const priceF = new Number(parseFloat(priceV)).toFixed(2);
   //const priceF = parseFloat(priceV);
   // console.log("typeof price-------",priceValue)
-   console.log("typeof price-------",typeof(priceF),priceF)
+ //  console.log("typeof price-------",typeof(priceF),priceF)
   const sortOrderN = parseInt(sortOrder) as number;
   const data = {
     name,
@@ -226,7 +231,7 @@ export async function editProduct(formData: FormData) {
     isFeatured,
   };
 
-  console.log("---------",productUpdtedData)
+  
   try {
     const docRef = doc(db, "product", id);
     await setDoc(docRef, productUpdtedData);

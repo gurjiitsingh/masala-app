@@ -26,7 +26,8 @@ function TableRows({ product }:{product:ProductType}){
 //const router = useRouter();
 
  async function handleDelete(product:ProductType) {
-   console.log(product.id);
+    // confirm("Do you want to delete the Product? \n If yes click OK \n If not click Cancel.");
+  confirm("Möchten Sie das Produkt löschen? \n Falls ja, klicken Sie auf OK. \n Falls nicht, klicken Sie auf Cancel.");
   const result = await deleteProduct(product.id!)
 // if(result.errors){
 //   alert(result.errors)

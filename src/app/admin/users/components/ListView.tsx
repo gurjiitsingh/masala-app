@@ -5,8 +5,6 @@ type productTableProps = {
   title?: string;
 };
 
-
-
 import React, { useEffect, useState } from "react";
 import {
   Table,
@@ -26,37 +24,36 @@ import { userType, userTypeArr } from "@/lib/types/userType";
 //import FeaturProductUpdate from "./FeaturProductUpdate";
 
 const ListView = ({ title }: productTableProps) => {
-  const [userData, setUserData] = useState<userTypeArr>([]);
-// var pageNo = 1;
-// var limit = 10
+  const [userData, setUserData] = useState<userType[]>([]);
+  // var pageNo = 1;
+  // var limit = 10
+
+
+  
+
 
   useEffect(() => {
-    async function fetchUsers(){
-console.log("--------data in user")
-
+    async function fetchUsers() {
       try {
-
-        const result = await fetchAllUsers()
-        setUserData(result)
+        const result = await fetchAllUsers();
+        setUserData(result);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    
-   };
+    }
     fetchUsers();
-  
   }, []);
-
 
   // function handleDelete(id:string){
   //   console.log(id)
   // }
   // Sort posts in dec product based on date
 
-//   const sortedproducts: TProduct[] = [...products].sort((a, b) => {
-//     return new Date(b.date).getTime() - new Date(a.date).getTime();
-//   });
+  //   const sortedproducts: TProduct[] = [...products].sort((a, b) => {
+  //     return new Date(b.date).getTime() - new Date(a.date).getTime();
+  //   });
 
+  
   return (
     <>
       <div className="mt-10 p-2">
@@ -64,26 +61,28 @@ console.log("--------data in user")
           {title ? title : "Products"}
         </h3>
         <div className="bg-slate-50 rounded-lg p-1">
-        <Table >
-          {/* <TableCaption>Product List</TableCaption> */}
-          <TableHeader>
-            <TableRow>
-              <TableHead className="hidden md:table-cell">User id</TableHead>
-              <TableHead className="hidden md:table-cell">User Name</TableHead>
-              <TableHead className="hidden md:table-cell">Email</TableHead>
-             
-              <TableHead>Role</TableHead>
-              <TableHead>Time</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {userData.map((user: userType) => {
-              return (
-                <TableRows key={user.id} user={user} />
-              );
-            })}
-          </TableBody>
-        </Table></div>
+          <Table>
+            {/* <TableCaption>Product List</TableCaption> */}
+            <TableHeader>
+              <TableRow>
+                <TableHead className="hidden md:table-cell">User id</TableHead>
+                <TableHead className="hidden md:table-cell">
+                  User Name
+                </TableHead>
+                <TableHead className="hidden md:table-cell">Email</TableHead>
+
+                <TableHead>Role</TableHead>
+                <TableHead className="hidden md:table-cell">Action</TableHead>
+                <TableHead>Time</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {userData.map((user: userType, i) => {
+                return <TableRows key={i} user={user} />;
+              })}
+            </TableBody>
+          </Table>
+        </div>
       </div>
     </>
   );

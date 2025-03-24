@@ -22,7 +22,8 @@ function TableRows({ product }:{product:flavorsProductGType}){
 //const router = useRouter();
 
  async function handleDelete(product:flavorsProductGType) {
-  
+   // confirm("Do you want to delete Flavors!\n If yes click OK \n If not click Cancel.");
+   confirm("Möchten Sie die flavors löschen?\n Falls ja, klicken Sie auf OK. \n Falls nicht, klicken Sie auf Cancel.");
  //const result =
   await deleteProduct(product.id!)
 // if(result.errors){

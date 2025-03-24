@@ -25,7 +25,8 @@ function TableRows({ delivery }:{delivery:deliveryType}){
 //const router = useRouter();
 
  async function handleDelete(delivery:deliveryType) {
-   console.log(delivery.id);
+    // confirm("Do you want to delete Delivery!\n If yes click OK \n If not click Cancel.");
+  confirm("Möchten Sie die Lieferung löschen?\n Falls ja, klicken Sie auf OK. \n Falls nicht, klicken Sie auf Cancel.");
  const result = await deletedelivery(delivery.id!)
 // if(result.errors){
 //   alert(result.errors)

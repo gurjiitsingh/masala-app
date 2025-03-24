@@ -22,7 +22,8 @@ function TableRows({ category }: { category: categoryType }) {
   //const router = useRouter();
 
   async function handleDelete(category: categoryType) {
-    //console.log("-------------------",category.id);
+    // confirm("Do you want to delete Categoy!\n If yes click OK \n If not click Cancel.");
+    confirm("Möchten Sie die Kategorie löschen?\n Falls ja, klicken Sie auf OK. \n Falls nicht, klicken Sie auf Cancel.");
     const result = await deleteCategory(category.id!, category.image!);
     if (result.errors) {
       alert(result.errors);

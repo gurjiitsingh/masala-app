@@ -26,8 +26,6 @@ export async function createNewOrder(purchaseData:purchaseDataT) {
   //const userId = purchaseData.address.userId;
  // const password = purchaseData.address.password;
  const password = "123456";
- // console.log("------- start order: email of the customer ----", email);
-
   const username = firstName + "" + lastName;
   //if(purchaseData.userId === undefined){
   const formData = new FormData();
@@ -56,19 +54,19 @@ export async function createNewOrder(purchaseData:purchaseDataT) {
   // enter data in order master
 
   const customerName = firstName + " " + lastName;
-  const now = new Date();
-  const now_india = now.toLocaleString("en-IN", {
-    dateStyle: "medium",
-    timeStyle: "medium",
-    timeZone: "Asia/Kolkata",
-  });
-
-//"de-DE"
-  // const now_german = new Date().toLocaleString("en-DE", {
+  //const now = new Date();
+  // const now_india = now.toLocaleString("en-IN", {
   //   dateStyle: "medium",
   //   timeStyle: "medium",
-  //   timeZone: "Europe/Berlin",
+  //   timeZone: "Asia/Kolkata",
   // });
+
+//"de-DE"
+  const now_german = new Date().toLocaleString("en-DE", {
+    dateStyle: "medium",
+    timeStyle: "medium",
+    timeZone: "Europe/Berlin",
+  });
 
  // const order = await fetchOrdersMaster()
 
@@ -102,15 +100,12 @@ const orderData = [] as orderMasterDataT[];
     total:total,
     status:"pending",
     totalDiscountG,
-    time: now_india,
+    time: now_german,
     srno:new_srno,
    
   } as orderMasterDataT; 
 
-  //console.log("----------addOrderToMaster --", orderMasterData)
-
-   
-
+  
 const orderMasterId = await addOrderToMaster(orderMasterData) as string;
 
   // add product to productOrder
