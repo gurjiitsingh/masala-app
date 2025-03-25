@@ -2,7 +2,7 @@ import Link from "next/link";
 import React from "react";
 
 const menuList = [
-  { name: "Home", link: "/" },
+  { name: "Heim", link: "/" },
   { name: "Über Uns", link: "/about" },
   { name: "Kontakt", link: "/contact" },
  

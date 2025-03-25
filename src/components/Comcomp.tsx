@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 
 import { SideCart } from '@/components/MiniCart/SideCart';
 import { BargerMenu } from '@/components/Bargermenu/Menu'
+import Footer from "./Footer";
 
 
 
@@ -23,6 +24,7 @@ export default function Comcomp({
       <SideCart />
       <Header />
     {children}
+    <Footer />
       </CartProvider>
       </SiteProvider>
       </>

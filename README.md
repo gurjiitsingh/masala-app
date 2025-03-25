@@ -1,10 +1,15 @@
+
+
+
+
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 
 const price = (product.price.toString()).replace(/\./g, ',')
 
 
-
+## ask customer email once and set it, ask again only if customer want to change 
 ## exapple code for pagination and sort order -- used in save ordermaster
 
 const collectionRef = collection(db, 'orderMaster')

@@ -51,10 +51,10 @@ const { productCategoryIdG } = UseSiteContext();
      
     >
     
-        <div className="rounded-full">
+        <div className="rounded-full w-[110px]  md:w-[150px]  overflow-hidden">
           <img
             src={product.image}
-            className="w-[150px] rounded-full"
+            className=" rounded-full "
           />
         </div>
    

@@ -1,13 +1,13 @@
 "use client";
-import Link from "next/link";
+// import Link from "next/link";
 import Slider from "react-slick";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useEffect, useState } from "react";
 import { fetchCategories } from "@/app/action/category/dbOperations";
-import Image from "next/image";
-import { categoryType } from "@/lib/types/categoryType";
+// import Image from "next/image";
+// import { categoryType } from "@/lib/types/categoryType";
 import { UseSiteContext } from "@/SiteContext/SiteContext";
 
 export default function CategorySlider() {
