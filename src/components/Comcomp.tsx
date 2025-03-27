@@ -21,7 +21,9 @@ export default function Comcomp({
      <SiteProvider >
       <CartProvider>
         <BargerMenu />
+      
       <SideCart />
+     
       <Header />
     {children}
     <Footer />

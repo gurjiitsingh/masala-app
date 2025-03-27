@@ -9,7 +9,7 @@ import { SideCart } from "@/components/MiniCart/SideCart";
 import { BargerMenu } from "@/components/Bargermenu/Menu";
 import Footer from "@/components/Footer";
 
-import Cart from "@/components/CartBottom/CartBottom"
+import CartBottom from "@/components/CartBottom/CartBottom"
 import Modal from "./Components/Modal";
 
 export const metadata: Metadata = {
@@ -29,13 +29,14 @@ export default function RootLayout({
           <CartProvider>
             <BargerMenu />
             <Modal />
-           
+           <div className="z-50">
             <SideCart />
+            </div>
             <Header />
             {children}
            
             <Footer />
-            <div className="sticky  bottom-4 flex justify-end pr-3 z-50"><Cart /></div> 
+            <div className="sticky  bottom-4 flex justify-end pr-3 z-50"><CartBottom /></div> 
           </CartProvider>
         </SiteProvider>
       </body>

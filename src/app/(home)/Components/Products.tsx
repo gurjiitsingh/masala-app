@@ -6,13 +6,19 @@ import { ProductType } from "@/lib/types/productType";
 import React, { useEffect, useState } from "react";
 import PageProductDetailComponent from "./PageProductDetailComponent";
 import { UseSiteContext } from "@/SiteContext/SiteContext";
+import { fetchAddOnProducts } from "@/app/action/productsaddon/dbOperation";
 
 export default function Products() {
   const { productCategoryIdG } = UseSiteContext();
   const [products, setProduct] = useState<ProductType[]>([]);
   const [allProducts, setAllProduct] = useState<ProductType[]>([]);
-
+  const [allAddOns, setAllAddOns] = useState<ProductType[]>([]);
   useEffect(() => {
+    async function fetchAddOn() {
+      const result = await fetchAddOnProducts();
+    setAllAddOns(result);
+    }
+    fetchAddOn();
     // console.log("productCategoryIdG -------------", productCategoryIdG)
     if (productCategoryIdG === "") {
       async function fetchproductData() {
@@ -40,7 +46,7 @@ export default function Products() {
   return (
     <div className="flex flex-col gap-1 w-full">
       {products.map((product, i) => {
-        return <PageProductDetailComponent key={i} product={product} />;
+        return <PageProductDetailComponent key={i} allAddOns={allAddOns} product={product} />;
       })}
     </div>
   );

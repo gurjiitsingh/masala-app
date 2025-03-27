@@ -5,11 +5,20 @@ import { IoCartOutline } from "react-icons/io5";
 
 import CartCount from './CartCount';
 import { UseSiteContext } from '@/SiteContext/SiteContext'
+// import { usePathname, useRouter } from "next/navigation";
+// import { useEffect } from "react";
+
 //<ProductType[]>
 const CartBottom = () => {
+  // const router = useRouter();
   // const path = usePathname();
   // useEffect(()=>{
+  //   if( path === "/pay"){
+  //     console.log("path------------canged",)
+  //    router.push("/")
+  //   }
   //   console.log("path------------",path)
+    
   // },[])
 
 const {  sideBarToggle } = UseSiteContext();//open,

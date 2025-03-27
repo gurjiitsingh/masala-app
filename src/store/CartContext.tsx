@@ -4,7 +4,7 @@ import { createContext, useContext } from "react";
 
 
 import { addressT } from "@/lib/types/addressType";
-import { cartProductType } from "@/lib/types/cartDataType";
+import { newOrderConditionType, cartProductType } from "@/lib/types/cartDataType";
 interface CartContextType {
   counter: number;
   productTotalCost: number;
@@ -23,6 +23,7 @@ interface CartContextType {
   setEndTotalG: (c: number) => void;
   totalDiscountG: number;
   setTotalDiscountG: (c: number) => void;
+  
 }
 
 //const CartContext = createContext<CartContextType | null>(null);
@@ -43,6 +44,7 @@ const CartContext = createContext<CartContextType>({
     addressLine2: "",
     userId: "",
   },
+ 
   addAddress: (a:addressT) => {return a},
   // getAddress:()=>{},
   addProduct: () => {},

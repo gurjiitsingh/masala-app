@@ -12,9 +12,9 @@ import { Button } from "@/components/ui/button";
 //import { useSearchParams } from "next/navigation";
 import {
   searchAddressEmail,
- // searchAddressByUserId,
+  // searchAddressByUserId,
 } from "@/app/action/address/dbOperations";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import CartContext, { useCartContext } from "@/store/CartContext";
 //import { searchUserById } from "@/app/action/user/dbOperation";
@@ -23,52 +23,50 @@ import { purchaseDataT } from "@/lib/types/cartDataType";
 import { fetchdeliveryByZip } from "@/app/action/delivery/dbOperation";
 import { UseSiteContext } from "@/SiteContext/SiteContext";
 
-
 const Address = () => {
-  
-  const { endTotalG, cartData, totalDiscountG } = useCartContext();
-  const { couponDisc, deliveryDis, setdeliveryDis, chageDeliveryType, deliveryType } =
-      UseSiteContext();
+  const { endTotalG, cartData, totalDiscountG,  } = useCartContext();
+  const {
+    couponDisc,
+    newOrderCondition,
+    deliveryDis,
+    
+    setdeliveryDis,
+    chageDeliveryType,
+    deliveryType,
+    customerEmail,
+  } = UseSiteContext();
   const { data: session } = useSession();
   const [paymentType, setPaymentType] = useState<string>();
-  const [isOrderOk, setIsOrderOk] = useState<boolean>(true);
   const router = useRouter();
 
-  const searchParams = useSearchParams();
-  const emailQueryString = searchParams.get("email") as string;
-
-  
-
   useEffect(() => {
- 
-    if (emailQueryString !== undefined) {
-      getAddressByEmail(emailQueryString);
+    if (customerEmail !== undefined) {
+      getAddressByEmail(customerEmail);
     }
-    if(deliveryType === null){
-      chageDeliveryType("pickup")
+    if (deliveryType === null) {
+      chageDeliveryType("pickup");
     }
 
     // if (session?.user?.id !== undefined) {
     //   getAddressByID();
     // }
-    setValue("email", emailQueryString);
-   // console.log("this is befor email set---------------4",emailQueryString)
-  }, [session, emailQueryString]);
+    setValue("email", customerEmail);
+    // console.log("this is befor email set---------------4",customerEmail)
+  }, [session, customerEmail]);
 
   // useEffect(() => {
-  //  // console.log("this is befor email set---------------",emailQueryString)
-  //   setValue("email", emailQueryString);
-  //  // console.log("this is befor email set---------------5",emailQueryString)
+  //  // console.log("this is befor email set---------------",customerEmail)
+  //   setValue("email", customerEmail);
+  //  // console.log("this is befor email set---------------5",customerEmail)
   // }, []);
 
   async function handleZipcodeChange(e: React.ChangeEvent<HTMLInputElement>) {
     const zipname: string = e.target.value;
-   // console.log("Zipcode-------------", inputEmail);
+    // console.log("Zipcode-------------", inputEmail);
     if (zipname.length > 4) {
       const result = await fetchdeliveryByZip(zipname);
-      setdeliveryDis(result[0]);
+      setdeliveryDis(result);
     }
-   
   }
 
   const {
@@ -82,17 +80,11 @@ const Address = () => {
   } = useForm<TaddressSchemaCheckout>({
     resolver: zodResolver(addressSchimaCheckout),
   });
- // console.log("in address --------------");
-
-
-
-
+  // console.log("in address --------------");
 
   async function onSubmit(data: TaddressSchemaCheckout) {
+    console.log("newOrderCondition -----------", newOrderCondition);
 
-
-
-    
     const formData = new FormData();
     formData.append("firstName", data.firstName);
     formData.append("lastName", data.lastName);
@@ -105,66 +97,79 @@ const Address = () => {
     formData.append("city", data.city!);
     formData.append("state", data.state!);
     formData.append("zipCode", data.zipCode!);
- 
 
-   
+    let canCompleteOrder = true;
 
-    if(deliveryType==='delivery' && deliveryDis === undefined){
-      if(data.zipCode === ""){
-        alert("Bitte geben Sie die Postleitzahl für die Lieferung ein oder wählen Sie die Abholung und erhalten Sie 10% Rabatt")
-      }else{
-      setIsOrderOk(false)
-alert("Wir können an diese Adresse nicht liefern. Bitte wählen Sie Abholung und erhalten Sie 10 % Rabatt")
+
+    if (deliveryType === "delivery" && data.zipCode === "") {
+      canCompleteOrder = false;
+      alert(
+        "Bitte geben Sie die Postleitzahl für die Lieferung ein oder wählen Sie die Abholung und erhalten Sie 10% Rabatt"
+      );
+    } 
+    
+    if (deliveryType === "delivery" && deliveryDis === undefined) {
+      canCompleteOrder = false;
+     
+          alert(
+          "Wir können an diese Adresse nicht liefern. Bitte wählen Sie Abholung und erhalten Sie 10 % Rabatt"
+        );
+     
+    }
+    
+    if(!newOrderCondition){
+      canCompleteOrder =false;
+      const minSpendMessage = `Minimum ouder amount for delivery is €${deliveryDis?.minSpend}`
+      alert(minSpendMessage)
       }
-    }
+  
+   // if (deliveryType === "pickup" || deliveryDis !== undefined) {
+   if(canCompleteOrder)  {
+   const customAddress = {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        userId: data.userId,
+        email: data.email,
+        mobNo: data.mobNo,
+        addressLine1: data.addressLine1,
+        addressLine2: data.addressLine2,
+        city: data.city,
+        state: data.state,
+        zipCode: data.zipCode,
+      };
+      if (typeof window !== "undefined") {
+        localStorage.setItem("customer_address", JSON.stringify(customAddress));
+      }
+      //await addCustomerAddress(formData);
 
-if(deliveryType==='pickup' || deliveryDis !== undefined){
-    const customAddress = {
-      firstName: data.firstName,
-      lastName: data.lastName,
-      userId: data.userId,
-      email: data.email,
-      mobNo: data.mobNo,
-      addressLine1: data.addressLine1,
-      addressLine2: data.addressLine2,
-      city: data.city,
-      state: data.state,
-      zipCode: data.zipCode,
-    };
-    if (typeof window !== "undefined") {
-      localStorage.setItem("customer_address", JSON.stringify(customAddress));
-    }
-    //await addCustomerAddress(formData);
+      const purchaseData = {
+        userId: "sfad", //session?.user?.id,
+        cartData,
+        total: endTotalG,
+        totalDiscountG,
+        address: customAddress,
+      } as purchaseDataT;
 
-    const purchaseData = {
-      userId: "sfad",//session?.user?.id,
-      cartData,
-      total:endTotalG,
-      totalDiscountG,
-      address: customAddress,
-    } as purchaseDataT;
+      if (cartData.length !== 0) {
+        await createNewOrder(purchaseData);
+      }
 
-    if (cartData.length !== 0) {
-      await createNewOrder(purchaseData);
-    }
+      //createNewOrderFile(cartData, customAddress);
 
-    //createNewOrderFile(cartData, customAddress);
-
-    if (paymentType === "paypal") {
-      router.push("/pay");
-    }
-    //console.log("going to complete--------")
-    if (paymentType === "cod") {
-     // console.log("going to complete")
-      router.push(`/complete?paymentypte=Barzahlung`);
-    //  router.push(`/checkout?email=${data.email}&deliverytype=${deliveryType}`)
-    }
-
-  }// end of ok order condition
+      if (paymentType === "paypal") {
+        router.push("/pay");
+      }
+      //console.log("going to complete--------")
+      if (paymentType === "cod") {
+        // console.log("going to complete")
+        router.push(`/complete?paymentypte=Barzahlung`);
+        //  router.push(`/checkout?email=${data.email}&deliverytype=${deliveryType}`)
+      }}
+    // end of ok order condition
   }
 
-  useEffect(()=>{
-   // setValue("userId", session?.user?.id); 
+  useEffect(() => {
+    // setValue("userId", session?.user?.id);
     setValue("password", "123456");
     //setValue("email", "g@mail.com");
     // setValue("firstName", "Gurjit");
@@ -172,12 +177,11 @@ if(deliveryType==='pickup' || deliveryDis !== undefined){
     // setValue("mobNo", "9838883323");
     // setValue("addressLine1", "345 street House 34");
     // setValue("addressLine1", "Vill Tandi Aulakh");
-     setValue("city", "Lower Saxony");
+    setValue("city", "Lower Saxony");
     // setValue("state", "Punjab");
     // setValue("zipCode", "144621");
     //setValue("orderDetail", cartData);
-  },[])
-  
+  }, []);
 
   return (
     <div className="w-full lg:w-[70%] md:border border-slate-400 md:rounded-2xl md:p-5">
@@ -202,7 +206,7 @@ if(deliveryType==='pickup' || deliveryDis !== undefined){
               </label>
               <input {...register("email")} className="input-style" />
               <span className="text-[0.8rem] font-medium text-destructive">
-                {errors.email?.message && <span>{ errors.email?.message}</span>}
+                {errors.email?.message && <span className="text-red-500">{errors.email?.message}</span>}
               </span>
             </div>
 
@@ -212,10 +216,10 @@ if(deliveryType==='pickup' || deliveryDis !== undefined){
               </label>
               <input {...register("mobNo")} className="input-style" />
               <span className="text-[0.8rem] font-medium text-destructive">
-                {errors.mobNo?.message && <span>{errors.mobNo?.message}</span>}
+                {errors.mobNo?.message && <span className="text-red-500">{errors.mobNo?.message}</span>}
               </span>
             </div>
-            <input {...register("password", {value:"123456"})} hidden />
+            <input {...register("password", { value: "123456" })} hidden />
             {/* {!session && (
               <div className="flex flex-col gap-1">
                 <label className="label-style">
@@ -238,7 +242,7 @@ if(deliveryType==='pickup' || deliveryDis !== undefined){
                 <input {...register("firstName")} className="input-style" />
                 <span className="text-[0.8rem] font-medium text-destructive">
                   {errors.firstName?.message && (
-                    <span>{errors.firstName?.message}</span>
+                    <span className="text-red-500">{errors.firstName?.message}</span>
                   )}
                 </span>
               </div>
@@ -250,7 +254,7 @@ if(deliveryType==='pickup' || deliveryDis !== undefined){
                 <input {...register("lastName")} className="input-style" />
                 <span className="text-[0.8rem] font-medium text-destructive">
                   {errors.lastName?.message && (
-                    <span>{errors.lastName?.message}</span>
+                    <span className="text-red-500">{errors.lastName?.message}</span>
                   )}
                 </span>
               </div>
@@ -258,12 +262,12 @@ if(deliveryType==='pickup' || deliveryDis !== undefined){
 
             <div className="flex flex-col gap-1 w-full">
               <label className="label-style">
-              Straße<span className="text-red-500">*</span>{" "}
+                Straße<span className="text-red-500">*</span>{" "}
               </label>
               <input {...register("addressLine1")} className="input-style" />
               <span className="text-[0.8rem] font-medium text-destructive">
                 {errors.addressLine1?.message && (
-                  <span>{errors.addressLine1?.message}</span>
+                  <span className="text-red-500">{errors.addressLine1?.message}</span>
                 )}
               </span>
             </div>
@@ -277,11 +281,11 @@ if(deliveryType==='pickup' || deliveryDis !== undefined){
               <input {...register("addressLine2")} className="input-style" />
               <span className="text-[0.8rem] font-medium text-destructive">
                 {errors.addressLine2?.message && (
-                  <span>{errors.addressLine2?.message}</span>
+                  <span className="text-red-500">{errors.addressLine2?.message}</span>
                 )}
               </span>
             </div>
-            <input {...register("city", {value:"gf"})}  hidden />
+            <input {...register("city", { value: "gf" })} hidden />
             {/* <div className="flex flex-col gap-1">
               <label className="label-style">
                 City<span className="text-red-500">*</span>{" "}
@@ -304,7 +308,7 @@ if(deliveryType==='pickup' || deliveryDis !== undefined){
 
             <div className="flex flex-col gap-1">
               <label className="label-style">
-              Postleitzahl<span className="text-red-500">*</span>{" "}
+                Postleitzahl<span className="text-red-500">*</span>{" "}
               </label>
               <input
                 {...register("zipCode", {
@@ -316,7 +320,7 @@ if(deliveryType==='pickup' || deliveryDis !== undefined){
               />
               <span className="text-[0.8rem] font-medium text-destructive">
                 {errors.zipCode?.message && (
-                  <span>{errors.zipCode?.message}</span>
+                  <span className="text-red-500">{errors.zipCode?.message}</span>
                 )}
               </span>
             </div>
@@ -341,7 +345,7 @@ if(deliveryType==='pickup' || deliveryDis !== undefined){
             <h3 className=" text-xl font-semibold text-slate-600  pt-3 pb-1 uppercase">
               {/* Select payment type */}
               Zahlungsart auswählen
-              </h3>
+            </h3>
             <Button
               className="w-[200px] py-1 text-center bg-amber-400 italic font-bold rounded-xl text-[1.2rem]"
               onClick={() => {
@@ -349,9 +353,9 @@ if(deliveryType==='pickup' || deliveryDis !== undefined){
               }}
               value="paypal"
               name="button_1"
-            ><span className=" text-blue-900">Pay</span>
-            <span className=" text-sky-500">Pal</span>
-              
+            >
+              <span className=" text-blue-900">Pay</span>
+              <span className=" text-sky-500">Pal</span>
             </Button>
             <Button
               className="w-[200px] py-1 text-center bg-amber-500 text-white font-bold rounded-xl text-[1.2rem]"
@@ -372,12 +376,11 @@ if(deliveryType==='pickup' || deliveryDis !== undefined){
   async function getAddressByEmail(inputEmail: string) {
     const addressRes = await searchAddressEmail(inputEmail);
     if (addressRes?.firstName !== null) {
-     setAddress(addressRes);
-     const zipInfo = await fetchdeliveryByZip(addressRes.zipCode);
-     setdeliveryDis(zipInfo[0]);
+      setAddress(addressRes);
+      const zipInfo = await fetchdeliveryByZip(addressRes.zipCode);
+      setdeliveryDis(zipInfo);
     }
     setValue("email", inputEmail);
-  
   }
 
   async function getAddressByID() {
@@ -393,10 +396,10 @@ if(deliveryType==='pickup' || deliveryDis !== undefined){
 
       setAddress(custAddressRes);
     } else {
-      const userResById = "khkjhk"//await searchUserById(session?.user?.id);
+      const userResById = "khkjhk"; //await searchUserById(session?.user?.id);
       if (userResById !== undefined) {
-     //   setValue("email", userResById.email);
-    //    console.log("this is befor email set---------------2",userResById.email)
+        //   setValue("email", userResById.email);
+        //    console.log("this is befor email set---------------2",userResById.email)
         // setValue("firstName", userResById.firstName);
         // setValue("lastName", userResById.lastName);
         // setValue("userId", userResById.userId);
@@ -411,7 +414,6 @@ if(deliveryType==='pickup' || deliveryDis !== undefined){
     }
   }
   function setAddress(addressRes: addressResT) {
-   
     setValue("email", addressRes.email);
     setValue("firstName", addressRes.firstName);
     setValue("lastName", addressRes.lastName);
@@ -425,4 +427,3 @@ if(deliveryType==='pickup' || deliveryDis !== undefined){
 }; // end of rfc
 
 export default Address;
-

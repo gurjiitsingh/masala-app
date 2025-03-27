@@ -6,7 +6,7 @@ export type deliveryType = {
   id: string | undefined;
   name: string;
   price: string;
-  minSpend: string;
+  minSpend: number;
   deliveryDesc: string;
   productCat: string;
   //image: string;

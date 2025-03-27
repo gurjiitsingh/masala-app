@@ -1,10 +1,13 @@
 "use client";
 
+import { newOrderConditionType } from "@/lib/types/cartDataType";
 import { couponDiscType } from "@/lib/types/couponDiscType";
 import { deliveryType } from "@/lib/types/deliveryType";
 import { createContext, useContext } from "react";
 
 type SiteContextType = {
+  newOrderCondition:boolean;
+    setNewOrderCondition:(e:boolean) => void;
   open: boolean;
   deliveryType: string;
   sideBarToggle: (e: boolean) => void;
@@ -30,6 +33,8 @@ type SiteContextType = {
 };
 
 const SiteContext = createContext<SiteContextType>({
+   newOrderCondition:false,
+    setNewOrderCondition:(e:boolean) => {return e},
   open: false,
   deliveryType: "pickup",
   sideBarToggle: () => {},

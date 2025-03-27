@@ -9,8 +9,11 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 const price = (product.price.toString()).replace(/\./g, ',')
 
 
-## ask customer email once and set it, ask again only if customer want to change 
+## ask customer email once and set it, ask again only if customer want to change (on click)
 ## exapple code for pagination and sort order -- used in save ordermaster
+## product description on click show notification
+## use react notification insted of js aleart
+## pagination
 
 const collectionRef = collection(db, 'orderMaster')
     

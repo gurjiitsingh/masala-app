@@ -9,6 +9,11 @@ export  type cartProductType = {
   image: string;
 }
 
+export type newOrderConditionType = {
+success:boolean;
+message:string;
+}
+
 export type cartDataT = {
     productDesc:string;
     productCat:string;

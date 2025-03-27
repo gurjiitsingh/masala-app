@@ -16,10 +16,10 @@ const MiniCartContent = () => {
         <h1 className=" text-[1.1rem]"></h1>
       </div> */}
       <div><div className='max-h-[400px] overflow-y-auto'>
-        {cartData.map((item) => {
+        {cartData.map((item,i) => {
            return (
            
-              <ProductList key={item.id} item={item} />
+              <ProductList key={i} item={item} />
            
           );
         })}

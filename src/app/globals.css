@@ -91,10 +91,14 @@ body {
 }
 
 .slick-arrow{
-  background-color: #64870d !important;
+  background-color: #aaa !important;
   border-radius: 100%;
-  padding:3px;
+  padding:auto;
   z-index: 9999;
+  height: 40px !important;
+  width: 40px !important;
+  opacity: .5;
+  z-index: 1 !important;
 } 
 .slick-prev{
 margin-right: -300px;
@@ -103,4 +107,11 @@ margin-right: -300px;
  .slick-next{
 margin-left: -400px !important;
 
+}
+
+.checkout{
+  z-index: 0 !important;
+  background-color: #aaa;
+  border-radius: 20px;
+  padding: 30px;
 }

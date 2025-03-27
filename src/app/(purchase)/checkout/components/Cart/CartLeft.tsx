@@ -1,8 +1,7 @@
-'use client'
+"use client";
 //import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useCartContext } from "@/store/CartContext";
-
 
 //import { useSearchParams } from "next/navigation";
 import { FaChevronDown } from "react-icons/fa";
@@ -15,9 +14,15 @@ import { cartProductType } from "@/lib/types/cartDataType";
 //import { FaCheckCircle } from 'react-icons/fa';
 
 export default function CartLeft() {
-  const { couponDisc, deliveryDis, chageDeliveryType, deliveryType } =
-    UseSiteContext();
-    
+  const {
+    couponDisc,
+    deliveryDis,
+    chageDeliveryType,
+    deliveryType,
+    newOrderCondition,
+    setNewOrderCondition,
+  } = UseSiteContext();
+
   // const searchParams = useSearchParams();
   //const deliveryType = searchParams.get("deliverytype");
 
@@ -45,29 +50,56 @@ export default function CartLeft() {
     TotalDiscount = 10;
   }
 
+
   if (deliveryType === "delivery") {
+   
     if (deliveryDis?.price !== undefined) {
       endPrice = endPrice + +deliveryDis?.price;
     }
+    //deliveryDis, chageDeliveryType, deliveryType, newOrderCondition, setNewOrderCondition
   }
 
   if (couponDisc?.price) {
-   // console.log("----coupon disc", +total * +couponDisc?.price);
+    // console.log("----coupon disc", +total * +couponDisc?.price);
     endPrice = endPrice - (+total * +couponDisc?.price) / 100;
-   // endPrice = +endPrice.toFixed(2);
+    // endPrice = +endPrice.toFixed(2);
     TotalDiscount = TotalDiscount + +couponDisc?.price;
   }
   //  console.log("total discount ------",TotalDiscount)
   //  console.log("end price -------", total- total*(+TotalDiscount)/100)
 
-  const endPriceS = (endPrice.toFixed(2)).toString();
+  const endPriceS = endPrice.toFixed(2).toString();
   const endPriceComma = endPriceS.split(".").join(",");
   useEffect(() => {
     endPrice = +endPrice.toFixed(2);
-   // console.log("endprice in cartleft-------------",endPrice)
+    // if(deliveryDis?.minSpend)
+   // console.log("deliveryDis?.minSpend-------------", deliveryDis);
     setEndTotalG(endPrice);
+    
   }, [endPrice]);
-  useEffect(() => {}, [deliveryType]);
+
+  useEffect(() => {
+    console.log("type, endprice, minspend--------", deliveryType,endPrice,deliveryDis?.minSpend);
+     if (deliveryType === "delivery") {
+      if (deliveryDis?.minSpend !== undefined) {
+        if (deliveryDis?.minSpend >= endPrice) {
+          // newOrderCondition
+          console.log("test-----------",deliveryDis?.minSpend > endPrice)
+         // const message = `Minimum amout for order is `
+          setNewOrderCondition(false)
+         
+        }else{
+          setNewOrderCondition(true)
+        }
+      }
+      console.log("deliveryDis minspend--------", deliveryDis?.minSpend);
+    }
+
+  }, [deliveryType,endPrice,deliveryDis?.minSpend]);
+  useEffect(() => {
+ 
+  }, [deliveryType]);
+
   useEffect(() => {
     setTotalDiscountG(TotalDiscount);
   }, [TotalDiscount]);
@@ -87,8 +119,7 @@ export default function CartLeft() {
                 onClick={() => setAddCoupon(!addCoupon)}
                 className="flex gap-2 items-center text-sm text-slate-600 bg-green-200 rounded-2xl px-3 font-semibold py-1 w-full text-left "
               >
-                <span>
-                Fügen Sie einen Gutschein hinzu </span>
+                <span>Fügen Sie einen Gutschein hinzu </span>
                 <span>
                   <FaChevronDown />
                 </span>
@@ -104,7 +135,7 @@ export default function CartLeft() {
 
           <div className="font-semibold border-b border-slate-200 py-3 w-full flex justify-between">
             <div className="text-sm font-semibold py-3 w-full text-left">
-            Zwischensumme
+              Zwischensumme
             </div>
             <div className="flex gap-1">
               <span>&#8364;</span>{" "}
@@ -114,52 +145,51 @@ export default function CartLeft() {
 
           <div className="font-semibold border-b border-slate-200 py-3 w-full flex  justify-start gap-4">
             <div className="w-fit">
-            
-            
-           { deliveryType === 'pickup'?   <button
-                onClick={() => chageDeliveryType("pickup")}
-                className="flex gap-2  items-center text-sm text-slate-600 bg-green-200 border border-slate-200 rounded-2xl px-3 font-semibold py-1 w-full text-left "
-              >
-                <span>Abholen </span>
-                {/* <span>
+              {deliveryType === "pickup" ? (
+                <button
+                  onClick={() => chageDeliveryType("pickup")}
+                  className="flex gap-2  items-center text-sm text-slate-600 bg-green-200 border border-slate-200 rounded-2xl px-3 font-semibold py-1 w-full text-left "
+                >
+                  <span>Abholen </span>
+                  {/* <span>
                   <FaChevronDown />
                 </span> */}
-              </button>:
-              <button
-                onClick={() => chageDeliveryType("pickup")}
-                className="shadow-lg flex gap-2 items-center text-sm text-slate-600 bg-red-200 border border-slate-200   rounded-2xl px-3 font-semibold py-1 w-full text-left "
-              >
-                <span>Abholen </span>
-                {/* <span>
+                </button>
+              ) : (
+                <button
+                  onClick={() => chageDeliveryType("pickup")}
+                  className="shadow-lg flex gap-2 items-center text-sm text-slate-600 bg-red-200 border border-slate-200   rounded-2xl px-3 font-semibold py-1 w-full text-left "
+                >
+                  <span>Abholen </span>
+                  {/* <span>
                   <FaChevronDown />
                 </span> */}
-              </button>
-
-                }
+                </button>
+              )}
             </div>
-           
-            <div className="w-fit">
-            { deliveryType === 'delivery'?     <button
-                onClick={() => chageDeliveryType("delivery")}
-                className="flex gap-2 items-center text-sm text-slate-600 bg-green-200 border border-slate-50 rounded-2xl px-3 font-semibold py-1 w-full text-left "
-              >
-              
-                <span>Lieferung </span>
-                {/* <span>
-                  <FaChevronDown />
-                </span> */}
-              </button>:
-              <button
-                onClick={() => chageDeliveryType("delivery")}
-                className="shadow-lg flex gap-2 items-center text-sm text-slate-600 bg-red-200 border border-slate-50 rounded-2xl px-3 font-semibold py-1 w-full text-left "
-              >
-              
-                <span>Lieferung </span>
-                {/* <span>
-                  <FaChevronDown />
-                </span> */}
-              </button>}
 
+            <div className="w-fit">
+              {deliveryType === "delivery" ? (
+                <button
+                  onClick={() => chageDeliveryType("delivery")}
+                  className="flex gap-2 items-center text-sm text-slate-600 bg-green-200 border border-slate-50 rounded-2xl px-3 font-semibold py-1 w-full text-left "
+                >
+                  <span>Lieferung </span>
+                  {/* <span>
+                  <FaChevronDown />
+                </span> */}
+                </button>
+              ) : (
+                <button
+                  onClick={() => chageDeliveryType("delivery")}
+                  className="shadow-lg flex gap-2 items-center text-sm text-slate-600 bg-red-200 border border-slate-50 rounded-2xl px-3 font-semibold py-1 w-full text-left "
+                >
+                  <span>Lieferung </span>
+                  {/* <span>
+                  <FaChevronDown />
+                </span> */}
+                </button>
+              )}
             </div>
           </div>
 
@@ -186,7 +216,7 @@ export default function CartLeft() {
 
           <div className="font-semibold border-b border-slate-200 py-3 w-full flex justify-between">
             <div className="text-md font-semibold py-3 w-full text-left">
-            Gesamt
+              Gesamt
             </div>
             <div className="flex gap-1">
               <span>&#8364;</span> <span> {endPriceComma} </span>

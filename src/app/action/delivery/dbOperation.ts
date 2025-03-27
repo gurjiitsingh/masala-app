@@ -20,18 +20,18 @@ import { deliveryType, newPorductSchema, editPorductSchema, } from "@/lib/types/
 
 export async function addNewdelivery(formData: FormData) {
  
-  console.log(formData.get("name"));
-  console.log(formData.get("price"));
-   console.log(formData.get("minSpend"));
-   console.log(formData.get("productCat"));
-  console.log(formData.get("deliveryDesc"));
- // console.log(formData.get("image"));
-  console.log(formData.get("deliveryDistance"));
-
+//   console.log(formData.get("name"));
+//   console.log(formData.get("price"));
+//    console.log(formData.get("minSpend"));
+//    console.log(formData.get("productCat"));
+//   console.log(formData.get("deliveryDesc"));
+//  // console.log(formData.get("image"));
+//   console.log(formData.get("deliveryDistance"));
+const MinSpend = formData.get("minSpend") as string;
    const receivedData = {
     name: formData.get("name"),
     price: formData.get("price"),
-    minSpend: formData.get("minSpend"),
+    minSpend:  MinSpend,
     productCat: formData.get("productCat"),
     deliveryDesc: formData.get("deliveryDesc"),
     deliveryDistance: formData.get("deliveryDistance"),
@@ -70,12 +70,13 @@ export async function addNewdelivery(formData: FormData) {
   // const productCat = formData.get("productCat");
   // const deliveryDesc = formData.get("deliveryDesc");
   // const featured = formData.get("deliveryDistance");
+  const MinSpendN = parseFloat( MinSpend);
   const data = {
     name: formData.get("name"),
     price: formData.get("price"),
     productCat: formData.get("productCat"),
     deliveryDesc: formData.get("deliveryDesc"),
-    minSpend: formData.get("minSpend"),
+    minSpend: MinSpendN,
     deliveryDistance: formData.get("deliveryDistance"),
   };
   //console.log("data to be saved ---", data)
@@ -201,7 +202,7 @@ export async function fetchdelivery(): Promise<deliveryType[]> {
 
   const result = await getDocs(collection(db, "delivery"));
 
-  let data = [] as deliveryType[];
+  const data = [] as deliveryType[];
   result.forEach((doc) => {
     const pData = { id: doc.id, ...doc.data() } as deliveryType;
     data.push(pData);
@@ -226,7 +227,7 @@ export async function fetchdeliveryById(id: string): Promise<deliveryType> {
 
 export async function fetchdeliveryByZip(
   zipname: string
-): Promise<deliveryType[]> {
+): Promise<deliveryType> {
  // console.log("insider delivery action------", zipname)
   const data = [] as deliveryType[];
   const q = query(
@@ -240,5 +241,5 @@ export async function fetchdeliveryByZip(
     data.push(datas);
   });
   //console.log("email -------- ", data)
-  return data;
+  return data[0];
 }

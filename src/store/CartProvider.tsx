@@ -4,7 +4,7 @@ import React, {  useEffect, useState } from "react";
 import CartContext from "./CartContext";
 
 import { addressT } from "@/lib/types/addressType";
-import { cartProductType } from "@/lib/types/cartDataType";
+import {  cartProductType } from "@/lib/types/cartDataType";
 
 interface Props {
   children: React.ReactNode;
@@ -32,7 +32,7 @@ export const CartProvider: React.FC<Props> = ({
   const [productTotalCost, setProductTotalCost] = useState<number>(0);
   const [isUpdated, setIsUpdated] = useState<boolean>(false);
   const [  totalDiscountG, setTotalDiscountL] = useState<number>(0);
-
+ 
   useEffect(() => {
 
     if (typeof window !== 'undefined') {
@@ -270,10 +270,13 @@ setEndTotalL(t)
  function setTotalDiscountG(d:number){
   setTotalDiscountL(d)
  }
+ 
+
 
   return (
     <CartContext.Provider
       value={{
+       
         cartData,
         address,
         addProduct,

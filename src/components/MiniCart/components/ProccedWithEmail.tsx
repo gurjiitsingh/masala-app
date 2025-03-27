@@ -48,7 +48,7 @@ const ProccedWithEmail = () => {
     formData.append("email", data.email);
     emailFormToggle(false);
     setCustomerEmailG(data.email);
-    router.push(`/checkout?email=${data.email}`);
+    router.push(`/checkout`);
   }
 
   return (

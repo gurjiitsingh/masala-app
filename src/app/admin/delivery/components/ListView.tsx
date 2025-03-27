@@ -63,6 +63,7 @@ const ListView = () => {
                 <TableHead>Min spend</TableHead>
                 {/* <TableHead>Status</TableHead> */}
                  <TableHead>Distance</TableHead>
+                 <TableHead>Description</TableHead>
                 <TableHead className="hidden md:table-cell">Action</TableHead>
               </TableRow>
             </TableHeader>

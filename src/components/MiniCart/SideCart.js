@@ -34,8 +34,15 @@ export const SideCart = () => {
   function pickUpHandle() {
     /// setShowEmailForm((state)=>!state)
     // chageDeliveryType("pickup")
+   // console.log("cutomer email in cart mini----------",customerEmail)
     sideBarToggle();
-    emailFormToggle(true);
+    if(customerEmail === "" || customerEmail === undefined || customerEmail === null){
+      emailFormToggle(true);
+    }else{
+      router.push(`/checkout`);
+    }
+   
+   
   }
 
   function shopMoreHandle() {
@@ -46,7 +53,7 @@ export const SideCart = () => {
     // emailFormToggle()
   }
   return (
-    <>
+    <div className="z-50">
       <SessionProvider>
         {!openEmailForm && (
           <AnimatePresence mode="wait" initial={false}>
@@ -115,7 +122,7 @@ export const SideCart = () => {
         )}
         {openEmailForm && <ProccedWithEmail />}
       </SessionProvider>
-    </>
+    </div>
   );
 };
 //console.log("llllllllllllll", cartData)

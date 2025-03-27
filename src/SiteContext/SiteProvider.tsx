@@ -4,6 +4,7 @@ import SiteContext from "./SiteContext";
 import { useEffect, useState } from "react";
 import { deliveryType } from "@/lib/types/deliveryType";
 import { couponDiscType } from "@/lib/types/couponDiscType";
+import { newOrderConditionType } from "@/lib/types/cartDataType";
 
 interface Props {
   children: React.ReactNode;
@@ -37,12 +38,17 @@ export const SiteProvider: React.FC<Props> = ({
   const [baseProductId, setBaseProductIdL] = useState<string>("");
   const [adminSideBarToggle, setAdminSideBarToggleL] = useState<boolean>(false);
   const [productCategoryIdG, setProductCategoryIdL] = useState<string>("");
-
+ const [newOrderCondition, setNewOrderConditionL  ] = useState<boolean>(false);
   useEffect(() => {
     const deliveryType = window.localStorage.getItem("delivery_type") as string;
     if (deliveryType !== undefined) {
       const deliveryTypeS = JSON.parse(deliveryType) as string;
       setDeliveryType(deliveryTypeS);
+    }
+    const customerEmail = window.localStorage.getItem("customer_email") as string;
+    if (customerEmail !== undefined) {
+      const customerEmailS = JSON.parse(customerEmail) as string;
+      setCustomerEmailL(customerEmailS);
     }
   }, []);
 
@@ -81,6 +87,7 @@ export const SiteProvider: React.FC<Props> = ({
   }
 
   function setCustomerEmailG(e: string) {
+    window.localStorage.setItem("customer_email", JSON.stringify(e));
     setCustomerEmailL(e);
   }
 
@@ -91,10 +98,15 @@ export const SiteProvider: React.FC<Props> = ({
   function setProductCategoryIdG(id:string) {
     setProductCategoryIdL(id);
   }
+  function setNewOrderCondition(s:boolean){
+    setNewOrderConditionL(s)
+   }
 
   return (
     <SiteContext.Provider
       value={{
+        newOrderCondition,
+        setNewOrderCondition,
         open,
         openBargerMenu,
         sideBarToggle: togleMenu,

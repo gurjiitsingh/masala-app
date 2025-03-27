@@ -35,13 +35,13 @@ const initialOptions = {
 
 
 function ProviderWrapper() {
-  return (
+  return ( <div className="z-0">
     <PayPalScriptProvider options={initialOptions}>
      
       <Checkout />
      
     </PayPalScriptProvider>
-   
+    </div>
   );
 }
 

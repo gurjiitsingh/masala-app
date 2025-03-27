@@ -87,7 +87,7 @@ export default function CategorySlider() {
       try {
         const categories = await fetchCategories();
         categories.sort((a, b) => a.sortOrder - b.sortOrder);
-        console.log("------------", categories);
+       // console.log("categories ------------", categories);
         setCategoryData(categories);
       } catch (error) {
         console.log(error);

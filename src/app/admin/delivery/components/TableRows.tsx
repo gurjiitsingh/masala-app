@@ -27,7 +27,7 @@ function TableRows({ delivery }:{delivery:deliveryType}){
  async function handleDelete(delivery:deliveryType) {
     // confirm("Do you want to delete Delivery!\n If yes click OK \n If not click Cancel.");
   confirm("Möchten Sie die Lieferung löschen?\n Falls ja, klicken Sie auf OK. \n Falls nicht, klicken Sie auf Cancel.");
- const result = await deletedelivery(delivery.id!)
+  await deletedelivery(delivery.id!)
 // if(result.errors){
 //   alert(result.errors)
 // }else{
@@ -57,6 +57,7 @@ function TableRows({ delivery }:{delivery:deliveryType}){
  <TableCell>&#8364;{delivery.minSpend}</TableCell>
       {/* <TableCell>{delivery.productCat}</TableCell> */}
       <TableCell>{delivery.deliveryDistance}</TableCell>
+      <TableCell>{delivery.deliveryDesc}</TableCell>
       {/* <TableCell>       
         {delivery?.deliveryDistance === true && (
           <span className="ml-2 bg-gradient-to-tr from-blue-500 to-indigo-400 text-white text-[10px] rounded-full px-3 py-1">

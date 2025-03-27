@@ -257,7 +257,7 @@ export async function editProduct(formData: FormData) {
   }
 }
 
-export async function fetchProducts(): Promise<ProductType[]> {
+export async function fetchAddOnProducts(): Promise<ProductType[]> {
   // const result = await getDocs(collection(db, "productaddon"))
   // let data = [];
   // result.forEach((doc) => {
@@ -292,6 +292,8 @@ export async function fetchProductById(id: string): Promise<ProductType> {
 export async function fetchProductByBaseProductId(
   id: string
 ): Promise<AddOnProductSchemaType[]> {
+
+  // console.log("fetch addon by id--------------", id)
   const data = [] as AddOnProductSchemaType[];
   const q = query(
     collection(db, "productaddon"),
@@ -303,6 +305,7 @@ export async function fetchProductByBaseProductId(
     const datas = doc.data() as AddOnProductSchemaType;
     data.push(datas);
   });
+  // console.log("add on data-------------", data)
   return data;
 }
 

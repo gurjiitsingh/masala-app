@@ -109,7 +109,7 @@ export default function Checkout(){
           <p>LOADING...</p>
         ) : (
           <>
-        
+          <div className="z-0">
             <PayPalButtons
               message={{
                 amount: endTotalG,
@@ -121,7 +121,7 @@ export default function Checkout(){
               createOrder={(data, actions) => onCreateOrder(data, actions)}
               onApprove={(data, actions) => onApproveOrder(data, actions)}
             />
-           
+            </div>
           </>
         )}
       </div></div>
