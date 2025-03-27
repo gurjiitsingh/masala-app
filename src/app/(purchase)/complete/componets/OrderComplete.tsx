@@ -47,12 +47,21 @@ export default function OrderComplete() {
         <div className="text-2xl font-semibold text-center ">
           Ihre Bestellung ist abgeschlossen
         </div>
+
+        <div className="text-lg text-center text-slate-500">
+        Zubereitungszeit: 20–30 Minuten</div>
+        <div/>
+        <div className="text-lg text-center text-slate-500">
+        Lieferzeit: 40–65 Minuten</div>
+        <div/>
+
+
         <div>
           <button
             onClick={() => {
               router.push("/");
             }}
-            className="min-w-[200px] mt-5 py-1 text-center bg-blue-500 rounded-2xl text-white text-[1rem]"
+            className="min-w-[200px] mt-5 py-1 text-center bg-amber-300 rounded-2xl text-slate-500 text-[1rem]"
           >
             Mehr einkaufen
           </button>

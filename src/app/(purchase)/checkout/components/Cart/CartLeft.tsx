@@ -10,7 +10,7 @@ import { UseSiteContext } from "@/SiteContext/SiteContext";
 import DeliveryCost from "./DeliveryCost";
 import Pickup from "./Pickup";
 import CouponDisc from "./CouponDisc";
-import { cartProductType, orderDataType, purchaseDataT } from "@/lib/types/cartDataType";
+import { cartProductType, orderDataType  } from "@/lib/types/cartDataType";
 import { createNewOrder } from "@/app/action/orders/dbOperations";
 import { useRouter } from "next/navigation";
 //import { FaCheckCircle } from 'react-icons/fa';
@@ -47,7 +47,7 @@ export default function CartLeft() {
   //console.log("deliveryType -------------", deliveryType)
 
   const [addCoupon, setAddCoupon] = useState<boolean>(false);
-
+  const [isDisabled, setIsDisabled] = useState(false);
   //console.log("del type------", searchParams.get("deliverytype"));
   //const { cartData } =  useCartContext();
   const { cartData, setEndTotalG, setTotalDiscountG, endTotalG,  totalDiscountG } = useCartContext();
@@ -62,10 +62,10 @@ export default function CartLeft() {
   let endPrice = +total;
   let TotalDiscount = 0;
   if (deliveryType === "pickup") {
-    let pickupDiscount = +total * 0.1;
+    let pickupDiscount = +total * 0.2;
     pickupDiscount = +pickupDiscount.toFixed(2);
     endPrice = endPrice - pickupDiscount;
-    TotalDiscount = 10;
+    TotalDiscount = 20;
   }
 
 
@@ -141,10 +141,20 @@ export default function CartLeft() {
 
 
 async function proceedToOrder(){
-
+  setIsDisabled(true)
   let canCompleteOrder = true;
+  let allReadyAlerted = false;
+
+  console.log("paymentType------------", paymentType)
+  console.log("deliveryType------------", deliveryType)
+  console.log("deliveryDis minSpend------------", deliveryDis?.minSpend)
+  console.log("newOrderCondition ------------", newOrderCondition)
+
+  
   if(paymentType === "" || paymentType === undefined){
     canCompleteOrder = false;
+    allReadyAlerted = true;
+    setIsDisabled(false)
     alert(
       "Select Payment type"
     );
@@ -153,11 +163,13 @@ async function proceedToOrder(){
  
 
   if (deliveryType === "delivery" && deliveryDis === undefined) {
+    setIsDisabled(false)
        canCompleteOrder = false;
- 
+ if(!allReadyAlerted){
        alert(
          "Wir können an diese Adresse nicht liefern. Bitte wählen Sie Abholung und erhalten Sie 10 % Rabatt"
        );
+      }
      }
 
 
@@ -173,14 +185,16 @@ async function proceedToOrder(){
 
 }
 
- console.log("userdata-----------",AddressId,order_user_Id,customer_name)
+ //console.log("userdata-----------",AddressId,order_user_Id,customer_name)
 
 
-
-    if (!newOrderCondition) {
+    if (!newOrderCondition && deliveryType !== "pickup") {
+      setIsDisabled(false)
       canCompleteOrder = false;
+      if(!allReadyAlerted){
       const minSpendMessage = `Minimum ouder amount for delivery is €${deliveryDis?.minSpend}`;
       alert(minSpendMessage);
+      }
     }
 
     // if (deliveryType === "pickup" || deliveryDis !== undefined) {
@@ -197,7 +211,8 @@ async function proceedToOrder(){
       if (cartData.length !== 0) {
         await createNewOrder(purchaseData);
       }
-
+      setIsDisabled(false)
+     
       if (paymentType === "paypal") {
         router.push("/pay");
       }
@@ -357,7 +372,8 @@ async function proceedToOrder(){
             </div>
           </Link>
         </div> */}
-        <button
+        {/* disabled={true} */}
+        <button  disabled={ isDisabled }
               className="w-[200px] py-1 text-center bg-amber-400 italic font-bold rounded-xl text-[1.2rem]"
               onClick={() => {
                 proceedToOrder()

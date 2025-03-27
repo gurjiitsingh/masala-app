@@ -24,22 +24,35 @@ import { fetchdeliveryByZip } from "@/app/action/delivery/dbOperation";
 import { UseSiteContext } from "@/SiteContext/SiteContext";
 import SlideButton from "@/components/SlideButton";
 
-
 const Address = () => {
   // const { endTotalG, cartData, totalDiscountG } = useCartContext();
+  
   const {
-    newOrderCondition,
-    deliveryDis,
+   
+    //deliveryDis,
     paymentType,
     setdeliveryDis,
     chageDeliveryType,
     deliveryType,
     customerEmail,
+   
   } = UseSiteContext();
+
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: ''
+  });
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData(prevState => ({ ...prevState, [name]: value }));
+  };
+
+  const isFormComplete = formData.firstName && formData.lastName && formData.email;
 
   const { data: session } = useSession();
   //const [paymentType, setPaymentType] = useState<string>();
- 
 
   useEffect(() => {
     if (customerEmail !== undefined) {
@@ -85,8 +98,8 @@ const Address = () => {
   // console.log("in address --------------");
 
   async function onSubmit(data: TaddressSchemaCheckout) {
-    console.log("newOrderCondition -----------", newOrderCondition);
-
+   // console.log("customer address -----------", data);
+    
     const formData = new FormData();
     formData.append("firstName", data.firstName);
     formData.append("lastName", data.lastName);
@@ -148,42 +161,35 @@ const Address = () => {
       } as purchaseDataT;
 
       // if (cartData.length !== 0) {
-    const result =   await createNewOrderCustomerAddress(purchaseData);
+      const result = await createNewOrderCustomerAddress(purchaseData);
 
-   const  addressAddedIdS = result.addressAddedId;
-   const  userAddedIdS = result.UserAddedId;
-   const  customerNameS = result.customerName;
-  
+      const addressAddedIdS = result.addressAddedId;
+      const userAddedIdS = result.UserAddedId;
+      const customerNameS = result.customerName;
       // }
-
       if (typeof window !== "undefined") {
-        localStorage.setItem("customer_address_Id", JSON.stringify(addressAddedIdS));
+        localStorage.setItem(
+          "customer_address_Id",
+          JSON.stringify(addressAddedIdS)
+        );
         localStorage.setItem("order_user_Id", JSON.stringify(userAddedIdS));
         localStorage.setItem("customer_name", JSON.stringify(customerNameS));
       }
 
       //createNewOrderFile(cartData, customAddress);
-
-    
     }
     // end of ok order condition
   }
 
   useEffect(() => {
-    console.log("paymentType ------------", paymentType);
-    // setValue("userId", session?.user?.id);
+    console.log("payment Type ------------", paymentType);
+   // setPaymentType("")
     setValue("password", "123456");
-    //setValue("email", "g@mail.com");
-    // setValue("firstName", "Gurjit");
-    // setValue("lastName", "Singh");
-    // setValue("mobNo", "9838883323");
-    // setValue("addressLine1", "345 street House 34");
-    // setValue("addressLine1", "Vill Tandi Aulakh");
     setValue("city", "Lower Saxony");
-    // setValue("state", "Punjab");
-    // setValue("zipCode", "144621");
-    //setValue("orderDetail", cartData);
+   
   }, []);
+
+  
 
   return (
     <div className="w-full lg:w-[70%] md:border border-slate-400 md:rounded-2xl md:p-5">
@@ -385,7 +391,7 @@ const Address = () => {
             </Button> */}
           </div>
 
-          <div  className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3">
             <div className="w-[300px] flex   justify-start items-center gap-3 italic font-bold  text-[1.2rem]">
               <SlideButton paytypeL={"paypal"} />
               <div className="">

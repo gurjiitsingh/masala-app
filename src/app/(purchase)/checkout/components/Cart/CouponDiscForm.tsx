@@ -59,7 +59,7 @@ export default function CouponDiscount() {
     //    }
     //  }
 
-    console.log("response in create coupon form ", result);
+   // console.log("response in create coupon form ", result);
   }
 
   return (
@@ -67,21 +67,24 @@ export default function CouponDiscount() {
       <div className="w-full border rounded-xl py-2 px-2 shadow-md">
         <div className="flex flex-col gap-2">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex gap-2 items-end">
-              <div className="flex flex-col gap-1">
-                <label className="label-style text-[.5rem]">
+            <div className="flex flex-col items-start gap-1">
+              <div className="flex  gap-1 justify-start ">
+                <label className="text-left label-style text-[.5rem] ">
                   Gutschein ausfüllen und Button klicken*
                   {/* Fill coupon and click button */}
                   <span className="text-red-500">*</span>{" "}
                 </label>
-                <input {...register("coupon")} className="input-style" />
+              
+              </div>
+              <div className="flex gap-2">
+                <div className="flex flex-col">
+              <input {...register("coupon")} className="input-style" />
                 <span className="text-[0.8rem] font-medium text-destructive">
                   {errors.coupon?.message && (
                     <span>{errors.coupon?.message}</span>
                   )}
                 </span>
-              </div>
-              <div className="">
+                </div>
                 {couponDisc === undefined ? (
                   <button
                     className="w-[200px] py-1 h-8 text-center bg-red-300 text-white font-semibold rounded-2xl text-[1rem]"

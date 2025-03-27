@@ -5,7 +5,6 @@ export default function SlideButton({paytypeL}:{paytypeL:string}) {
 const [ on, setOn ] = useState<boolean>(false);
 const { paymentType, setPaymentType } = UseSiteContext();
 useEffect(()=>{
-    console.log("pay type -------", paymentType)
     if(paymentType !== paytypeL){
         setOn(false);
     }
