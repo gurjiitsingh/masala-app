@@ -10,7 +10,9 @@ import { UseSiteContext } from "@/SiteContext/SiteContext";
 import DeliveryCost from "./DeliveryCost";
 import Pickup from "./Pickup";
 import CouponDisc from "./CouponDisc";
-import { cartProductType } from "@/lib/types/cartDataType";
+import { cartProductType, orderDataType, purchaseDataT } from "@/lib/types/cartDataType";
+import { createNewOrder } from "@/app/action/orders/dbOperations";
+import { useRouter } from "next/navigation";
 //import { FaCheckCircle } from 'react-icons/fa';
 
 export default function CartLeft() {
@@ -19,9 +21,25 @@ export default function CartLeft() {
     deliveryDis,
     chageDeliveryType,
     deliveryType,
+    paymentType,
     newOrderCondition,
     setNewOrderCondition,
   } = UseSiteContext();
+
+  console.log("newOrderCondition-------------", newOrderCondition)
+  
+ const router = useRouter();
+// const {
+//     newOrderCondition,
+//     deliveryDis,
+   
+//     setdeliveryDis,
+//     chageDeliveryType,
+//     deliveryType,
+//     customerEmail,
+//   } = UseSiteContext();
+
+
 
   // const searchParams = useSearchParams();
   //const deliveryType = searchParams.get("deliverytype");
@@ -32,7 +50,7 @@ export default function CartLeft() {
 
   //console.log("del type------", searchParams.get("deliverytype"));
   //const { cartData } =  useCartContext();
-  const { cartData, setEndTotalG, setTotalDiscountG } = useCartContext();
+  const { cartData, setEndTotalG, setTotalDiscountG, endTotalG,  totalDiscountG } = useCartContext();
   //console.log("kljjljlkll", cartData.lenght)
   let total = 0;
   cartData.forEach((item: cartProductType) => {
@@ -84,7 +102,7 @@ export default function CartLeft() {
       if (deliveryDis?.minSpend !== undefined) {
         if (deliveryDis?.minSpend >= endPrice) {
           // newOrderCondition
-          console.log("test-----------",deliveryDis?.minSpend > endPrice)
+          console.log("order amount is low-----------",deliveryDis?.minSpend > endPrice)
          // const message = `Minimum amout for order is `
           setNewOrderCondition(false)
          
@@ -92,17 +110,111 @@ export default function CartLeft() {
           setNewOrderCondition(true)
         }
       }
-      console.log("deliveryDis minspend--------", deliveryDis?.minSpend);
+     // console.log("deliveryDis minspend--------", deliveryDis?.minSpend);
     }
 
   }, [deliveryType,endPrice,deliveryDis?.minSpend]);
-  useEffect(() => {
  
-  }, [deliveryType]);
+
+  useEffect(() => {
+   // console.log("type, endprice, minspend--------", deliveryType,endPrice,deliveryDis?.minSpend);
+     if (deliveryType === "delivery") {
+      if (deliveryDis?.minSpend !== undefined) {
+        if (deliveryDis?.minSpend >= endPrice) {
+          // newOrderCondition
+         // console.log("order amount is low-----------",deliveryDis?.minSpend > endPrice)
+         // const message = `Minimum amout for order is `
+          setNewOrderCondition(false)
+         
+        }else{
+          setNewOrderCondition(true)
+        }
+      }
+     // console.log("deliveryDis minspend--------", deliveryDis?.minSpend);
+    }
+
+  }, []);
 
   useEffect(() => {
     setTotalDiscountG(TotalDiscount);
   }, [TotalDiscount]);
+
+
+async function proceedToOrder(){
+
+  let canCompleteOrder = true;
+  if(paymentType === "" || paymentType === undefined){
+    canCompleteOrder = false;
+    alert(
+      "Select Payment type"
+    );
+  }
+
+ 
+
+  if (deliveryType === "delivery" && deliveryDis === undefined) {
+       canCompleteOrder = false;
+ 
+       alert(
+         "Wir können an diese Adresse nicht liefern. Bitte wählen Sie Abholung und erhalten Sie 10 % Rabatt"
+       );
+     }
+
+
+  let AddressId =  "";
+  let order_user_Id = "";
+  let customer_name = "";
+
+ if (typeof window !== "undefined") {
+
+   AddressId = JSON.parse(localStorage.getItem("customer_address_Id") || "");
+  order_user_Id = JSON.parse(localStorage.getItem("order_user_Id") || "");
+   customer_name = JSON.parse(localStorage.getItem("customer_name") || "");
+
+}
+
+ console.log("userdata-----------",AddressId,order_user_Id,customer_name)
+
+
+
+    if (!newOrderCondition) {
+      canCompleteOrder = false;
+      const minSpendMessage = `Minimum ouder amount for delivery is €${deliveryDis?.minSpend}`;
+      alert(minSpendMessage);
+    }
+
+    // if (deliveryType === "pickup" || deliveryDis !== undefined) {
+    if (canCompleteOrder) {
+        const purchaseData = {
+        userId: "kljlkl",//order_user_Id, //session?.user?.id,
+        customerName:customer_name,
+        cartData,
+        total: endTotalG,
+        totalDiscountG,
+        addressId: AddressId,
+      } as orderDataType;
+
+      if (cartData.length !== 0) {
+        await createNewOrder(purchaseData);
+      }
+
+      if (paymentType === "paypal") {
+        router.push("/pay");
+      }
+      //console.log("going to complete--------")
+      if (paymentType === "cod") {
+        // console.log("going to complete")
+        router.push(`/complete?paymentypte=Barzahlung`);
+        //  router.push(`/checkout?email=${data.email}&deliverytype=${deliveryType}`)
+      }
+    }
+
+}
+
+
+
+
+
   return (
     <div className="flex flex-col gap-4 w-full ">
       <div className="flex flex-col bg-slate-50 p-5 h-full w-full gap-7 rounded-2xl">
@@ -245,6 +357,16 @@ export default function CartLeft() {
             </div>
           </Link>
         </div> */}
+        <button
+              className="w-[200px] py-1 text-center bg-amber-400 italic font-bold rounded-xl text-[1.2rem]"
+              onClick={() => {
+                proceedToOrder()
+              }}
+            
+            >
+              <span className=" text-blue-900">Submit</span>
+              <span className=" text-sky-500">Order</span>
+            </button>
       </div>
     </div>
   );

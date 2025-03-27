@@ -18,18 +18,16 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import CartContext, { useCartContext } from "@/store/CartContext";
 //import { searchUserById } from "@/app/action/user/dbOperation";
-import { createNewOrder } from "@/app/action/orders/dbOperations";
+import { createNewOrderCustomerAddress } from "@/app/action/orders/dbOperations";
 import { purchaseDataT } from "@/lib/types/cartDataType";
 import { fetchdeliveryByZip } from "@/app/action/delivery/dbOperation";
 import { UseSiteContext } from "@/SiteContext/SiteContext";
 import SlideButton from "@/components/SlideButton";
-import { FaCcPaypal } from "react-icons/fa6";
-import { IoMdCash } from "react-icons/io";
+
 
 const Address = () => {
-  const { endTotalG, cartData, totalDiscountG } = useCartContext();
+  // const { endTotalG, cartData, totalDiscountG } = useCartContext();
   const {
-    couponDisc,
     newOrderCondition,
     deliveryDis,
     paymentType,
@@ -41,7 +39,7 @@ const Address = () => {
 
   const { data: session } = useSession();
   //const [paymentType, setPaymentType] = useState<string>();
-  const router = useRouter();
+ 
 
   useEffect(() => {
     if (customerEmail !== undefined) {
@@ -111,19 +109,19 @@ const Address = () => {
       );
     }
 
-    if (deliveryType === "delivery" && deliveryDis === undefined) {
-      canCompleteOrder = false;
+    // if (deliveryType === "delivery" && deliveryDis === undefined) {
+    //   canCompleteOrder = false;
 
-      alert(
-        "Wir können an diese Adresse nicht liefern. Bitte wählen Sie Abholung und erhalten Sie 10 % Rabatt"
-      );
-    }
+    //   alert(
+    //     "Wir können an diese Adresse nicht liefern. Bitte wählen Sie Abholung und erhalten Sie 10 % Rabatt"
+    //   );
+    // }
 
-    if (!newOrderCondition) {
-      canCompleteOrder = false;
-      const minSpendMessage = `Minimum ouder amount for delivery is €${deliveryDis?.minSpend}`;
-      alert(minSpendMessage);
-    }
+    // if (!newOrderCondition) {
+    //   canCompleteOrder = false;
+    //   const minSpendMessage = `Minimum ouder amount for delivery is €${deliveryDis?.minSpend}`;
+    //   alert(minSpendMessage);
+    // }
 
     // if (deliveryType === "pickup" || deliveryDis !== undefined) {
     if (canCompleteOrder) {
@@ -146,27 +144,27 @@ const Address = () => {
 
       const purchaseData = {
         userId: "sfad", //session?.user?.id,
-        cartData,
-        total: endTotalG,
-        totalDiscountG,
         address: customAddress,
       } as purchaseDataT;
 
-      if (cartData.length !== 0) {
-        await createNewOrder(purchaseData);
+      // if (cartData.length !== 0) {
+    const result =   await createNewOrderCustomerAddress(purchaseData);
+
+   const  addressAddedIdS = result.addressAddedId;
+   const  userAddedIdS = result.UserAddedId;
+   const  customerNameS = result.customerName;
+  
+      // }
+
+      if (typeof window !== "undefined") {
+        localStorage.setItem("customer_address_Id", JSON.stringify(addressAddedIdS));
+        localStorage.setItem("order_user_Id", JSON.stringify(userAddedIdS));
+        localStorage.setItem("customer_name", JSON.stringify(customerNameS));
       }
 
       //createNewOrderFile(cartData, customAddress);
 
-      if (paymentType === "paypal") {
-        router.push("/pay");
-      }
-      //console.log("going to complete--------")
-      if (paymentType === "cod") {
-        // console.log("going to complete")
-        router.push(`/complete?paymentypte=Barzahlung`);
-        //  router.push(`/checkout?email=${data.email}&deliverytype=${deliveryType}`)
-      }
+    
     }
     // end of ok order condition
   }

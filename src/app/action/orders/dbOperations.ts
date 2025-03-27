@@ -7,12 +7,13 @@ import { addUserDirect } from "../user/dbOperation";
 import { addCustomerAddressDirect } from "../address/dbOperations";
 import {  TOrderMaster, orderMasterDataT } from "@/lib/types/orderMasterType";
 import { orderProductsT } from "@/lib/types/orderType";
-import {   purchaseDataT } from "@/lib/types/cartDataType";
+import {   orderDataType, purchaseDataT } from "@/lib/types/cartDataType";
 import { ProductType } from "@/lib/types/productType";
 
  
 
-export async function createNewOrder(purchaseData:purchaseDataT) {
+
+export async function createNewOrderCustomerAddress(purchaseData:purchaseDataT) {
   //  console.log("--------------------- cart data in cart save draft  ",purchaseData)
   //1. user id
   //2. user address
@@ -21,8 +22,8 @@ export async function createNewOrder(purchaseData:purchaseDataT) {
   const email = purchaseData.address.email;
   const lastName = purchaseData.address.lastName;
   const firstName = purchaseData.address.firstName;
-  const total = purchaseData.total;
-  const totalDiscountG = purchaseData.totalDiscountG;
+  // const total = purchaseData.total;
+  // const totalDiscountG = purchaseData.totalDiscountG;
   //const userId = purchaseData.address.userId;
  // const password = purchaseData.address.password;
  const password = "123456";
@@ -40,7 +41,7 @@ export async function createNewOrder(purchaseData:purchaseDataT) {
   const formDataAdd = new FormData();
   formDataAdd.append("firstName", purchaseData.address.firstName);
   formDataAdd.append("lastName", purchaseData.address.lastName);
- formDataAdd.append("userId", UserAddedId);
+  formDataAdd.append("userId", UserAddedId);
   formDataAdd.append("email", purchaseData.address.email);
   formDataAdd.append("mobNo", purchaseData.address.mobNo);
   formDataAdd.append("password", "123456");
@@ -54,6 +55,119 @@ export async function createNewOrder(purchaseData:purchaseDataT) {
   // enter data in order master
 
   const customerName = firstName + " " + lastName;
+
+  return {addressAddedId, UserAddedId, customerName};
+  //const now = new Date();
+  // const now_india = now.toLocaleString("en-IN", {
+  //   dateStyle: "medium",
+  //   timeStyle: "medium",
+  //   timeZone: "Asia/Kolkata",
+  // });
+
+//"de-DE"
+  // const now_german = new Date().toLocaleString("en-DE", {
+  //   dateStyle: "medium",
+  //   timeStyle: "medium",
+  //   timeZone: "Europe/Berlin",
+  // });
+
+ // const order = await fetchOrdersMaster()
+
+//  const collectionRef = collection(db, 'orderMaster')
+    
+//  const targetQuery = query(collectionRef, orderBy("srno", "desc"), limit(1));
+//  const querySnapshot = await getDocs(targetQuery)
+
+//  const q = query(collectionRef);
+//  const querySnapshot = await getDocs(q);
+//let new_srno =1;
+// const orderData = [] as orderMasterDataT[];
+//   querySnapshot.forEach((doc) => {
+//      const  data = doc.data() as orderMasterDataT;
+//     //   console.log("last order ----------", data)
+//        orderData.push(data)
+//      });
+ 
+   
+  //  if(orderData[0]?.srno !== undefined){
+  //    new_srno =orderData[0].srno + 1;
+  //  }
+ //  console.log("sr No ----------", new_srno)
+
+ // const timeId = new Date().toISOString();
+  // const orderMasterData = {
+  //   // also add auto increment to order,
+  //   customerName,
+  //   userId: UserAddedId,
+  //   addressId: addressAddedId,
+  //   total:total,
+  //   status:"pending",
+  //   totalDiscountG,
+  //   time: now_german,
+  //   srno:new_srno,
+   
+  // } as orderMasterDataT; 
+
+  
+//const orderMasterId = await addOrderToMaster(orderMasterData) as string;
+
+  // add product to productOrder
+
+  // unique id ->   purchaseSession: '1737704030168',
+  // const purchaseProducts = purchaseData.cartData as ProductType[];
+
+  // purchaseProducts.forEach((element) => {
+  //   addProductDraft(element, UserAddedId, orderMasterId);
+  // });
+
+  //  const toBeDeleted = cartData[0].purchaseSession;
+  //  console.log(toBeDeleted)
+  //  await deleteDoc(doc(db, "orderProducts", toBeDeleted));
+}
+
+
+export async function createNewOrder(purchaseData:orderDataType) {
+  //  console.log("--------------------- cart data in cart save draft  ",purchaseData)
+  //1. user id
+  //2. user address
+  //3. cart data
+
+  // const email = purchaseData.address.email;
+  // const lastName = purchaseData.address.lastName;
+  // const firstName = purchaseData.address.firstName;
+  // const total = purchaseData.total;
+  // const totalDiscountG = purchaseData.totalDiscountG;
+  //const userId = purchaseData.address.userId;
+ // const password = purchaseData.address.password;
+// const password = "123456";
+//  const username = firstName + "" + lastName;
+  //if(purchaseData.userId === undefined){
+ // const formData = new FormData();
+  // formData.append("username", username);
+  // formData.append("email", email);
+  // formData.append("password", password);
+  // formData.append("confirmPassword", password);
+  // const result = await addUser(formData);
+ // const UserAddedId = await addUserDirect(formData) as string;
+
+  // Now check address or add new address
+ // const formDataAdd = new FormData();
+  // formDataAdd.append("firstName", purchaseData.address.firstName);
+  // formDataAdd.append("lastName", purchaseData.address.lastName);
+ //formDataAdd.append("userId", UserAddedId);
+  // formDataAdd.append("email", purchaseData.address.email);
+  // formDataAdd.append("mobNo", purchaseData.address.mobNo);
+  // formDataAdd.append("password", "123456");
+  // formDataAdd.append("addressLine1", purchaseData.address.addressLine1!);
+  // formDataAdd.append("addressLine2", purchaseData.address.addressLine2!);
+  // formDataAdd.append("city", purchaseData.address.city);
+  // formDataAdd.append("state", purchaseData.address.state);
+  // formDataAdd.append("zipCode", purchaseData.address.zipCode);
+
+  //const addressAddedId = await addCustomerAddressDirect(formDataAdd);
+  // enter data in order master
+
+  
   //const now = new Date();
   // const now_india = now.toLocaleString("en-IN", {
   //   dateStyle: "medium",
@@ -92,11 +206,16 @@ const orderData = [] as orderMasterDataT[];
  //  console.log("sr No ----------", new_srno)
 
  // const timeId = new Date().toISOString();
+ const total = purchaseData.total;
+  const totalDiscountG = purchaseData.totalDiscountG;
+ const addressId = purchaseData.addressId;
+ const userAddedId = purchaseData.addressId;
+ const customerName = purchaseData.customerName;
   const orderMasterData = {
     // also add auto increment to order,
-    customerName,
-    userId: UserAddedId,
-    addressId: addressAddedId,
+    customerName:customerName,
+    userId: userAddedId,
+    addressId: addressId,
     total:total,
     status:"pending",
     totalDiscountG,
@@ -114,7 +233,7 @@ const orderMasterId = await addOrderToMaster(orderMasterData) as string;
   const purchaseProducts = purchaseData.cartData as ProductType[];
 
   purchaseProducts.forEach((element) => {
-    addProductDraft(element, UserAddedId, orderMasterId);
+    addProductDraft(element, userAddedId, orderMasterId);
   });
 
   //  const toBeDeleted = cartData[0].purchaseSession;
@@ -123,7 +242,7 @@ const orderMasterId = await addOrderToMaster(orderMasterData) as string;
 } //end of cart to orderProduct
 
 
-export async function addProductDraft(element:ProductType, UserAddedId:string, orderMasterId:string) {
+export async function addProductDraft(element:ProductType, userAddedId:string, orderMasterId:string) {
    
   const product = {
     id: element.id,
@@ -132,7 +251,7 @@ export async function addProductDraft(element:ProductType, UserAddedId:string, o
     quantity: element.quantity,
     orderMasterId,
     //purchaseSession: element.purchaseSession,
-    userId: UserAddedId,
+    userId: userAddedId,
     status: element.status,
   };
  // console.log("UserAddedId in add products ----",  product)

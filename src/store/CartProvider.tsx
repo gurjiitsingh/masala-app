@@ -259,7 +259,7 @@ export const CartProvider: React.FC<Props> = ({
 
   
        function setEndTotalG(t:number){
-        console.log("in store set end total------", t)
+       // console.log("in store set end total------", t)
         if (typeof window !== 'undefined') {
           localStorage.setItem("END_TOTAL", JSON.stringify(t));
           }

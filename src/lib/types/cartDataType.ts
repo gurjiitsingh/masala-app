@@ -98,3 +98,13 @@ export type cartDataT = {
             zipCode: string;
         };
       }
+
+
+      export type orderDataType = {
+        userId: string | undefined;
+        customerName: string;
+        cartData: ProductType[];
+        total:number;
+        totalDiscountG:number;
+        addressId: string;
+      }
