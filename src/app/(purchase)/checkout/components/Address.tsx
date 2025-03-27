@@ -22,21 +22,25 @@ import { createNewOrder } from "@/app/action/orders/dbOperations";
 import { purchaseDataT } from "@/lib/types/cartDataType";
 import { fetchdeliveryByZip } from "@/app/action/delivery/dbOperation";
 import { UseSiteContext } from "@/SiteContext/SiteContext";
+import SlideButton from "@/components/SlideButton";
+import { FaCcPaypal } from "react-icons/fa6";
+import { IoMdCash } from "react-icons/io";
 
 const Address = () => {
-  const { endTotalG, cartData, totalDiscountG,  } = useCartContext();
+  const { endTotalG, cartData, totalDiscountG } = useCartContext();
   const {
     couponDisc,
     newOrderCondition,
     deliveryDis,
-    
+    paymentType,
     setdeliveryDis,
     chageDeliveryType,
     deliveryType,
     customerEmail,
   } = UseSiteContext();
+
   const { data: session } = useSession();
-  const [paymentType, setPaymentType] = useState<string>();
+  //const [paymentType, setPaymentType] = useState<string>();
   const router = useRouter();
 
   useEffect(() => {
@@ -100,32 +104,30 @@ const Address = () => {
 
     let canCompleteOrder = true;
 
-
     if (deliveryType === "delivery" && data.zipCode === "") {
       canCompleteOrder = false;
       alert(
         "Bitte geben Sie die Postleitzahl für die Lieferung ein oder wählen Sie die Abholung und erhalten Sie 10% Rabatt"
       );
-    } 
-    
+    }
+
     if (deliveryType === "delivery" && deliveryDis === undefined) {
       canCompleteOrder = false;
-     
-          alert(
-          "Wir können an diese Adresse nicht liefern. Bitte wählen Sie Abholung und erhalten Sie 10 % Rabatt"
-        );
-     
+
+      alert(
+        "Wir können an diese Adresse nicht liefern. Bitte wählen Sie Abholung und erhalten Sie 10 % Rabatt"
+      );
     }
-    
-    if(!newOrderCondition){
-      canCompleteOrder =false;
-      const minSpendMessage = `Minimum ouder amount for delivery is €${deliveryDis?.minSpend}`
-      alert(minSpendMessage)
-      }
-  
-   // if (deliveryType === "pickup" || deliveryDis !== undefined) {
-   if(canCompleteOrder)  {
-   const customAddress = {
+
+    if (!newOrderCondition) {
+      canCompleteOrder = false;
+      const minSpendMessage = `Minimum ouder amount for delivery is €${deliveryDis?.minSpend}`;
+      alert(minSpendMessage);
+    }
+
+    // if (deliveryType === "pickup" || deliveryDis !== undefined) {
+    if (canCompleteOrder) {
+      const customAddress = {
         firstName: data.firstName,
         lastName: data.lastName,
         userId: data.userId,
@@ -164,11 +166,13 @@ const Address = () => {
         // console.log("going to complete")
         router.push(`/complete?paymentypte=Barzahlung`);
         //  router.push(`/checkout?email=${data.email}&deliverytype=${deliveryType}`)
-      }}
+      }
+    }
     // end of ok order condition
   }
 
   useEffect(() => {
+    console.log("paymentType ------------", paymentType);
     // setValue("userId", session?.user?.id);
     setValue("password", "123456");
     //setValue("email", "g@mail.com");
@@ -206,7 +210,9 @@ const Address = () => {
               </label>
               <input {...register("email")} className="input-style" />
               <span className="text-[0.8rem] font-medium text-destructive">
-                {errors.email?.message && <span className="text-red-500">{errors.email?.message}</span>}
+                {errors.email?.message && (
+                  <span className="text-red-500">{errors.email?.message}</span>
+                )}
               </span>
             </div>
 
@@ -216,7 +222,9 @@ const Address = () => {
               </label>
               <input {...register("mobNo")} className="input-style" />
               <span className="text-[0.8rem] font-medium text-destructive">
-                {errors.mobNo?.message && <span className="text-red-500">{errors.mobNo?.message}</span>}
+                {errors.mobNo?.message && (
+                  <span className="text-red-500">{errors.mobNo?.message}</span>
+                )}
               </span>
             </div>
             <input {...register("password", { value: "123456" })} hidden />
@@ -242,7 +250,9 @@ const Address = () => {
                 <input {...register("firstName")} className="input-style" />
                 <span className="text-[0.8rem] font-medium text-destructive">
                   {errors.firstName?.message && (
-                    <span className="text-red-500">{errors.firstName?.message}</span>
+                    <span className="text-red-500">
+                      {errors.firstName?.message}
+                    </span>
                   )}
                 </span>
               </div>
@@ -254,7 +264,9 @@ const Address = () => {
                 <input {...register("lastName")} className="input-style" />
                 <span className="text-[0.8rem] font-medium text-destructive">
                   {errors.lastName?.message && (
-                    <span className="text-red-500">{errors.lastName?.message}</span>
+                    <span className="text-red-500">
+                      {errors.lastName?.message}
+                    </span>
                   )}
                 </span>
               </div>
@@ -267,7 +279,9 @@ const Address = () => {
               <input {...register("addressLine1")} className="input-style" />
               <span className="text-[0.8rem] font-medium text-destructive">
                 {errors.addressLine1?.message && (
-                  <span className="text-red-500">{errors.addressLine1?.message}</span>
+                  <span className="text-red-500">
+                    {errors.addressLine1?.message}
+                  </span>
                 )}
               </span>
             </div>
@@ -281,7 +295,9 @@ const Address = () => {
               <input {...register("addressLine2")} className="input-style" />
               <span className="text-[0.8rem] font-medium text-destructive">
                 {errors.addressLine2?.message && (
-                  <span className="text-red-500">{errors.addressLine2?.message}</span>
+                  <span className="text-red-500">
+                    {errors.addressLine2?.message}
+                  </span>
                 )}
               </span>
             </div>
@@ -320,7 +336,9 @@ const Address = () => {
               />
               <span className="text-[0.8rem] font-medium text-destructive">
                 {errors.zipCode?.message && (
-                  <span className="text-red-500">{errors.zipCode?.message}</span>
+                  <span className="text-red-500">
+                    {errors.zipCode?.message}
+                  </span>
                 )}
               </span>
             </div>
@@ -346,10 +364,10 @@ const Address = () => {
               {/* Select payment type */}
               Zahlungsart auswählen
             </h3>
-            <Button
+            {/* <Button
               className="w-[200px] py-1 text-center bg-amber-400 italic font-bold rounded-xl text-[1.2rem]"
               onClick={() => {
-                setPaymentType("paypal");
+                //   setPaymentType("paypal");
               }}
               value="paypal"
               name="button_1"
@@ -360,13 +378,27 @@ const Address = () => {
             <Button
               className="w-[200px] py-1 text-center bg-amber-500 text-white font-bold rounded-xl text-[1.2rem]"
               onClick={() => {
-                setPaymentType("cod");
+                //  setPaymentType("cod");
               }}
               value="cod"
               name="button_1"
             >
               Cash on Delivery
-            </Button>
+            </Button> */}
+          </div>
+
+          <div  className="flex flex-col gap-3">
+            <div className="w-[300px] flex   justify-start items-center gap-3 italic font-bold  text-[1.2rem]">
+              <SlideButton paytypeL={"paypal"} />
+              <div className="">
+                <span className=" text-blue-900">Pay</span>
+                <span className=" text-sky-500">Pal</span>
+              </div>
+            </div>
+            <div className="w-[300px] flex justify-start items-center gap-3  font-bold  text-[1.2rem]">
+              <SlideButton paytypeL={"cod"} />
+              <div className="text-slate-500"> Cash on delivery</div>
+            </div>
           </div>
         </form>
       </div>

@@ -39,6 +39,8 @@ export const SiteProvider: React.FC<Props> = ({
   const [adminSideBarToggle, setAdminSideBarToggleL] = useState<boolean>(false);
   const [productCategoryIdG, setProductCategoryIdL] = useState<string>("");
  const [newOrderCondition, setNewOrderConditionL  ] = useState<boolean>(false);
+ const [paymentType, setPaymentTypeL ] = useState<string>("");
+ 
   useEffect(() => {
     const deliveryType = window.localStorage.getItem("delivery_type") as string;
     if (deliveryType !== undefined) {
@@ -102,9 +104,15 @@ export const SiteProvider: React.FC<Props> = ({
     setNewOrderConditionL(s)
    }
 
+function setPaymentType(s){
+  setPaymentTypeL(s)
+  }
+
   return (
     <SiteContext.Provider
       value={{
+        paymentType,
+  setPaymentType,
         newOrderCondition,
         setNewOrderCondition,
         open,

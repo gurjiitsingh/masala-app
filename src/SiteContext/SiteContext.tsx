@@ -1,13 +1,13 @@
 "use client";
 
-import { newOrderConditionType } from "@/lib/types/cartDataType";
+
 import { couponDiscType } from "@/lib/types/couponDiscType";
 import { deliveryType } from "@/lib/types/deliveryType";
 import { createContext, useContext } from "react";
 
 type SiteContextType = {
-  newOrderCondition:boolean;
-    setNewOrderCondition:(e:boolean) => void;
+  newOrderCondition: boolean;
+  setNewOrderCondition: (e: boolean) => void;
   open: boolean;
   deliveryType: string;
   sideBarToggle: (e: boolean) => void;
@@ -22,33 +22,41 @@ type SiteContextType = {
   setdeliveryDis: (e: deliveryType) => void;
   showProductDetailM: boolean;
   setShowProductDetailM: (e: boolean) => void;
-  baseProductId: string ;
+  baseProductId: string;
   setBaseProductId: (e: string) => void;
-  adminSideBarToggle:boolean;
-  setAdminSideBarToggleG:(e:boolean) => void;
-  setCustomerEmailG:(e:string) => void;
-  customerEmail:string;
-  productCategoryIdG:string,
-     setProductCategoryIdG:(e:string)=> void,
+  adminSideBarToggle: boolean;
+  setAdminSideBarToggleG: (e: boolean) => void;
+  setCustomerEmailG: (e: string) => void;
+  customerEmail: string;
+  productCategoryIdG: string;
+  setProductCategoryIdG: (e: string) => void;
+  paymentType:string;
+  setPaymentType:(e:string) => void;
 };
 
 const SiteContext = createContext<SiteContextType>({
-   newOrderCondition:false,
-    setNewOrderCondition:(e:boolean) => {return e},
+  paymentType:"",
+  setPaymentType:(e:string) => {return e},
+  newOrderCondition: false,
+  setNewOrderCondition: (e: boolean) => {
+    return e;
+  },
   open: false,
   deliveryType: "pickup",
   sideBarToggle: () => {},
   openBargerMenu: false,
   bargerMenuToggle: () => {},
   openEmailForm: false,
-  emailFormToggle: (e) => {return e;},
+  emailFormToggle: (e) => {
+    return e;
+  },
   chageDeliveryType: (e) => {
     return e;
   },
   couponDisc: {
     couponDesc: "",
     isFeatured: false,
-    minSpend: "",
+    minSpend: 0,
     name: "",
     price: "",
     productCat: "",
@@ -61,7 +69,7 @@ const SiteContext = createContext<SiteContextType>({
     id: "",
     name: "",
     price: "",
-    minSpend: "",
+    minSpend: 0,
     deliveryDesc: "",
     productCat: "",
     //image: string;
@@ -78,17 +86,19 @@ const SiteContext = createContext<SiteContextType>({
   setBaseProductId: (e) => {
     return e;
   },
-  adminSideBarToggle:false,
-     setAdminSideBarToggleG:(e)=> {return e},
-     setCustomerEmailG:(e)=>{return e;},
-     customerEmail:"",
+  adminSideBarToggle: false,
+  setAdminSideBarToggleG: (e) => {
+    return e;
+  },
+  setCustomerEmailG: (e) => {
+    return e;
+  },
+  customerEmail: "",
 
-     productCategoryIdG:"",
-     setProductCategoryIdG:(e)=>{return e;},
-     
-
-
-
+  productCategoryIdG: "",
+  setProductCategoryIdG: (e) => {
+    return e;
+  },
 });
 
 export const UseSiteContext = () => {

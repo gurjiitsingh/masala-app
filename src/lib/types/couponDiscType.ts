@@ -14,7 +14,7 @@ export   type TcouponCodeSchema = z.infer<typeof couponCodeSchema>;
 export type couponDiscType ={
 couponDesc:string;
 isFeatured:boolean;
-minSpend:string;
+minSpend:number;
 name:string;
 price:string;
 productCat:string;
