@@ -1,7 +1,8 @@
 "use client";
 
 
-import { couponDiscType } from "@/lib/types/couponDiscType";
+
+import { couponType } from "@/lib/types/couponType";
 import { deliveryType } from "@/lib/types/deliveryType";
 import { createContext, useContext } from "react";
 
@@ -16,8 +17,8 @@ type SiteContextType = {
   openEmailForm: boolean;
   emailFormToggle: (e: boolean) => void;
   chageDeliveryType: (e: string) => void;
-  couponDisc: couponDiscType | undefined;
-  setCouponDisc: (e: couponDiscType) => void;
+  couponDisc: couponType | undefined;
+  setCouponDisc: (e: couponType) => void;
   deliveryDis: deliveryType | undefined;
   setdeliveryDis: (e: deliveryType) => void;
   showProductDetailM: boolean;
@@ -58,7 +59,7 @@ const SiteContext = createContext<SiteContextType>({
     isFeatured: false,
     minSpend: 0,
     name: "",
-    price: "",
+    price: 0,
     productCat: "",
   },
 

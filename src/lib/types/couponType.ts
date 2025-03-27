@@ -2,19 +2,7 @@ import { z } from "zod";
 
 
 
-export type couponType = {
-  id: string | undefined;
-  name: string;
-  price: string;
-  minSpend: string;
-  couponDesc: string;
-  productCat: string;
-  image: string;
-  isFeatured: boolean;
-  purchaseSession: string | null;
-  quantity: number | null;
-  status: string | null;
-};
+
 
 
 
@@ -57,21 +45,30 @@ export const couponSchema = z.object({
     .string().optional(),
    // .min(2, { message: "coupon description is required" }),
   minSpend: z.string().optional(),
-  //  offerType: z.string().min(1, { message: "Please select category" }),
-  //  dimensions:z.string().optional(),
-  //weight:z.string().optional(),
+  offerType: z.string().optional(),
   isFeatured: z.boolean().optional(),
-
+  expiry: z.string().optional(),
+  discountType: z.string().optional(),
   //image: z.any().refine((file: File) => file?.length !== 0, "File is required"),
   image: z.any().optional(),
-  // .refine((file) => file.size < MAX_FILE_SIZE, "Max size is 5MB.")
-  // .refine(
-  //   (file) => checkFileType(file),
-  //   "Only .jpg, .jpeg formats are supported."
-  // ),
-});
+ });
 
 export type TcouponSchema = z.infer<typeof couponSchema>;
+
+
+export type couponType = {
+  name: string;
+  price: number;
+  productCat: string;
+  id?: string | undefined;
+  couponDesc?: string | undefined;
+  minSpend?: number | undefined;
+  offerType?: string | undefined;
+  isFeatured?: boolean | undefined;
+  expiry?: string | undefined;
+  discountType?: string | undefined;
+  image?: any;
+}
 
 
 export type ShowPorductT = {

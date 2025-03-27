@@ -54,7 +54,7 @@ const PageComp = () => {
       setValue("id", id);
       setValue("name", deliveryData.name);
       setValue("deliveryDesc", deliveryData.deliveryDesc);
-      setValue("minSpend", deliveryData.minSpend);
+      setValue("minSpend", deliveryData.minSpend.toString());
           //  setValue("oldImgageUrl", deliveryData.image);
       setValue("price", deliveryData.price);
       setValue("productCat", deliveryData.productCat);

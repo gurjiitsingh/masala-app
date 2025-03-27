@@ -3,7 +3,7 @@ import { boolean, number, string } from "zod";
 import SiteContext from "./SiteContext";
 import { useEffect, useState } from "react";
 import { deliveryType } from "@/lib/types/deliveryType";
-import { couponDiscType } from "@/lib/types/couponDiscType";
+import { couponType } from "@/lib/types/couponType";
 import { newOrderConditionType } from "@/lib/types/cartDataType";
 
 interface Props {
@@ -15,7 +15,7 @@ export const SiteProvider: React.FC<Props> = ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  //     const setCouponDiscType ={
+  //     const setcouponType ={
   //         couponDesc:{},
   // isFeatured:boolean,
   // minSpend:number,
@@ -32,7 +32,7 @@ export const SiteProvider: React.FC<Props> = ({
   const [openEmailForm, setEmailFormToggle] = useState<boolean>(false);
   const [customerEmail, setCustomerEmailL] = useState<string>("");
   const [deliveryType, setDeliveryType] = useState<string>("pickup");
-  const [couponDisc, setCouponDiscU] = useState<couponDiscType | undefined>();
+  const [couponDisc, setCouponDiscU] = useState<couponType | undefined>();
   const [deliveryDis, setdeliveryDisU] = useState<deliveryType | undefined>();
   const [showProductDetailM, setShowProductDetailML] = useState<boolean>(false);
   const [baseProductId, setBaseProductIdL] = useState<string>("");
@@ -65,7 +65,7 @@ export const SiteProvider: React.FC<Props> = ({
     setDeliveryType(t);
   }
 
-  function setCouponDisc(e: couponDiscType | undefined) {
+  function setCouponDisc(e: couponType | undefined) {
     setCouponDiscU(e);
   }
   function setdeliveryDis(e: deliveryType | undefined) {
@@ -104,7 +104,7 @@ export const SiteProvider: React.FC<Props> = ({
     setNewOrderConditionL(s)
    }
 
-function setPaymentType(s){
+function setPaymentType(s:string){
   setPaymentTypeL(s)
   }
 

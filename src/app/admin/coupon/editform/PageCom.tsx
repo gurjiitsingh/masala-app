@@ -53,8 +53,8 @@ const PageCom = () => {
       setValue("name", couponData.name);
       setValue("couponDesc", couponData.couponDesc);
       //  setValue("oldImgageUrl", couponData.image);
-      setValue("price", couponData.price);
-      setValue("minSpend", couponData.minSpend);
+      setValue("price", couponData.price.toString());
+      setValue("minSpend", couponData.minSpend!.toString());
       // setValue("productCat", couponData.productCat);
       setValue("isFeatured", couponData.isFeatured);
     }

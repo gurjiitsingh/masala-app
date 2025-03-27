@@ -15,34 +15,36 @@ import {
   setDoc,
   where,
 } from "@firebase/firestore"; //doc, getDoc,
-import {
-  couponType,
-  couponSchema,
-  
-} from "@/lib/types/couponType";
+import { couponType, couponSchema } from "@/lib/types/couponType";
 
 export async function addNewcoupon(formData: FormData) {
-  let featured_img: boolean = false;
-  console.log(formData.get("name"));
-  console.log(formData.get("price"));
-  console.log(formData.get("minSpend"));
-  console.log(formData.get("productCat"));
-  console.log(formData.get("couponDesc"));
-  // console.log(formData.get("image"));
-  console.log(formData.get("isFeatured"));
+  const name = formData.get("name");
+  const price = formData.get("price") as string;
+  const minSpend = formData.get("minSpend") as string;
+  const productCat = formData.get("productCat");
+  const couponDesc = formData.get("couponDesc");
+  const offerType = formData.get("offerType");
+  const expiry = formData.get("expiry");
+  const discountType = formData.get("discountType");
+  const isFeatured= false;
 
-  if (formData.get("isFeatured") === "ture") featured_img = true;
+  // formData.append("isFeatured", data.isFeatured);
+
+  //image = formData.get("image"),
 
   //console.log("isFeatured ", typeof formData.get("isFeatured"));
 
   const receivedData = {
-    name: formData.get("name"),
-    price: formData.get("price"),
-    minSpend: formData.get("minSpend"),
-    productCat: formData.get("productCat"),
-    couponDesc: formData.get("couponDesc"),
+    name,
+    price,
+    minSpend,
+    productCat,
+    couponDesc,
+    offerType,
+    expiry,
+    discountType,
+    isFeatured,
     //image: formData.get("image"),
-    isFeatured: featured_img,
   };
 
   const result = couponSchema.safeParse(receivedData);
@@ -71,21 +73,20 @@ export async function addNewcoupon(formData: FormData) {
 
   // imageUrl = "/public/com.jpg";
 
-  // const name = formData.get("name");
-  // const price = formData.get("price");
-  // const productCat = formData.get("productCat");
-  // const couponDesc = formData.get("couponDesc");
-  // const featured = formData.get("isFeatured");
+ const priceF = parseFloat(price) as number;
+ const minSpendF = parseFloat(minSpend) as number;
   const data = {
-    name: formData.get("name"),
-    price: formData.get("price"),
-    productCat: formData.get("productCat"),
-    couponDesc: formData.get("couponDesc"),
-    minSpend: formData.get("minSpend"),
-    // image: imageUrl,
-    isFeatured: featured_img,
+    name,
+    price:priceF,
+    minSpend:minSpendF,
+    productCat,
+    couponDesc,
+    offerType,
+    expiry,
+    discountType,
+    isFeatured,
   };
-  //console.log("data to be saved ---", data)
+  console.log("data to be saved ---", data)
 
   try {
     const docRef = await addDoc(collection(db, "coupon"), data);
@@ -99,8 +100,6 @@ export async function addNewcoupon(formData: FormData) {
 
 type rt = {
   success: string;
- 
-  
 };
 
 export async function deletecoupon(id: string): Promise<rt> {
@@ -112,7 +111,7 @@ export async function deletecoupon(id: string): Promise<rt> {
 export async function editcoupon(formData: FormData) {
   const id = formData.get("id") as string;
   const image = formData.get("image");
- // const oldImgageUrl = formData.get("oldImgageUrl") as string;
+  // const oldImgageUrl = formData.get("oldImgageUrl") as string;
   const featured_img: boolean = false;
   // featured_img = formData.get("oldImgageUrl");
 
@@ -121,8 +120,8 @@ export async function editcoupon(formData: FormData) {
     price: formData.get("price"),
     productCat: formData.get("productCat"),
     couponDesc: formData.get("couponDesc"),
-    minSpend:formData.get("minSpend"),
-   // image: formData.get("image"),
+    minSpend: formData.get("minSpend"),
+    // image: formData.get("image"),
     isFeatured: featured_img,
   };
 
@@ -178,7 +177,7 @@ export async function editcoupon(formData: FormData) {
     price: formData.get("price"),
     productCat: formData.get("productCat"),
     couponDesc: formData.get("couponDesc"),
-    minSpend:formData.get("minSpend"),
+    minSpend: formData.get("minSpend"),
     //image: imageUrl,
     isFeatured: featured_img,
   };
@@ -196,7 +195,7 @@ export async function editcoupon(formData: FormData) {
 export async function fetchcoupon(): Promise<couponType[]> {
   const result = await getDocs(collection(db, "coupon"));
 
-  let data = [] as couponType[];
+  const data = [] as couponType[];
   result.forEach((doc) => {
     const pData = { id: doc.id, ...doc.data() } as couponType;
     data.push(pData);
@@ -221,7 +220,7 @@ export async function fetchcouponById(id: string): Promise<couponType> {
 export async function fetchcouponByCode(
   condname: string
 ): Promise<couponType[]> {
-  let data = [] as couponType[];
+  const data = [] as couponType[];
   const q = query(collection(db, "coupon"), where("name", "==", condname));
   const querySnapshot = await getDocs(q);
 
