@@ -24,12 +24,7 @@ export const SideCart = () => {
   const ref = useRef(null);
   const router = useRouter();
   useClickAway(ref, () => sideBarToggle());
-  // const sideBarToggle = () => setOpen(prev => !prev)
-  // function deliveryHandle(){
-  //  /// setShowEmailForm((state)=>!state)
-  //  emailFormToggle(false)
-  //  chageDeliveryType("delivery")
-  // }
+ 
 
   function pickUpHandle() {
     /// setShowEmailForm((state)=>!state)

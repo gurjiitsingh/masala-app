@@ -11,6 +11,7 @@ useEffect(()=>{
 },[paymentType,on])
 
 function clickHandler(){
+  console.log("paytype----------",paytypeL)
     setPaymentType(paytypeL)
      setOn(true)
 }

@@ -223,7 +223,7 @@ const orderData = [] as orderMasterDataT[];
     srno:new_srno,
    
   } as orderMasterDataT; 
-
+//console.log("order master---------", orderMasterData)
   
 const orderMasterId = await addOrderToMaster(orderMasterData) as string;
 
@@ -233,7 +233,8 @@ const orderMasterId = await addOrderToMaster(orderMasterData) as string;
   const purchaseProducts = purchaseData.cartData as ProductType[];
 
   purchaseProducts.forEach((element) => {
-    addProductDraft(element, userAddedId, orderMasterId);
+  //  console.log("order item---------", element,userAddedId, orderMasterId)
+   addProductDraft(element, userAddedId, orderMasterId);
   });
 
   //  const toBeDeleted = cartData[0].purchaseSession;
@@ -252,7 +253,7 @@ export async function addProductDraft(element:ProductType, userAddedId:string, o
     orderMasterId,
     //purchaseSession: element.purchaseSession,
     userId: userAddedId,
-    status: element.status,
+  //  status: element.status,
   };
  // console.log("UserAddedId in add products ----",  product)
   try {

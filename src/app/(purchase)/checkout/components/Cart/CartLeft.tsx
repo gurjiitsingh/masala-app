@@ -26,32 +26,13 @@ export default function CartLeft() {
     setNewOrderCondition,
   } = UseSiteContext();
 
-  console.log("newOrderCondition-------------", newOrderCondition)
+  //console.log("newOrderCondition-------------", newOrderCondition)
   
  const router = useRouter();
-// const {
-//     newOrderCondition,
-//     deliveryDis,
-   
-//     setdeliveryDis,
-//     chageDeliveryType,
-//     deliveryType,
-//     customerEmail,
-//   } = UseSiteContext();
-
-
-
-  // const searchParams = useSearchParams();
-  //const deliveryType = searchParams.get("deliverytype");
-
-  //console.log("deliveryType -------------", deliveryType)
 
   const [addCoupon, setAddCoupon] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState(false);
-  //console.log("del type------", searchParams.get("deliverytype"));
-  //const { cartData } =  useCartContext();
   const { cartData, setEndTotalG, setTotalDiscountG, endTotalG,  totalDiscountG } = useCartContext();
-  //console.log("kljjljlkll", cartData.lenght)
   let total = 0;
   cartData.forEach((item: cartProductType) => {
     total += item.quantity! * +item.price;
@@ -90,19 +71,17 @@ export default function CartLeft() {
   const endPriceComma = endPriceS.split(".").join(",");
   useEffect(() => {
     endPrice = +endPrice.toFixed(2);
-    // if(deliveryDis?.minSpend)
-   // console.log("deliveryDis?.minSpend-------------", deliveryDis);
     setEndTotalG(endPrice);
     
   }, [endPrice]);
 
   useEffect(() => {
-    console.log("type, endprice, minspend--------", deliveryType,endPrice,deliveryDis?.minSpend);
+   // console.log("type, endprice, minspend--------", deliveryType,endPrice,deliveryDis?.minSpend);
      if (deliveryType === "delivery") {
       if (deliveryDis?.minSpend !== undefined) {
         if (deliveryDis?.minSpend >= endPrice) {
           // newOrderCondition
-          console.log("order amount is low-----------",deliveryDis?.minSpend > endPrice)
+        //  console.log("order amount is low-----------",deliveryDis?.minSpend > endPrice)
          // const message = `Minimum amout for order is `
           setNewOrderCondition(false)
          
@@ -121,16 +100,12 @@ export default function CartLeft() {
      if (deliveryType === "delivery") {
       if (deliveryDis?.minSpend !== undefined) {
         if (deliveryDis?.minSpend >= endPrice) {
-          // newOrderCondition
-         // console.log("order amount is low-----------",deliveryDis?.minSpend > endPrice)
-         // const message = `Minimum amout for order is `
           setNewOrderCondition(false)
-         
-        }else{
+         }else{
           setNewOrderCondition(true)
         }
       }
-     // console.log("deliveryDis minspend--------", deliveryDis?.minSpend);
+    
     }
 
   }, []);
@@ -147,28 +122,32 @@ async function proceedToOrder(){
 
   console.log("paymentType------------", paymentType)
   console.log("deliveryType------------", deliveryType)
-  console.log("deliveryDis minSpend------------", deliveryDis?.minSpend)
+  console.log("deliveryDis minSpend------------", deliveryDis)
   console.log("newOrderCondition ------------", newOrderCondition)
 
   
   if(paymentType === "" || paymentType === undefined){
     canCompleteOrder = false;
-    allReadyAlerted = true;
+   
     setIsDisabled(false)
     alert(
       "Select Payment type"
     );
+    allReadyAlerted = true;
   }
 
  
 
   if (deliveryType === "delivery" && deliveryDis === undefined) {
+    console.log("deliveryType----",deliveryType,"deliveryDis-----", deliveryDis,"allReadyAlerted---",allReadyAlerted)
     setIsDisabled(false)
        canCompleteOrder = false;
+      
  if(!allReadyAlerted){
        alert(
          "Wir können an diese Adresse nicht liefern. Bitte wählen Sie Abholung und erhalten Sie 10 % Rabatt"
        );
+       allReadyAlerted = true;
       }
      }
 
@@ -183,6 +162,8 @@ async function proceedToOrder(){
   order_user_Id = JSON.parse(localStorage.getItem("order_user_Id") || "");
    customer_name = JSON.parse(localStorage.getItem("customer_name") || "");
 
+   console.log("address id, useraddress id,  customer name ",AddressId,order_user_Id, customer_name)
+
 }
 
  //console.log("userdata-----------",AddressId,order_user_Id,customer_name)
@@ -192,7 +173,7 @@ async function proceedToOrder(){
       setIsDisabled(false)
       canCompleteOrder = false;
       if(!allReadyAlerted){
-      const minSpendMessage = `Minimum ouder amount for delivery is €${deliveryDis?.minSpend}`;
+      const minSpendMessage = `Minimum order amount for delivery is €${deliveryDis?.minSpend}`;
       alert(minSpendMessage);
       }
     }
@@ -200,7 +181,7 @@ async function proceedToOrder(){
     // if (deliveryType === "pickup" || deliveryDis !== undefined) {
     if (canCompleteOrder) {
         const purchaseData = {
-        userId: "kljlkl",//order_user_Id, //session?.user?.id,
+        userId: order_user_Id,//order_user_Id, //session?.user?.id,
         customerName:customer_name,
         cartData,
         total: endTotalG,
@@ -227,7 +208,32 @@ async function proceedToOrder(){
 }
 
 
+const [disablePickUpBtn, setDisablePickUpBtn] = useState(false);
+  const [disableDeliveryBtn, setDisableDeliveryBtn] = useState(false);
 
+useEffect(()=>{
+  if(deliveryType==='pickup'){
+    setDisablePickUpBtn(true)
+    setDisableDeliveryBtn(false);
+    console.log("deliveryType---------",deliveryType)
+  }
+  if(deliveryType==='delivery'){
+   
+    setDisablePickUpBtn(false)
+    setDisableDeliveryBtn(true);
+    console.log("deliveryType---------",deliveryType)
+  }
+  if(deliveryType===""){
+  
+    setDisablePickUpBtn(false)
+    setDisableDeliveryBtn(false);
+    console.log("deliveryType---------",deliveryType)
+  }
+  },[deliveryType])
+  
+  
+  
+  
 
 
   return (
@@ -272,8 +278,8 @@ async function proceedToOrder(){
 
           <div className="font-semibold border-b border-slate-200 py-3 w-full flex  justify-start gap-4">
             <div className="w-fit">
-              {deliveryType === "pickup" ? (
-                <button
+             
+                <button disabled={disablePickUpBtn} 
                   onClick={() => chageDeliveryType("pickup")}
                   className="flex gap-2  items-center text-sm text-slate-600 bg-green-200 border border-slate-200 rounded-2xl px-3 font-semibold py-1 w-full text-left "
                 >
@@ -282,22 +288,12 @@ async function proceedToOrder(){
                   <FaChevronDown />
                 </span> */}
                 </button>
-              ) : (
-                <button
-                  onClick={() => chageDeliveryType("pickup")}
-                  className="shadow-lg flex gap-2 items-center text-sm text-slate-600 bg-red-200 border border-slate-200   rounded-2xl px-3 font-semibold py-1 w-full text-left "
-                >
-                  <span>Abholen </span>
-                  {/* <span>
-                  <FaChevronDown />
-                </span> */}
-                </button>
-              )}
+            
             </div>
 
             <div className="w-fit">
-              {deliveryType === "delivery" ? (
-                <button
+             
+                <button disabled={disableDeliveryBtn}
                   onClick={() => chageDeliveryType("delivery")}
                   className="flex gap-2 items-center text-sm text-slate-600 bg-green-200 border border-slate-50 rounded-2xl px-3 font-semibold py-1 w-full text-left "
                 >
@@ -306,17 +302,7 @@ async function proceedToOrder(){
                   <FaChevronDown />
                 </span> */}
                 </button>
-              ) : (
-                <button
-                  onClick={() => chageDeliveryType("delivery")}
-                  className="shadow-lg flex gap-2 items-center text-sm text-slate-600 bg-red-200 border border-slate-50 rounded-2xl px-3 font-semibold py-1 w-full text-left "
-                >
-                  <span>Lieferung </span>
-                  {/* <span>
-                  <FaChevronDown />
-                </span> */}
-                </button>
-              )}
+            
             </div>
           </div>
 
