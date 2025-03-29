@@ -111,7 +111,8 @@ export default function CategorySlider() {
                   <div className="flex flex-col  gap-1 ">
                     <div className="h-fit w-fit rounded-lg  pl-5 ">
                       <img
-                        className="w-[70px] rounded-lg"
+                      //  className="w-[70px] rounded-lg"
+                       className="rounded-lg h-20 w-48 object-fill"
                         src={category.image}
                       />
                     </div>

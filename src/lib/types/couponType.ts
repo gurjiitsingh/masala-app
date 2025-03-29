@@ -65,8 +65,11 @@ export type couponType = {
   minSpend?: number | undefined;
   offerType?: string | undefined;
   isFeatured?: boolean | undefined;
+  isActivated: boolean | undefined;
   expiry?: string | undefined;
   discountType?: string | undefined;
+  startDate:string | undefined;
+  date:string | undefined;
   image?: any;
 }
 

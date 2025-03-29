@@ -27,7 +27,7 @@ export async function addNewcoupon(formData: FormData) {
   const expiry = formData.get("expiry");
   const discountType = formData.get("discountType");
   const isFeatured= false;
-
+const isActivated = true;
   // formData.append("isFeatured", data.isFeatured);
 
   //image = formData.get("image"),
@@ -73,6 +73,12 @@ export async function addNewcoupon(formData: FormData) {
 
   // imageUrl = "/public/com.jpg";
 
+  const now_german = new Date().toLocaleString("en-DE", {
+    dateStyle: "medium",
+    timeStyle: "medium",
+    timeZone: "Europe/Berlin",
+  });
+
  const priceF = parseFloat(price) as number;
  const minSpendF = parseFloat(minSpend) as number;
   const data = {
@@ -85,6 +91,9 @@ export async function addNewcoupon(formData: FormData) {
     expiry,
     discountType,
     isFeatured,
+    isActivated,
+    startDate:now_german,
+    date:now_german,
   };
   console.log("data to be saved ---", data)
 

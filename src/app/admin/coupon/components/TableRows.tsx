@@ -22,7 +22,7 @@ import { couponType } from "@/lib/types/couponType";
 function TableRows({ coupon }:{coupon:couponType}){
 
 //const router = useRouter();
-
+console.log("copoun data------------",coupon)
  async function handleDelete(coupon:couponType) {
    // confirm("Do you want to delete Coupon!\n If yes click OK \n If not click Cancel.");
    confirm("Möchten Sie den Gutschein löschen?\n Falls ja, klicken Sie auf OK. \n Falls nicht, klicken Sie auf Cancel.");
@@ -41,7 +41,7 @@ function TableRows({ coupon }:{coupon:couponType}){
   return (
     <TableRow key={coupon.id} className="whitespace-nowrap bg-slate-50 rounded-lg p-1 my-1">
       <TableCell>{coupon.name}</TableCell>
-      <TableCell> %{coupon.price}</TableCell>
+      <TableCell>{coupon.discountType ==='flate'? <>flate &#8364;{coupon.price}</>:<>%{coupon.price}</>}</TableCell>
       {/* <TableCell>
         <div className=" px-3 py-1 text-center ">
           {coupon?.image&&
@@ -56,7 +56,9 @@ function TableRows({ coupon }:{coupon:couponType}){
       </TableCell> */}
  <TableCell>&#8364;{coupon.minSpend}</TableCell>
       {/* <TableCell>{coupon.productCat}</TableCell> */}
-      <TableCell>{coupon.couponDesc}</TableCell>
+ 
+      <TableCell>{coupon.expiry}</TableCell>
+      <TableCell>{coupon.date}</TableCell>
       {/* <TableCell>       
         {coupon?.isFeatured === true && (
           <span className="ml-2 bg-gradient-to-tr from-blue-500 to-indigo-400 text-white text-[10px] rounded-full px-3 py-1">
@@ -78,7 +80,7 @@ function TableRows({ coupon }:{coupon:couponType}){
           }
           >
             <Button size="sm" className="bg-red-500 px-1 py-0">
-              {" "}
+             
               <CiEdit size={20} className="text-white" />
             </Button>
           </Link>
@@ -89,6 +91,7 @@ function TableRows({ coupon }:{coupon:couponType}){
           </Button>
         </p>
       </TableCell>
+      <TableCell>{coupon.couponDesc}</TableCell>
     </TableRow>
   );
 };

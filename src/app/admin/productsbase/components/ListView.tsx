@@ -76,7 +76,7 @@ const ListView = ({ title }: productTableProps) => {
       <h3 className="text-xl mb-4 font-semibold">
        Select Category
         </h3>
-        <div className="flex gap-3">
+        <div className="flex flex-wrap gap-3">
 {categoryData.map((cate)=>{
   return <CategoryComp name={cate.name} id={cate.id} key={cate.name} cateId={cateId} fetchServiceHandler={fetchServiceHandler} />
 })}

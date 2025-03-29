@@ -7,6 +7,7 @@ import "../globals.css";
 
 import { SiteProvider } from "@/SiteContext/SiteProvider";
 import SideBarBase from "./SideBarBase";
+import { ButtonProvider } from "@/ButtonContext/ButtonProvider";
 
 // export const metadata = {
 //   title: "Next.js",
@@ -22,6 +23,7 @@ export default function RootLayout({
     <html lang="de">
       <body>
         <SiteProvider>
+        <ButtonProvider>
           <main className="relative flex border-0">
             <SideBarBase />
 
@@ -34,6 +36,7 @@ export default function RootLayout({
               </div>
             </div>
           </main>
+          </ButtonProvider>
         </SiteProvider>
       </body>
     </html>

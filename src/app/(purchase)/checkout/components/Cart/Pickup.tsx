@@ -14,7 +14,7 @@ export default function Pickup({total}:{total:number}) {
                   </button>
                   <div className="flex gap-1">
                     - <span>&#8364;</span> <span> 
-                        {pickupDiscount}
+                        {pickupDiscount.toString().replace(/\./g, ",")}
                         </span>
                   </div>
                 </div>}

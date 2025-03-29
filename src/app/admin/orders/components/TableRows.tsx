@@ -22,7 +22,7 @@ function TableRows({ order }:{order:orderMasterDataT}){
       <TableCell>{order.status}</TableCell>
         <TableCell>&#8364;{order.total}</TableCell>
         <TableCell>{order.totalDiscountG}%</TableCell>
-      <TableCell><Link href={
+      <TableCell><Link className="p-1 rounded-2xl bg-amber-400" href={
         {
            pathname: `/admin/orders/order-detail`,
          query: { masterId: order.id, userId: order.userId,addressId:order.addressId 

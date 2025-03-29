@@ -6,7 +6,7 @@ import { couponType } from "@/lib/types/couponType";
 import { deliveryType } from "@/lib/types/deliveryType";
 import { createContext, useContext } from "react";
 
-type SiteContextType = {
+type ButtonContextType = {
   newOrderCondition: boolean;
   setNewOrderCondition: (e: boolean) => void;
   open: boolean;
@@ -31,13 +31,13 @@ type SiteContextType = {
   customerEmail: string;
   productCategoryIdG: string;
   setProductCategoryIdG: (e: string) => void;
-  paymentType:string;
-  setPaymentType:(e:string) => void;
+  discountType:string;
+  setdiscountType:(e:string) => void;
 };
 
-const SiteContext = createContext<SiteContextType>({
-  paymentType:"",
-  setPaymentType:(e:string) => {return e},
+const ButtonContext = createContext<ButtonContextType>({
+  discountType:"",
+  setdiscountType:(e:string) => {return e},
   newOrderCondition: false,
   setNewOrderCondition: (e: boolean) => {
     return e;
@@ -54,7 +54,7 @@ const SiteContext = createContext<SiteContextType>({
   chageDeliveryType: (e) => {
     return e;
   },
-  couponDisc: { 
+  couponDisc: {
     couponDesc: "",
     isFeatured: false,
     minSpend: 0,
@@ -105,12 +105,12 @@ const SiteContext = createContext<SiteContextType>({
   },
 });
 
-export const UseSiteContext = () => {
-  const context = useContext(SiteContext);
+export const UseButtonContext = () => {
+  const context = useContext(ButtonContext);
   if (!context) {
     throw new Error("useCartContext must be used within a CartContextProvider");
   }
   return context;
 };
 
-export default SiteContext;
+export default ButtonContext;

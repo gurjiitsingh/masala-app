@@ -4,52 +4,59 @@ import React from "react";
 
 export default function Footer() {
   return (
-    <footer className="px-1  divide-y dark:bg-gray-100 dark:text-gray-800 bg-white">
-      <div className="container flex flex-col justify-between py-10 mx-auto space-y-8 lg:flex-row lg:space-y-0">
-        <div className="lg:w-1/3 flex gap-2">
-          <div className="flex items-center justify-center w-12 h-12 rounded-full dark:bg-violet-600">
-            <Link href="/">
-              <img className="h-12 md:h-12" src="/logo.webp" alt="Logo" />
-            </Link>
+    <footer className=" dark:bg-gray-100 dark:text-blue-800 bg-amber-300 pt-12 mt-12 -mb-20">
+      <div className="container mx-auto  ">
+        <div className="flex flex-col md:flex-row justify-between gap-8 md:gap-1">
+          <div className="flex items-center gap-1 w-full h-fit border border-amber-50 p-1 mx-1 rounded-2xl bg-amber-200">
+            <div className="flex items-center  justify-start  rounded-full dark:bg-blue-600">
+              <Link href="/">
+                <img className="h-12 md:h-12" src="/logo.webp" alt="Logo" />
+              </Link>
+            </div>
+            <div className="flex items-center  h-fit">
+            <span className="self-center text-md  text-slate-700">
+              Masala Taste of India
+            </span>
+            </div>
           </div>
-          <span className="self-center text-2xl font-semibold">
-            Masala GF
-          </span>
-        </div>
-        <div className="grid grid-cols-2 text-sm gap-x-3 gap-y-8 lg:w-2/3 sm:grid-cols-4">
-          <div className="space-y-3">
-            <h3 className="tracking-wide uppercase dark:text-gray-900">
-              Product
+
+          <div className="flex flex-col gap-2 w-full px-2">
+            <h3 className="tracking-wide text-xl font-bold uppercase dark:text-gray-700">
+              Links
             </h3>
-            <ul className="space-y-1">
-              <li>
-                <a rel="noopener noreferrer" href="#">
-                  Features
+            <ul className="flex flex-col gap-3">
+              <li className="border-b border-slate-400 pb-1">
+                <Link href="/">Home</Link>
+              </li>
+              <li className="border-b border-slate-400 pb-1">
+                <Link href="/shop">Menü</Link>
+              </li>
+              <li className="border-b border-slate-400 pb-1">
+                <Link href="/about">Über Uns</Link>
+              </li>
+              <li className="border-b border-slate-400 pb-1">
+                <Link href="/contact">Kontakt</Link>
+              </li>
+              <li className="border-b border-slate-400 pb-1">
+                <a
+                  href="https://ukonline.gstadeveloper.com/table-reservation"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Tisch reservation
                 </a>
               </li>
-              <li>
-                <a rel="noopener noreferrer" href="#">
-                  Integrations
-                </a>
-              </li>
-              <li>
-                <a rel="noopener noreferrer" href="#">
-                  Pricing
-                </a>
-              </li>
-              <li>
-                <a rel="noopener noreferrer" href="#">
-                  FAQ
-                </a>
+              <li className="pb-1">
+                <Link href="/allergene">Allergene</Link>
               </li>
             </ul>
           </div>
-          <div className="space-y-3">
-            <h3 className="tracking-wide uppercase dark:text-gray-900">
+          <div className="flex flex-col gap-2 w-full px-2">
+            <h3 className="tracking-wide text-xl font-bold uppercase dark:text-gray-700">
               Company
             </h3>
             <ul className="space-y-1">
-              <li>
+              <li className="border-b border-slate-400 pb-1">
                 <a rel="noopener noreferrer" href="#">
                   Privacy
                 </a>
@@ -61,7 +68,7 @@ export default function Footer() {
               </li>
             </ul>
           </div>
-          <div className="space-y-3">
+          {/* <div className="space-y-3">
             <h3 className="uppercase dark:text-gray-900">Developers</h3>
             <ul className="space-y-1">
               <li>
@@ -80,9 +87,11 @@ export default function Footer() {
                 </a>
               </li>
             </ul>
-          </div>
-          <div className="space-y-3">
-            <div className="uppercase dark:text-gray-900">Social media</div>
+          </div> */}
+          <div className="flex flex-col gap-2 w-full px-2">
+            <div className="tracking-wide text-xl font-bold uppercase dark:text-gray-700">
+              Social media
+            </div>
             <div className="flex justify-start space-x-3">
               <a
                 rel="noopener noreferrer"
@@ -132,9 +141,19 @@ export default function Footer() {
           </div>
         </div>
       </div>
-      <div className="py-6 text-sm text-center dark:text-gray-600">
-        © 2025 Company Co. All rights reserved.
+      <div className="bg-[#64870d] mt-12 pt-3 pb-6">
+        <div className="container mx-auto flex flex-col  items-center">
+          <p className="text-md text-slate-100">
+            Powered by <a href="http://www.gstadeveloper.com">GstaDeveloper.com</a>
+          </p>
+          <p className="text-md text-slate-100">
+            Copyright © <span className="year">2025</span> All Rights Reserved
+            by <b>Masala Taste of india</b>
+          </p>
+        </div>
       </div>
+    
     </footer>
+    
   );
 }

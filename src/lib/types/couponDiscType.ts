@@ -11,7 +11,7 @@ export const couponCodeSchema = z.object({
 export   type TcouponCodeSchema = z.infer<typeof couponCodeSchema>;
 
 
-export type couponDiscType ={
+export type couponDiscType ={ 
 couponDesc:string;
 isFeatured:boolean;
 minSpend:number;

@@ -1,34 +1,42 @@
-import { UseSiteContext } from '@/SiteContext/SiteContext';
+//import { UseSiteContext } from '@/SiteContext/SiteContext';
+import { UseButtonContext } from '@/ButtonContext/ButtonContext';
 import React, { useEffect, useState } from 'react'
 
-export default function SlideButton({paytypeL}:{paytypeL:string}) {
+
+
+export default function SlideButton({value,name,setTargetValue}:{value:string, name:string,setTargetValue:(e:string)=>void}) {
 const [ on, setOn ] = useState<boolean>(false);
-const { paymentType, setPaymentType } = UseSiteContext();
+//const { paymentType, setPaymentType } = UseSiteContext();
+const { discountType , setdiscountType} = UseButtonContext();
+//const [valueL, setValue ] = useState<string>("");
+
 useEffect(()=>{
-    if(paymentType !== paytypeL){
+    if(discountType !== value){
         setOn(false);
     }
-},[paymentType,on])
+},[discountType,on])
 
 function clickHandler(){
-  console.log("paytype----------",paytypeL)
-    setPaymentType(paytypeL)
+  setdiscountType(value)
+  setTargetValue(value)
      setOn(true)
 }
-  return (
-    <button onClick={() => {clickHandler()
+  return (<div className='flex gap-3'>
+    <div onClick={() => {clickHandler()
        }
              
         }>
-    <div className=' w-[100px] bg-slate-300  border-zinc-300 border-2 rounded-3xl px-1 py-1'>
-        <div className='w-full bg-amber-200 rounded-3xl shadow-2xl'>
+    <div className=' w-[70px]   border-zinc-300 border-1 rounded-2xl '>
+        <div className='w-full  rounded-2xl '>
         {!on ?
-     <div className='w-full flex justify-start'>  <div className='w-5 h-5 bg-slate-300 rounded-3xl px-1 py-1'></div></div>
+     <div className='w-full flex justify-start'>  <div className='w-4 h-4 bg-slate-300 rounded-2xl px-1 py-1'></div></div>
      :
-     <div className='w-full flex justify-end'>   <div className='w-5 h-5 bg-red-300 rounded-3xl px-1 py-1'></div></div>
+     <div className='w-full flex justify-end'>   <div className='w-4 h-4 bg-green-500 rounded-2xl px-1 py-1'></div></div>
         }
     </div></div>
-    </button>
+    </div>
+<div className=''>{name}</div>
+    </div>
   )
 }
 

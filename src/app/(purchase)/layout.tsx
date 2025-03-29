@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import "../globals.css";
 import Comcomp from "@/components/Comcomp";
-import Cart from "@/components/CartBottom/CartBottom"
-
+import Cart from "@/components/CartBottom/CartBottom";
 
 export const metadata: Metadata = {
   title: "Masala GF",
@@ -14,25 +13,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
-
- 
-  
-  
   return (
     <html lang="de">
-    <body>
-      
-    <Comcomp>
-     
-    
-    {children}
-    <div className="sticky  bottom-4 flex justify-end pr-3 z-50"><Cart /></div>  
-      </Comcomp> 
+      <body>
+        <Comcomp>{children}</Comcomp>
       </body>
-  </html>
-    
-     
-     
+    </html>
   );
 }

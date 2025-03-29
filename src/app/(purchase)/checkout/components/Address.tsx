@@ -11,7 +11,7 @@ import {
   searchAddressEmail,
   // searchAddressByUserId,
 } from "@/app/action/address/dbOperations";
-
+import { FaCheck } from "react-icons/fa";
 import { useSession } from "next-auth/react";
 
 //import { searchUserById } from "@/app/action/user/dbOperation";
@@ -19,7 +19,7 @@ import { createNewOrderCustomerAddress } from "@/app/action/orders/dbOperations"
 import { purchaseDataT } from "@/lib/types/cartDataType";
 import { fetchdeliveryByZip } from "@/app/action/delivery/dbOperation";
 import { UseSiteContext } from "@/SiteContext/SiteContext";
-import SlideButton from "@/components/SlideButton";
+
 
 const Address = () => {
   // const { endTotalG, cartData, totalDiscountG } = useCartContext();
@@ -403,6 +403,7 @@ if(paymentType===""){
               {/* Select payment type */}
               Zahlungsart auswählen
             </h3>
+            <div className="flex gap-2 items-center">
             <button disabled={ disablePaypalBtn }
               className="w-[200px] py-1 text-center bg-amber-400 italic font-bold rounded-xl text-[1.2rem]"
               onClick={() => {
@@ -414,6 +415,9 @@ if(paymentType===""){
               <span className=" text-blue-900">Pay</span>
               <span className=" text-sky-500">Pal</span>
             </button>
+{paymentType==='paypal' && <FaCheck className="text-green-300" size={24} />}
+            </div>
+            <div className="flex gap-2 items-center">
             <button disabled={ disableCodBtn }
               className="w-[200px] py-1 text-center bg-amber-500 text-white font-bold rounded-xl text-[1.2rem]"
               onClick={() => {
@@ -424,6 +428,8 @@ if(paymentType===""){
             >
               Cash on Delivery
             </button>
+            {paymentType==='cod' && <FaCheck className="text-green-300 " size={24} />}
+            </div>
           </div>
 
           {/* <div className="flex flex-col gap-6">

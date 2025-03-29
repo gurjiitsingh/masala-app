@@ -59,10 +59,16 @@ export default function CartLeft() {
   }
 
   if (couponDisc?.price) {
-    // console.log("----coupon disc", +total * +couponDisc?.price);
+     console.log("----coupon disc",couponDisc);
+     if(couponDisc.discountType === "flat"){
+      endPrice = endPrice - (+couponDisc?.price);
+      // endPrice = +endPrice.toFixed(2);
+     // TotalDiscount = TotalDiscount + +couponDisc?.price;
+     }else{
     endPrice = endPrice - (+total * +couponDisc?.price) / 100;
     // endPrice = +endPrice.toFixed(2);
     TotalDiscount = TotalDiscount + +couponDisc?.price;
+     }
   }
   //  console.log("total discount ------",TotalDiscount)
   //  console.log("end price -------", total- total*(+TotalDiscount)/100)
@@ -120,10 +126,10 @@ async function proceedToOrder(){
   let canCompleteOrder = true;
   let allReadyAlerted = false;
 
-  console.log("paymentType------------", paymentType)
-  console.log("deliveryType------------", deliveryType)
-  console.log("deliveryDis minSpend------------", deliveryDis)
-  console.log("newOrderCondition ------------", newOrderCondition)
+  // console.log("paymentType------------", paymentType)
+  // console.log("deliveryType------------", deliveryType)
+  // console.log("deliveryDis minSpend------------", deliveryDis)
+  // console.log("newOrderCondition ------------", newOrderCondition)
 
   
   if(paymentType === "" || paymentType === undefined){
@@ -215,19 +221,19 @@ useEffect(()=>{
   if(deliveryType==='pickup'){
     setDisablePickUpBtn(true)
     setDisableDeliveryBtn(false);
-    console.log("deliveryType---------",deliveryType)
+   // console.log("deliveryType---------",deliveryType)
   }
   if(deliveryType==='delivery'){
    
     setDisablePickUpBtn(false)
     setDisableDeliveryBtn(true);
-    console.log("deliveryType---------",deliveryType)
+   // console.log("deliveryType---------",deliveryType)
   }
   if(deliveryType===""){
   
     setDisablePickUpBtn(false)
     setDisableDeliveryBtn(false);
-    console.log("deliveryType---------",deliveryType)
+   // console.log("deliveryType---------",deliveryType)
   }
   },[deliveryType])
   

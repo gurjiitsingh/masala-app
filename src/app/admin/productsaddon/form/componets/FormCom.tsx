@@ -283,7 +283,7 @@ const FormCom = () => {
                   </span>
                 </div>
 
-                <Button type="submit">Add Product </Button>
+                <Button className="form-btn-color" type="submit">Save </Button>
               </div>
             </div>
           </div>

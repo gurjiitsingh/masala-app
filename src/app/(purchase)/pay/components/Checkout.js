@@ -12,8 +12,8 @@ export default function Checkout(){
     const [{ options, isPending }, dispatch] = usePayPalScriptReducer();
     //const [currency, setCurrency] = useState(options.currency);
     const router = useRouter();
-    const {  productTotalCost, endTotalG } = useCartContext();
-   const endTotalG1 = endTotalG.toFixed(2)
+    const {   endTotalG } = useCartContext();
+   
   //  console.log("amount--------------",productTotalCost,typeof(productTotalCost), endTotalG1,typeof(endTotalG1),endTotalG,typeof(endTotalG))
   
     // const onCurrencyChange = ({ target: { value } }) => {
@@ -26,19 +26,7 @@ export default function Checkout(){
     //     },
     //   });
     // };
-   // console.log("productTotalCost----------",productTotalCost,typeof(productTotalCost),"endTotalG----------",endTotalG,typeof(endTotalG))
-  
-    //var products =  JSON.parse(window.localStorage.getItem("cart_product_data"));
-    // type customerAddressType =	{
-		// 	firstNamestring: string;
-    //         lastName: string;
-		// 	address_line_1: string;
-    //         address_line_2: string;
-    //         admin_area_2: string;
-    //         admin_area_1: string;
-    //         postal_code: string;
-    //         country_code: string;
-		// 	}
+
     let customerAddress;
     if (typeof window !== 'undefined') {
      customerAddress = JSON.parse(localStorage.getItem("customer_address") || '""')  ;
@@ -95,12 +83,7 @@ export default function Checkout(){
         const name = details.payer.name.given_name;
        // alert(`Transaction completed by ${name}`);
        router.push(`/complete?paymentypte=paypal`)
-      // router.push(`/checkout?email=${data.email}&deliverytype=${deliveryType}`)
-      //  router.push({
-      //   pathname: "/complete",
-      //   query: { data: details.payer },
-      // })
-      });
+       });
     };
   
     return (<div className="flex container mx-auto px-[30%] items-center justify-center my-[20%] ">

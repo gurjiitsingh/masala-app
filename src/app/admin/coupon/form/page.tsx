@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { TcouponSchema, couponSchema } from "@/lib/types/couponType";
 //import { fetchofferTypes } from "@/app/action/brads/dbOperations";
 import { addNewcoupon } from "@/app/action/coupon/dbOperation";
+import SlideButton from "@/components/SlideButton";
 
 const Page = () => {
   useEffect(() => {
@@ -55,11 +56,11 @@ const Page = () => {
     // if (!result?.errors) {
     //   // router.push('/admin/coupons')
 
-    //   setValue("name", "");
+       setValue("name", "");
     //   setValue("couponDesc", "");
-    //   setValue("price", "");
+       setValue("price", "");
     //   // setValue("productCat", "");
-    //   setValue("minSpend", "");
+       setValue("minSpend", "");
     //   // setValue("weight", "");
     //   // setValue("dimensions", "");
     //   setValue("isFeatured", false);
@@ -111,6 +112,9 @@ const Page = () => {
 
     // console.log("response in create coupon form ", result);
   }
+ function setTargetValue(value:string){
+setValue("discountType",value)
+  }
 
   return (
     <>
@@ -122,8 +126,8 @@ const Page = () => {
             {/* left box */}
             <div className="flex-1 flex flex-col gap-y-5">
               <div className="flex-1 flex flex-col gap-3 bg-white rounded-xl p-4 border">
-                <h1 className="font-semibold">Coupon detail</h1>
-                <div className="flex w-full flex-col gap-2  my-15 ">
+                <h1 className="font-semibold">Coupon Detail</h1>
+                <div className="flex w-full flex-col gap-2  my-2 ">
                   <div className="flex flex-col gap-1 w-full">
                     <label className="label-style" htmlFor="coupon-title">
                       Coupon code<span className="text-red-500">*</span>{" "}
@@ -140,17 +144,20 @@ const Page = () => {
                       )}
                     </span>
                   </div>
-
+                 
                   <div className="flex w-full flex-col gap-2  my-2 ">
                     <div className="flex flex-col gap-1 w-full">
                       <label className="label-style" htmlFor="coupon-title">
                         Discount type % or Flate
                         <span className="text-red-500">*</span>{" "}
                       </label>
+                      <SlideButton value={'flat'} name={"Flat"} setTargetValue={setTargetValue} />
+                      <SlideButton value={'percent'} name={"%"} setTargetValue={setTargetValue} />
                       <input
-                        {...register("discountType")}
+                        {...register("discountType") }
                         className="input-style"
                         placeholder="Enter percentage or flat rate"
+                        hidden
                       />
                       <span className="text-[0.8rem] font-medium text-destructive">
                         {errors.discountType?.message && (
