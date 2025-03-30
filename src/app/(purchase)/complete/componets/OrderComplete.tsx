@@ -61,7 +61,7 @@ export default function OrderComplete() {
             onClick={() => {
               router.push("/");
             }}
-            className="min-w-[200px] mt-5 py-1 text-center bg-amber-300 rounded-2xl text-slate-500 text-[1rem]"
+            className="min-w-[200px] mt-5 py-1 text-center primary rounded-2xl text-slate-500 text-[1rem]"
           >
             Mehr einkaufen
           </button>

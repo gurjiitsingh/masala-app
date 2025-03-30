@@ -77,7 +77,7 @@ export default function PageProductDetailComponent({
           </div>
           </button>
           {!product.flavors && (
-            <div className="flex text-slate-500 items-center bg-amber-300 justify-between pt-1 pl-2 pr-1  rounded-3xl">
+            <div className="flex text-slate-500 items-center bg-[#FADB5E] justify-between pt-1 pl-2 pr-1  rounded-3xl">
               <div>Pack</div> <div>&euro;{price}</div>
               <div>
                 <CartButton cartProduct={cartProduct} />

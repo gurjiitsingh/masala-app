@@ -51,7 +51,7 @@ const Address = () => {
     // if (session?.user?.id !== undefined) {
     //   getAddressByID();
     // }
-    setValue("email", customerEmail);
+   // setValue("email", customerEmail);
     // console.log("this is befor email set---------------4",customerEmail)
   }, [session, customerEmail]);
 
@@ -457,7 +457,7 @@ if(paymentType===""){
       const zipInfo = await fetchdeliveryByZip(addressRes.zipCode);
       setdeliveryDis(zipInfo);
     }
-    setValue("email", inputEmail);
+  //  setValue("email", inputEmail);
   }
 
   async function getAddressByID() {

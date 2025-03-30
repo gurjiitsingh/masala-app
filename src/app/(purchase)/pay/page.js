@@ -9,19 +9,19 @@ import {
 
 
 
-import { loadScript } from "@paypal/paypal-js";
+//import { loadScript } from "@paypal/paypal-js";
 import Checkout from "./components/Checkout";
 
-loadScript({
-  "client-id": process.env.PAYPAL_CLIENT_ID,
-    // "AW5e7drnAQ7XcIGUsTNi1B88EO_XyXPhMGzm32hUffetc9NWsDBjzua8cGJKVbLbR16XxdlGE0Wh4nUa",
-})
-  .then((paypal) => {
-    // start to use the PayPal JS SDK script
-  })
-  .catch((err) => {
-    console.error("failed to load the PayPal JS SDK script1", err);
-  });
+// loadScript({
+//   "client-id": process.env.PAYPAL_CLIENT_ID,
+//     // "AW5e7drnAQ7XcIGUsTNi1B88EO_XyXPhMGzm32hUffetc9NWsDBjzua8cGJKVbLbR16XxdlGE0Wh4nUa",
+// })
+//   .then((paypal) => {
+//     // start to use the PayPal JS SDK script
+//   })
+//   .catch((err) => {
+//     console.error("failed to load the PayPal JS SDK script1", err);
+//   });
 
 
 

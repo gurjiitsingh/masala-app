@@ -5,7 +5,9 @@ export type orderMasterDataT = {
       addressId: string;
       time: string;
       total:number;
+      paymentType:string;
       totalDiscountG:number;
+      flatDiscount:number;
       status:string;
       srno:number;
       timeId:string;

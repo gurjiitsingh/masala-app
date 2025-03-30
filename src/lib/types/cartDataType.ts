@@ -106,5 +106,8 @@ export type cartDataT = {
         cartData: ProductType[];
         total:number;
         totalDiscountG:number;
+        flatDiscount:number;
         addressId: string;
+        paymentType:string;
+        
       }

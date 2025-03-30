@@ -21,7 +21,9 @@ function TableRows({ order }:{order:orderMasterDataT}){
       <TableCell>{order.time}</TableCell>
       <TableCell>{order.status}</TableCell>
         <TableCell>&#8364;{order.total}</TableCell>
+        <TableCell>{order.paymentType}</TableCell>
         <TableCell>{order.totalDiscountG}%</TableCell>
+        <TableCell>&#8364;{order.flatDiscount}</TableCell>
       <TableCell><Link className="p-1 rounded-2xl bg-amber-400" href={
         {
            pathname: `/admin/orders/order-detail`,

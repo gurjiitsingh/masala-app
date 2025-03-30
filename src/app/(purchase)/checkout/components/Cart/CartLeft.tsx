@@ -32,6 +32,7 @@ export default function CartLeft() {
 
   const [addCoupon, setAddCoupon] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState(false);
+  
   const { cartData, setEndTotalG, setTotalDiscountG, endTotalG,  totalDiscountG } = useCartContext();
   let total = 0;
   cartData.forEach((item: cartProductType) => {
@@ -59,11 +60,13 @@ export default function CartLeft() {
   }
 
   if (couponDisc?.price) {
-     console.log("----coupon disc",couponDisc);
+     //console.log("----coupon disc",couponDisc);
      if(couponDisc.discountType === "flat"){
       endPrice = endPrice - (+couponDisc?.price);
       // endPrice = +endPrice.toFixed(2);
      // TotalDiscount = TotalDiscount + +couponDisc?.price;
+    
+    // setFlatDiscount(+couponDisc?.price)
      }else{
     endPrice = endPrice - (+total * +couponDisc?.price) / 100;
     // endPrice = +endPrice.toFixed(2);
@@ -168,7 +171,7 @@ async function proceedToOrder(){
   order_user_Id = JSON.parse(localStorage.getItem("order_user_Id") || "");
    customer_name = JSON.parse(localStorage.getItem("customer_name") || "");
 
-   console.log("address id, useraddress id,  customer name ",AddressId,order_user_Id, customer_name)
+  // console.log("address id, useraddress id,  customer name ",AddressId,order_user_Id, customer_name)
 
 }
 
@@ -186,13 +189,21 @@ async function proceedToOrder(){
 
     // if (deliveryType === "pickup" || deliveryDis !== undefined) {
     if (canCompleteOrder) {
+     let flatDiscount = 0;
+      if(couponDisc?.discountType === "flat" && couponDisc?.price ){
+        flatDiscount = couponDisc?.price as number;
+      }
+      
+     
         const purchaseData = {
         userId: order_user_Id,//order_user_Id, //session?.user?.id,
         customerName:customer_name,
         cartData,
         total: endTotalG,
         totalDiscountG,
+        flatDiscount,
         addressId: AddressId,
+        paymentType,
       } as orderDataType;
 
       if (cartData.length !== 0) {
@@ -366,7 +377,7 @@ useEffect(()=>{
         </div> */}
         {/* disabled={true} */}
         <button  disabled={ isDisabled }
-              className="w-[200px] py-1 text-center bg-amber-400 italic font-bold rounded-xl text-[1.2rem]"
+              className="w-[200px] py-1 text-center bg-amber-400  font-bold rounded-xl text-[1.2rem]"
               onClick={() => {
                 proceedToOrder()
               }}

@@ -132,41 +132,7 @@ export async function createNewOrder(purchaseData:orderDataType) {
   //2. user address
   //3. cart data
 
-  // const email = purchaseData.address.email;
-  // const lastName = purchaseData.address.lastName;
-  // const firstName = purchaseData.address.firstName;
-  // const total = purchaseData.total;
-  // const totalDiscountG = purchaseData.totalDiscountG;
-  //const userId = purchaseData.address.userId;
- // const password = purchaseData.address.password;
-// const password = "123456";
-//  const username = firstName + "" + lastName;
-  //if(purchaseData.userId === undefined){
- // const formData = new FormData();
-  // formData.append("username", username);
-  // formData.append("email", email);
-  // formData.append("password", password);
-  // formData.append("confirmPassword", password);
-  // const result = await addUser(formData);
- // const UserAddedId = await addUserDirect(formData) as string;
-
-  // Now check address or add new address
- // const formDataAdd = new FormData();
-  // formDataAdd.append("firstName", purchaseData.address.firstName);
-  // formDataAdd.append("lastName", purchaseData.address.lastName);
- //formDataAdd.append("userId", UserAddedId);
-  // formDataAdd.append("email", purchaseData.address.email);
-  // formDataAdd.append("mobNo", purchaseData.address.mobNo);
-  // formDataAdd.append("password", "123456");
-  // formDataAdd.append("addressLine1", purchaseData.address.addressLine1!);
-  // formDataAdd.append("addressLine2", purchaseData.address.addressLine2!);
-  // formDataAdd.append("city", purchaseData.address.city);
-  // formDataAdd.append("state", purchaseData.address.state);
-  // formDataAdd.append("zipCode", purchaseData.address.zipCode);
-
-  //const addressAddedId = await addCustomerAddressDirect(formDataAdd);
-  // enter data in order master
-
+  
   
   //const now = new Date();
   // const now_india = now.toLocaleString("en-IN", {
@@ -211,19 +177,29 @@ const orderData = [] as orderMasterDataT[];
  const addressId = purchaseData.addressId;
  const userAddedId = purchaseData.addressId;
  const customerName = purchaseData.customerName;
+ const paymentType = purchaseData.paymentType;
+ const  flatDiscount= purchaseData.flatDiscount;
+ let status = 'Pending payment';
+   if(paymentType === 'cod'){ 
+    status = 'Completed';
+   }
+
+
   const orderMasterData = {
     // also add auto increment to order,
     customerName:customerName,
     userId: userAddedId,
     addressId: addressId,
     total:total,
-    status:"pending",
+    paymentType,
+    status,
     totalDiscountG,
+    flatDiscount,
     time: now_german,
     srno:new_srno,
    
   } as orderMasterDataT; 
-//console.log("order master---------", orderMasterData)
+console.log("order master---------", orderMasterData)
   
 const orderMasterId = await addOrderToMaster(orderMasterData) as string;
 
