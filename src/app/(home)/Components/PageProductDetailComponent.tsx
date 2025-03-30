@@ -1,6 +1,6 @@
 "use client";
-import { fetchProductByBaseProductId } from "@/app/action/productsaddon/dbOperation";
-import { AddOnProductSchemaType } from "@/lib/types/productAddOnType";
+// import { fetchProductByBaseProductId } from "@/app/action/productsaddon/dbOperation";
+// import { AddOnProductSchemaType } from "@/lib/types/productAddOnType";
 import { UseSiteContext } from "@/SiteContext/SiteContext";
 import React, { useEffect, useState } from "react";
 import AddOn from "./AddOn";
@@ -28,20 +28,7 @@ export default function PageProductDetailComponent({
       setAddOnData(AddOnData);
     }
 
-    // console.log("Ready to get andon data ---------")
-    // async function fetchProduct() {
-    //   try {
-    //     // const result = await fetchProducts();
-
-    //     const result = await fetchProductByBaseProductId(product.id!);
-    //     console.log("addon product data ---------", result)
-    //     setAddOnData(result);
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // }
-    // fetchProduct();
-  }, [product.id]);
+   }, [product.id]);
 
   // console.log("this is price ---------", addOnData)
   const price = product.price.toString().replace(/\./g, ",");
