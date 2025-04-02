@@ -22,9 +22,9 @@ export default function OrderComplete() {
   const { cartData, endTotalG, totalDiscountG, productTotalCost, emptyCart } =
     useContext(CartContext);
     const id = orderId as string;
-    const status = Paymentstatus as string;
+    //const status = Paymentstatus as string;
 
-    async function updateOrderStatus(status) {
+    async function updateOrderStatus(status:string) {
       await updateOrderMaster(id, status);
     }
   useEffect(() => {

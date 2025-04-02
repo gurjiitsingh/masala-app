@@ -11,7 +11,7 @@ import {
 export default function Checkout(){
  const searchParams = useSearchParams();
    const orderMasterId = searchParams.get("orderMasterId");
-   console.log("orderMasterId in paypal -------------",orderMasterId)
+  // console.log("orderMasterId in paypal -------------",orderMasterId)
 
     const [{ options, isPending,isRejected,isResolved, isInitial  }, dispatch] = usePayPalScriptReducer();
     //const [currency, setCurrency] = useState(options.currency);
