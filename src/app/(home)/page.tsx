@@ -2,7 +2,7 @@
 
 
 import Hero from "./Components/Hero";
-import Categories from "./Components/Categories";
+//import Categories from "./Components/Categories";
 import Products from "./Components/Products";
 import CategorySlider from "./Components/CategorySlider"
 //import { TnewProductSchema } from '@/lib/types';
