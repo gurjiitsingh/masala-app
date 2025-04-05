@@ -7,23 +7,24 @@ import AddOn from "./AddOn";
 import CartButton from "@/components/AddToCart/CartButton";
 import { cartProductType } from "@/lib/types/cartDataType";
 import { ProductType } from "@/lib/types/productType";
+import { addOnType } from "@/lib/types/addOnType";
 
 export default function PageProductDetailComponent({
   product,
   allAddOns,
 }: {
   product: ProductType;
-  allAddOns: ProductType[];
+  allAddOns: addOnType[];
 }) {
-  const [addOnData, setAddOnData] = useState<ProductType[]>([]);
+  const [addOnData, setAddOnData] = useState<addOnType[]>([]);
   const { productCategoryIdG } = UseSiteContext();
   useEffect(() => {
     if (allAddOns.length !== 0 && product.flavors) {
       const AddOnData = allAddOns.filter(
-        (item: ProductType) => product.id === item.baseProductId
+        (item: addOnType) => product.id === item.baseProductId
       );
       AddOnData.sort(
-        (a: ProductType, b: ProductType) => a.sortOrder! - b.sortOrder!
+        (a: addOnType, b: addOnType) => a.sortOrder! - b.sortOrder!
       );
       setAddOnData(AddOnData);
     }

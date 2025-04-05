@@ -22,6 +22,7 @@ import {
 
 import { editPorductSchema, ProductType } from "@/lib/types/productType";
 import { addOnPorductSchema, AddOnProductSchemaType } from "@/lib/types/productAddOnType";
+import { addOnType } from "@/lib/types/addOnType";
 
 //import { Result } from "postcss";
 //productT,productTs, productTsArr, TproductSchemaArr
@@ -257,7 +258,7 @@ export async function editProduct(formData: FormData) {
   }
 }
 
-export async function fetchAddOnProducts(): Promise<ProductType[]> {
+export async function fetchAddOnProducts(): Promise<addOnType[]> {
   // const result = await getDocs(collection(db, "productaddon"))
   // let data = [];
   // result.forEach((doc) => {
@@ -267,9 +268,9 @@ export async function fetchAddOnProducts(): Promise<ProductType[]> {
 
   const result = await getDocs(collection(db, "productaddon"));
 
-  const data = [] as ProductType[];
+  const data = [] as addOnType[];
   result.forEach((doc) => {
-    const pData = { id: doc.id, ...doc.data() } as ProductType;
+    const pData = { id: doc.id, ...doc.data() } as addOnType;
     data.push(pData);
   });
   return data;
