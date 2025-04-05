@@ -1,10 +1,11 @@
 "use client";
 
 
-import Hero from "./Components/Hero";
+import Hero from "./components/Hero";
 //import Categories from "./Components/Categories";
-import Products from "./Components/Products";
-import CategorySlider from "./Components/CategorySlider"
+import Products from "./components/Products";
+import CategorySlider from "./components/CategorySlider"
+
 
 //import { TnewProductSchema } from '@/lib/types';
 // import {  TnewProductSchema } from '@/lib/type/productType';
@@ -25,6 +26,7 @@ export default function Page() {
           </div>
           <CategorySlider />
           {/* <Categories /> */}
+        
           <Products />
         
         </div>

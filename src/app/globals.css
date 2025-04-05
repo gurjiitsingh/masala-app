@@ -15,6 +15,9 @@
 .input-image-style{
 @apply text-sm border border-slate-300 rounded
 }
+.seach-form{
+  @apply text-sm border border-slate-300 rounded-full p-1
+}
 .mp{
   @apply px-32 py-32;
 }

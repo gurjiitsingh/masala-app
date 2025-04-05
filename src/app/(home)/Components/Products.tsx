@@ -8,6 +8,7 @@ import PageProductDetailComponent from "./PageProductDetailComponent";
 import { UseSiteContext } from "@/SiteContext/SiteContext";
 import { fetchAddOnProducts } from "@/app/action/productsaddon/dbOperation";
 import { addOnType } from "@/lib/types/addOnType";
+import SearchForm from "./SearchForm";
 
 export default function Products() {
   const { productCategoryIdG } = UseSiteContext();
@@ -44,8 +45,18 @@ export default function Products() {
       fetchproductData();
     }
   }, [productCategoryIdG]);
+ 
+  function handleSearchForm(e:string){
+    
+    console.log("search text-----------", e)
+    const searchedProduct = allProducts.filter(item =>
+    item.name.toLowerCase().includes(e.toLowerCase())
+  );
+  setProduct(searchedProduct);
+  }
   return (
     <div className="flex flex-col gap-1 w-full">
+        <SearchForm handleSearchForm={handleSearchForm} />
       {products.map((product, i) => {
         return <PageProductDetailComponent key={i} allAddOns={allAddOns} product={product} />;
       })}

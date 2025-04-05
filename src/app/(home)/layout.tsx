@@ -10,7 +10,7 @@ import { BargerMenu } from "@/components/Bargermenu/Menu";
 import Footer from "@/components/Footer";
 
 import CartBottom from "@/components/CartBottom/CartBottom"
-import Modal from "./Components/Modal";
+import Modal from "./components/Modal";
 
 export const metadata: Metadata = {
   title: "Create Next App",
