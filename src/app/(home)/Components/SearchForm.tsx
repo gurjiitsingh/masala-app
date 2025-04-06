@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const data = [
-  { id: 1, name: 'Apple' },
-  { id: 2, name: 'Banana' },
-  { id: 3, name: 'Orange' },
-  { id: 4, name: 'Mango' },
-  { id: 5, name: 'Grapes' },
-];
+
 
 export default function SearchForm({handleSearchForm}:{handleSearchForm:(e:string)=>void}) {
   const [query, setQuery] = useState('');
