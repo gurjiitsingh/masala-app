@@ -79,7 +79,7 @@ export default function CategorySlider() {
 
   <style></style>;
 
-  const { setProductCategoryIdG } = UseSiteContext();
+  const { productCategoryIdG, setProductCategoryIdG } = UseSiteContext();
 
   const [categoryData, setCategoryData] = useState([]);
   useEffect(() => {
@@ -88,16 +88,30 @@ export default function CategorySlider() {
         const categories = await fetchCategories();
         categories.sort((a, b) => a.sortOrder - b.sortOrder);
        // console.log("categories ------------", categories);
-        setCategoryData(categories);
+        setCategoryData(categories.filter((category) => category.isFeatured !== 'no'));
       } catch (error) {
         console.log(error);
       }
     }
     fetchcate();
   }, []);
+  
+
+
+//   useEffect(()=>{
+// if(categoryData.length>0){
+    
+
+//  // if(productCategoryIdG === '' || productCategoryIdG === undefined){
+//     let targetCategory = categoryData.find(item => item.sortOrder === "0");
+//     setProductCategoryIdG(targetCategory.id)
+//  // }
+//   //  console.log(targetCategory);
+// }
+//   },[categoryData])
 
   return (
-    <div className="m-2 h-full w-[98%] px-2 gap-1 ">
+    <div className="-mt-20 h-full w-[98%] px-2 gap-1 ">
       <Slider {...settings}>
         {categoryData?.map((category, i) => {
           return (
@@ -109,13 +123,24 @@ export default function CategorySlider() {
               >
                 <div className="w-[100px]">
                   <div className="flex flex-col  gap-1 ">
-                    <div className="h-fit w-fit rounded-lg  pl-5 ">
+                  {productCategoryIdG === category.id ?<div className="primary py-1 rounded-xl"> 
+                    <div className="h-fit w-fit rounded-lg  px-1 ">
                       <img
                       //  className="w-[70px] rounded-lg"
                        className="rounded-lg h-20 w-48 object-fill"
                         src={category.image}
                       />
                     </div>
+                  </div>:<div> 
+                  <div className="h-fit w-fit rounded-lg  px-1 ">
+                      <img
+                      //  className="w-[70px] rounded-lg"
+                       className="rounded-lg h-20 w-48 object-fill"
+                        src={category.image}
+                      />
+                    </div>
+                    </div>}
+                   
                     <div className="flex flex-col justify-center w-[110px]  items-center">
                       <h3 className="text-[.8rem] text-slate-600 px-0">
                        
