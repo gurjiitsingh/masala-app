@@ -28,27 +28,29 @@ export default function PageProductDetailComponent({
       );
       setAddOnData(AddOnData);
     }
+  }, [product.id]);
 
-   }, [product.id]);
-
-  // console.log("this is price ---------", addOnData)
-  const price = product.price.toString().replace(/\./g, ",");
-  //bg-[#D3E671]
+  //common code start
+  const priceRegular = product.price.toString().replace(/\./g, ",");
+  let priceDiscounted;
+  let priceTarget = product.price;
+  if (product.discountPrice !== undefined && product.discountPrice > 0) {
+    priceTarget = product.discountPrice;
+    priceDiscounted = product.discountPrice.toString().replace(/\./g, ",");
+  }
 
   const cartProduct: cartProductType = {
     id: product.id,
     quantity: 1,
-    price: product.price,
+    price: priceTarget,
     name: product.name,
     image: product.image,
   };
+  //common code end
   return (
     <div className="w-full  lg:w-[48%]   bg-zinc-50 shadow-lg flex flex-row   rounded-2xl items-center">
       <div className="rounded-full flex items-center justify-center w-[70px] h-[65px]  md:w-[90px]  md:h-[80px]  overflow-hidden">
-        <img src={product.image} 
-        className="h-[65px]  md:h-[85px]" 
-        
-        />
+        <img src={product.image} className="h-[65px]  md:h-[85px]" />
       </div>
 
       <div className="w-full flex flex-col p-3 justify-between ">
@@ -59,14 +61,26 @@ export default function PageProductDetailComponent({
               {product.name}
             </div>
           </div>
-<button onClick={() =>alert(product.productDesc)}>
-          <div  className="text-sm text-slate-500 font-extralight text-left max-w-fit md:max-w-[400px] max-h-[22px] overflow-hidden">
-            {product.productDesc}
-          </div>
+          <button onClick={() => alert(product.productDesc)}>
+            <div className="text-sm text-slate-500 font-extralight text-left max-w-fit md:max-w-[400px] max-h-[22px] overflow-hidden">
+              {product.productDesc}
+            </div>
           </button>
           {!product.flavors && (
             <div className="flex text-slate-500 items-center bg-[#FADB5E] justify-between pt-1 pl-2 pr-1  rounded-3xl">
-              <div>Pack</div> <div>&euro;{price}</div>
+              <div>Pack</div>
+              {/* common code start */}
+              {product.discountPrice !== undefined &&
+              product.discountPrice > 0 ? (
+                <div className="flex justify-between gap-3 items-center">
+                  {" "}
+                  <div className="line-through">&euro;{priceRegular}</div>{" "}
+                  <div>&euro;{priceDiscounted}</div>
+                </div>
+              ) : (
+                <div>&euro;{priceRegular}</div>
+              )}
+              {/* common code end */}
               <div>
                 <CartButton cartProduct={cartProduct} />
                 {/* <button
@@ -82,7 +96,9 @@ export default function PageProductDetailComponent({
           )}
         </div>
 
-        {product.flavors && <AddOn baseProductName={product.name} addOnData={addOnData} />}
+        {product.flavors && (
+          <AddOn baseProductName={product.name} addOnData={addOnData} />
+        )}
       </div>
     </div>
   );
