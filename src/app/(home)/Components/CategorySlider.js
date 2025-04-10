@@ -114,6 +114,7 @@ export default function CategorySlider() {
     <div className="-mt-20 h-full w-[98%] px-2 gap-1 ">
       <Slider {...settings}>
         {categoryData?.map((category, i) => {
+            console.log("cate----------",category)
           return (
             <div key={i} className="mx-2">
               <button
