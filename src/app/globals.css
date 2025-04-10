@@ -24,6 +24,9 @@
 .primary{
   @apply bg-[#FADB5E];
 }
+.light-bg{
+  @apply bg-slate-100;
+}
 .dim{
   @apply bg-blue-400;
 }
