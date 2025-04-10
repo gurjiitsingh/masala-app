@@ -36,15 +36,27 @@ const PageComp = () => {
     let productData;
     async function prefetch() {
       productData = await fetchProductById(id);
-      //console.log("productData ----", productData);
-      const priceS = productData.price.toString().replace(/\./g, ',');
+      console.log("productData ----", productData);
+      let priceS = "";
+      if(productData.price! !== undefined){
+       priceS = productData.price.toString().replace(/\./g, ',');
+      }
+      let discountPriceS = "";
+      if(productData.discountPrice! !== undefined){
+       discountPriceS = productData.discountPrice!.toString().replace(/\./g, ',');
+    }
+   
       setValue("id", id);
       setValue("name", productData.name);
       setValue("productDesc", productData.productDesc);
      // setValue("categoryId", "yishiwe");
       setValue("oldImgageUrl", productData.image);
       setValue("price", priceS);
+     
+      setValue("discountPrice", discountPriceS);
+     if(productData.sortOrder! !== undefined){
       setValue("sortOrder", productData.sortOrder!.toString());
+     }
       setValue("categoryId", productData.categoryId!);
       setValue("isFeatured", productData.isFeatured);
     }
@@ -76,6 +88,7 @@ const PageComp = () => {
 
     formData.append("name", data.name);
     formData.append("price", data.price);
+    formData.append("discountPrice", data.discountPrice!);
     formData.append("categoryId", data.categoryId!);
     formData.append("sortOrder", data.sortOrder);
     formData.append("productDesc", data.productDesc);
@@ -197,7 +210,7 @@ const PageComp = () => {
                 <div className="flex w-full flex-col gap-2  my-2 ">
                   <div className="flex flex-col gap-1 w-full">
                     <label className="label-style" htmlFor="product-title">
-                      Price<span className="text-red-500">*</span>{" "}
+                      Regurlar Price<span className="text-red-500">*</span>{" "}
                     </label>
                     <input
                       {...register("price")}
@@ -207,6 +220,22 @@ const PageComp = () => {
                     <span className="text-[0.8rem] font-medium text-destructive">
                       {errors.price?.message && (
                         <span>{errors.price?.message}</span>
+                      )}
+                    </span>
+                  </div>
+
+                  <div className="flex flex-col gap-1 w-full">
+                    <label className="label-style" htmlFor="product-title">
+                      Discount Price<span className="text-red-500">*</span>{" "}
+                    </label>
+                    <input
+                      {...register("discountPrice")}
+                      className="input-style"
+                      placeholder="Enter Price"
+                    />
+                    <span className="text-[0.8rem] font-medium text-destructive">
+                      {errors.discountPrice?.message && (
+                        <span>{errors.discountPrice?.message}</span>
                       )}
                     </span>
                   </div>
