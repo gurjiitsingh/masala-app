@@ -19,6 +19,8 @@ function CheckoutForm() {
     var customerAddress = JSON.parse(localStorage.getItem("customer_address"))
     }
 
+
+
   const handlePayment = async (e) => {
     e.preventDefault();
 
@@ -50,9 +52,12 @@ function CheckoutForm() {
     //   },
     // });
 
+    console.log(customerAddress)
+console.log(totalAmount)
+console.log(name)
 
     const { clientSecret, error } = await createPaymentIntent({
-      amount: 400,
+      amount: totalAmount,
       name: 'John Doe',
       email: 'john@example.com',
       phone: '+1234567890',
