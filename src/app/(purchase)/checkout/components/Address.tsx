@@ -57,6 +57,9 @@ const Address = () => {
 
 const [disablePaypalBtn, setDisablePaypalBtn] = useState(false);
 const [disableCodBtn, setDisableCodBtn] = useState(false);
+const [disableStripeBtn, setDisableStripeBtn] = useState(false);
+
+
   useEffect(() => {
     //console.log("payment Type ------------", paymentType);
     // setPaymentType("")
@@ -65,15 +68,25 @@ const [disableCodBtn, setDisableCodBtn] = useState(false);
   }, []);
 
 useEffect(()=>{
+  if(paymentType==='stripe'){
+    setDisableStripeBtn(true)
+    setDisableCodBtn(false);
+    setDisablePaypalBtn(false)
+   
+  }
 if(paymentType==='paypal'){
+  setDisableStripeBtn(false)
   setDisablePaypalBtn(true)
   setDisableCodBtn(false);
+  
 }
 if(paymentType==='cod'){
+  setDisableStripeBtn(false)
   setDisableCodBtn(true);
   setDisablePaypalBtn(false)
 }
 if(paymentType===""){
+  setDisableStripeBtn(false)
   setDisableCodBtn(false);
   setDisablePaypalBtn(false)
 }
@@ -403,6 +416,23 @@ if(paymentType===""){
               {/* Select payment type */}
               Zahlungsart auswählen
             </h3>
+
+            <div className="flex gap-2 items-center">
+            <button disabled={ disableStripeBtn }
+              className="w-[200px] py-1 text-center bg-amber-400 italic font-bold rounded-xl text-[1.2rem]"
+              onClick={() => {
+                   setPaymentType("stripe");
+              }}
+              value="stripe"
+              name="button_1"
+            >
+              <span className=" text-blue-900">Stripe</span>
+              {/* <span className=" text-sky-500">Pal</span> */}
+            </button>
+{paymentType==='stripe' && <FaCheck className="text-green-300" size={24} />}
+            </div>
+
+
             <div className="flex gap-2 items-center">
             <button disabled={ disablePaypalBtn }
               className="w-[200px] py-1 text-center bg-amber-400 italic font-bold rounded-xl text-[1.2rem]"
@@ -410,7 +440,7 @@ if(paymentType===""){
                    setPaymentType("paypal");
               }}
               value="paypal"
-              name="button_1"
+              name="button_2"
             >
               <span className=" text-blue-900">Pay</span>
               <span className=" text-sky-500">Pal</span>
@@ -424,7 +454,7 @@ if(paymentType===""){
                   setPaymentType("cod");
               }}
               value="cod"
-              name="button_1"
+              name="button_3"
             >
               Cash on Delivery
             </button>

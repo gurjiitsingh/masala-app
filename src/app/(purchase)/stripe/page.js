@@ -1,0 +1,91 @@
+'use client';
+
+import { useState } from 'react';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { createPaymentIntent } from '@/app/action/stripe/actionStripe';
+import { useCartContext } from '@/store/CartContext';
+//import { ProductType } from "@/app/action/";
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
+
+function CheckoutForm() {
+  const stripe = useStripe();
+  const elements = useElements();
+  const [status, setStatus] = useState('');
+
+  const {  productTotalCost, endTotalG } = useCartContext();
+
+  if (typeof window !== 'undefined') {
+    var customerAddress = JSON.parse(localStorage.getItem("customer_address"))
+    }
+
+  const handlePayment = async (e) => {
+    e.preventDefault();
+
+    if (!stripe || !elements) return;
+
+    const totalAmount = endTotalG*100;
+
+    const cardElement = elements.getElement(CardElement);
+
+   // const { clientSecret, error } = await createPaymentIntent({ amount: 2000 });
+
+   const name = customerAddress.firstName+ " "+customerAddress.lastName;
+  
+
+    const { clientSecret, error } = await createPaymentIntent({
+      amount: totalAmount,
+      customer: {
+        name: name,
+        email: customerAddress.email,
+        phone: customerAddress.mobNo,
+        address: {
+          line1: customerAddress.addressLine1,
+          line2: customerAddress.addressLine2,
+          city: customerAddress.city,
+          state: customerAddress.state,
+          postal_code: customerAddress.zipCode,
+          country: 'DE',
+        },
+      },
+    });
+
+   
+    if (error) {
+      setStatus(error);
+      return;
+    }
+
+    const { paymentIntent, error: confirmError } = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: {
+        card: cardElement,
+      },
+    });
+
+    if (confirmError) {
+      setStatus(confirmError.message);
+    } else if (paymentIntent.status === 'succeeded') {
+      setStatus('Payment successful!');
+    }
+  };
+
+  return (<div className='min-h-[400px] flex justify-center items-center'>
+    <form onSubmit={handlePayment}>
+      <div className='flex flex-col gap-3'>
+      <CardElement />
+      <button className="bg-amber-400 font-semibold text-slate-700 rounded-lg px-2 py-1 min-w-[200px]" type="submit" disabled={!stripe}>Pay </button>
+      <p className=''>{status}</p>
+      </div>
+    </form>
+    </div>
+  );
+}
+
+export default function StripeWrapper() {
+  return (<div className="container mx-auto py-5 px-5 border-slate-300 rounded-2xl">
+    <Elements stripe={stripePromise}>
+      <CheckoutForm />
+    </Elements>
+    </div>
+  );
+}

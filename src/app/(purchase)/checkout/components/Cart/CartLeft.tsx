@@ -297,6 +297,9 @@ console.log("couponDisc?.minSpend-------------",couponDisc?.minSpend)
       }
       setIsDisabled(false);
 
+      if (paymentType === "stripe") {
+        router.push(`/stripe?orderMasterId=${orderMasterId}`);
+      }
       if (paymentType === "paypal") {
         router.push(`/pay?orderMasterId=${orderMasterId}`);
       }
