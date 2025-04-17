@@ -25,14 +25,16 @@ function CheckoutForm() {
   if (typeof window !== "undefined") {
     var customerAddress = JSON.parse(localStorage.getItem("customer_address"));
   }
-  const full_name = customerAddress.firstName + " " + customerAddress.lastName;
-  const totalAmount = endTotalG * 100;
-  console.log(customerAddress);
-  console.log(totalAmount);
-  console.log(full_name);
+
 
   const handlePayment = async (e) => {
     e.preventDefault();
+
+    const full_name = customerAddress.firstName + " " + customerAddress.lastName;
+    const totalAmount = endTotalG * 100;
+    console.log(customerAddress);
+    console.log(totalAmount);
+    console.log(full_name);
 
     if (!stripe || !elements) return;
 
