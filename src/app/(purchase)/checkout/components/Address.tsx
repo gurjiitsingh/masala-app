@@ -417,7 +417,7 @@ if(paymentType===""){
               Zahlungsart auswählen
             </h3>
 
-            {/* <div className="flex gap-2 items-center">
+            <div className="flex gap-2 items-center">
             <button disabled={ disableStripeBtn }
               className="w-[200px] py-1 text-center bg-amber-400 italic font-bold rounded-xl text-[1.2rem]"
               onClick={() => {
@@ -430,7 +430,7 @@ if(paymentType===""){
             
             </button>
 {paymentType==='stripe' && <FaCheck className="text-green-300" size={24} />}
-            </div> */}
+            </div>
 
 
             <div className="flex gap-2 items-center">

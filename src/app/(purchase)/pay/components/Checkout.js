@@ -94,7 +94,7 @@ export default function Checkout(){
     };
 
     const onError = (err) => {
-      router.push(`/complete?paymentType=paypal&status=fail&orderMasterId=${orderMasterId}`)
+      router.push(`/order-fail?paymentType=paypal&status=fail&orderMasterId=${orderMasterId}`)
   }
   
     return (<div className="flex container mx-auto px-[30%] items-center justify-center my-[20%] ">
