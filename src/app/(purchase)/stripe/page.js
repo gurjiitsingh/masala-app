@@ -33,20 +33,36 @@ function CheckoutForm() {
    const name = customerAddress.firstName+ " "+customerAddress.lastName;
   
 
+    // const { clientSecret, error } = await createPaymentIntent({
+    //   amount: totalAmount,
+    //   customer: {
+    //     name: name,
+    //     email: customerAddress.email,
+    //     phone: customerAddress.mobNo,
+    //     address: {
+    //       line1: customerAddress.addressLine1,
+    //       line2: customerAddress.addressLine2,
+    //       city: customerAddress.city,
+    //       state: customerAddress.state,
+    //       postal_code: customerAddress.zipCode,
+    //       country: 'DE',
+    //     },
+    //   },
+    // });
+
+
     const { clientSecret, error } = await createPaymentIntent({
-      amount: totalAmount,
-      customer: {
-        name: name,
-        email: customerAddress.email,
-        phone: customerAddress.mobNo,
-        address: {
-          line1: customerAddress.addressLine1,
-          line2: customerAddress.addressLine2,
-          city: customerAddress.city,
-          state: customerAddress.state,
-          postal_code: customerAddress.zipCode,
-          country: 'DE',
-        },
+      amount: 400,
+      name: 'John Doe',
+      email: 'john@example.com',
+      phone: '+1234567890',
+      address: {
+        line1: '123 Main Street',
+        line2: 'Apt 4B',
+        city: 'New York',
+        state: 'NY',
+        postal_code: '10001',
+        country: 'US',
       },
     });
 
