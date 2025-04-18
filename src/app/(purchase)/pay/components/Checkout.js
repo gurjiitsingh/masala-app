@@ -47,45 +47,45 @@ export default function Checkout(){
             },
           },
         ], 
-        items: [
-          {
-            "name": "All products", /* Shows within upper-right dropdown during payment approval */
-            "description": "Total amount", /* Item details will also be in the completed paypal.com transaction view */
-            "unit_amount": {
-              "currency_code": "EUR",
-              "value": endTotalG,
-            },
-            "quantity": 2
-          },
-        ],
-        payer: {
-          name: {
-            given_name: customerAddress.firstName,
-            surname: customerAddress.lastName,
-          },
-          address:
-           {
-            address_line_1: customerAddress.addressLine1,
-            address_line_2: customerAddress.addressLine2,
-            admin_area_2: customerAddress.city,
-            admin_area_1: customerAddress.state,
-            postal_code: customerAddress.zipCode,
-            country_code: "DE",
-          },
-          email_address: customerAddress.email,
-          phone: {
-            phone_type: "MOBILE",
-            phone_number: {
-              national_number: customerAddress.mobNo,
-            },
-          },
-        },
+        // items: [
+        //   {
+        //     "name": "All products", /* Shows within upper-right dropdown during payment approval */
+        //     "description": "Total amount", /* Item details will also be in the completed paypal.com transaction view */
+        //     "unit_amount": {
+        //       "currency_code": "EUR",
+        //       "value": endTotalG,
+        //     },
+        //     "quantity": 2
+        //   },
+        // ],
+        // payer: {
+        //   name: {
+        //     given_name: customerAddress.firstName,
+        //     surname: customerAddress.lastName,
+        //   },
+        //   address:
+        //    {
+        //     address_line_1: customerAddress.addressLine1,
+        //     address_line_2: customerAddress.addressLine2,
+        //     admin_area_2: customerAddress.city,
+        //     admin_area_1: customerAddress.state,
+        //    // postal_code: customerAddress.zipCode,
+        //     country_code: "DE",
+        //   },
+        //   email_address: customerAddress.email,
+        //   phone: {
+        //     phone_type: "MOBILE",
+        //     phone_number: {
+        //       national_number: customerAddress.mobNo,
+        //     },
+        //   },
+        // },
       });
     };
   
     const onApproveOrder = (data, actions) => {
       return actions.order.capture().then((details) => {
-        const name = details.payer.name.given_name;
+        //const name = details.payer.name.given_name;
        // alert(`Transaction completed by ${name}`);
       
       // console.log("isPending,isRejected,isResolved, isInitial ---------", isPending,isRejected,isResolved, isInitial)
@@ -94,7 +94,13 @@ export default function Checkout(){
     };
 
     const onError = (err) => {
+      console.log("paypal error--------------- ",err)
       router.push(`/order-fail?paymentType=paypal&status=fail&orderMasterId=${orderMasterId}`)
+  }
+
+  const onCancel= (data) => {
+    console.log("Payment Cancelled:", data);
+    router.push(`/order-cancel?paymentType=paypal&status=cancel&orderMasterId=${orderMasterId}`)
   }
   
     return (<div className="flex container mx-auto px-[30%] items-center justify-center my-[20%] ">
@@ -115,7 +121,7 @@ export default function Checkout(){
               createOrder={(data, actions) => onCreateOrder(data, actions)}
               onApprove={(data, actions) => onApproveOrder(data, actions)}
               onError={ (err)=> onError(err)}
-              
+              onCancel = {(data)=> onCancel(data)}
             />
            
           </>
