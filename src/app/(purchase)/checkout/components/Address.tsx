@@ -444,7 +444,7 @@ const Address = () => {
             </div>
             <div className="flex gap-2 items-center">
               <button
-                disabled={disableCodBtn}
+               // disabled={disableCodBtn}
                 className="w-[200px] py-1 text-center bg-amber-500 text-white font-bold rounded-xl text-[1.2rem]"
                 onClick={() => {
                   setPaymentType("cod");
