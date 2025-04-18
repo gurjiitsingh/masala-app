@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
     PayPalButtons,
    
@@ -32,6 +32,10 @@ export default function Checkout(){
     //   });
     // };
 
+    useEffect(()=>{
+      console.log("endTotalG , type --------",endTotalG,typeof(endTotalG));
+    })
+
     let customerAddress;
     if (typeof window !== 'undefined') {
      customerAddress = JSON.parse(localStorage.getItem("customer_address") || '""')  ;
@@ -58,28 +62,28 @@ export default function Checkout(){
         //     "quantity": 2
         //   },
         // ],
-        // payer: {
-        //   name: {
-        //     given_name: customerAddress.firstName,
-        //     surname: customerAddress.lastName,
-        //   },
-        //   address:
-        //    {
-        //     address_line_1: customerAddress.addressLine1,
-        //     address_line_2: customerAddress.addressLine2,
-        //     admin_area_2: customerAddress.city,
-        //     admin_area_1: customerAddress.state,
-        //    // postal_code: customerAddress.zipCode,
-        //     country_code: "DE",
-        //   },
-        //   email_address: customerAddress.email,
-        //   phone: {
-        //     phone_type: "MOBILE",
-        //     phone_number: {
-        //       national_number: customerAddress.mobNo,
-        //     },
-        //   },
-        // },
+        payer: {
+          name: {
+            given_name: customerAddress.firstName,
+            surname: customerAddress.lastName,
+          },
+          address:
+           {
+            address_line_1: customerAddress.addressLine1,
+            address_line_2: customerAddress.addressLine2,
+            admin_area_2: customerAddress.city,
+            admin_area_1: customerAddress.state,
+           // postal_code: customerAddress.zipCode,
+            country_code: "DE",
+          },
+          email_address: customerAddress.email,
+          phone: {
+            phone_type: "MOBILE",
+            phone_number: {
+              national_number: customerAddress.mobNo,
+            },
+          },
+        },
       });
     };
   
