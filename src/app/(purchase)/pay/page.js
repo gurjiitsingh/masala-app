@@ -30,7 +30,9 @@ const initialOptions = {
   "client-id": process.env.PAYPAL_CLIENT_ID,
    currency: "EUR",
   intent: "capture",
+  locale: "de_DE", 
   debug: true,
+  commit: true,
 };
 
 
