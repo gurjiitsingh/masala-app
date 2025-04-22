@@ -18,26 +18,48 @@ export default function PageProductDetailComponent({
 }) {
   const [addOnData, setAddOnData] = useState<addOnType[]>([]);
   const { productCategoryIdG } = UseSiteContext();
+  
+
+
   useEffect(() => {
     if (allAddOns.length !== 0 && product.flavors) {
       const AddOnData = allAddOns.filter(
         (item: addOnType) => product.id === item.baseProductId
       );
       AddOnData.sort(
-        (a: addOnType, b: addOnType) => a.sortOrder! - b.sortOrder!
+      //  (a: addOnType, b: addOnType) => a.sortOrder! - b.sortOrder!
+      (a: addOnType, b: addOnType) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0)
       );
       setAddOnData(AddOnData);
     }
-  }, [product.id]);
+  }, [product.id, allAddOns, product.flavors]);
+
+
+  
+
+
+
 
   //common code start
-  const priceRegular = product.price.toString().replace(/\./g, ",");
+  //const priceRegular = product.price.toString().replace(/\./g, ",");
+  const priceRegular = product.price?.toString().replace(/\./g, ",") ?? "0,00";
+ 
+ 
+  // let priceDiscounted;
+  // let priceTarget = product.price;
+  // if (product.discountPrice !== undefined && product.discountPrice > 0) {
+  //   priceTarget = product.discountPrice;
+  //   priceDiscounted = product.discountPrice.toString().replace(/\./g, ",");
+  // }
+
   let priceDiscounted;
-  let priceTarget = product.price;
-  if (product.discountPrice !== undefined && product.discountPrice > 0) {
+  let priceTarget = product.price ?? 0;
+  if (product.discountPrice && product.discountPrice > 0) {
     priceTarget = product.discountPrice;
     priceDiscounted = product.discountPrice.toString().replace(/\./g, ",");
   }
+
+
 
   const cartProduct: cartProductType = {
     id: product.id,
@@ -50,7 +72,12 @@ export default function PageProductDetailComponent({
   return (
     <div className="w-full  lg:w-[48%]   bg-zinc-50 shadow-lg flex flex-row   rounded-2xl items-center">
       <div className="rounded-full flex items-center justify-center w-[70px] h-[65px]  md:w-[90px]  md:h-[80px]  overflow-hidden">
-        <img src={product.image} className="h-[65px]  md:h-[85px]" />
+        
+        {product.image && (
+  <img src={product.image} alt={product.name} className="h-[65px]  md:h-[85px]" />
+)}
+
+
       </div>
 
       <div className="w-full flex flex-col p-3 justify-between ">
@@ -61,11 +88,14 @@ export default function PageProductDetailComponent({
               {product.name}
             </div>
           </div>
-          <button onClick={() => alert(product.productDesc)}>
+
+          {/* <button onClick={() => alert(product.productDesc)}> */}
+          <button onClick={() => alert(product.productDesc ?? "Keine Beschreibung verfügbar")}>
             <div className="text-sm text-slate-500 font-extralight text-left max-w-fit md:max-w-[400px] max-h-[22px] overflow-hidden">
               {product.productDesc}
             </div>
           </button>
+
           {!product.flavors && (
             <div className="flex text-slate-500 items-center bg-[#FADB5E] justify-between pt-1 pl-2 pr-1  rounded-3xl">
               <div>Pack</div>

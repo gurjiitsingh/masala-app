@@ -201,6 +201,8 @@ export default function CartLeft() {
 
    
   }, [deliveryType]);
+  console.log("isDisabled---------------", isDisabled);
+ 
 
   useEffect(() => {
     if (deliveryType === "delivery") {
